@@ -1744,6 +1744,7 @@ Object.assign(ET,{
  slimeKing:'Chicle Gigante',gobKing:'La Vecina del 5º',boneColossus:'El Fumeta Colosal',batLord:'La Paloma Reina',highPriest:'La Predicadora Antidroga',
  magmaCore:'Gominola Madre',taskmaster:'El Rey Poni',cerberus:'Unicornio de Tres Cabezas',executioner:'La Seta Matriarca',forgeLord:'Osito Colosal',
  ancientGarg:'El Nubarrón',archwarlock:'El Gran Duende Fumeta',demonKing:'El Gran Unicornio Cósmico'};for(const k in BN)if(ET[k])ET[k].name=BN[k]}
+ET.maxPet={def:110,sdf:90,el:'wind',sty:'melee',spr:'max',hp:200,spd:58,dmg:6,xp:0,r:9,sc:1.6,name:'Max',pc:'#24242c'};
 // fases: 10 por acto, 3 minutos cada una, con jefe al final
 const DEMON={skel:'imp',bat:'ashGarg',slime:'magmaLarva',gob:'lesserDemon',wolf:'hellhound',cult:'warlock',orc:'lavaBrute',slimeKing:'magmaCore',gobKing:'taskmaster',wolfBoss:'cerberus',boneColossus:'executioner',orcBoss:'forgeLord',batLord:'ancientGarg',highPriest:'archwarlock',king:'demonKing'};
 const ALL7=[['skel',2],['bat',1],['slime',1],['gob',2],['wolf',2],['cult',2],['orc',2]];
@@ -2674,7 +2675,8 @@ function enterRift(){hazards=[];const h=riftHero();G.rift={x:G.portal.x,y:G.port
   enemies=[];eprojs=[];pickups=[];meteors=[];zones=[];projs=[];wfx=[];P.dash=null;P.x=RC.x;P.y=RC.y+90;P.inv=1.5;
   const t=G.time,rk=h.rar;const T={el:h.el,sty:h.sty,def:h.st.def,sdf:h.st.sdf,spr:h.spr,hp:Math.round((900+t*5)*(1+rk*.35)),spd:h.sty==='melee'?44:38,dmg:Math.round((9+t/40)*(1+rk*.12)),xp:0,r:9,sc:1.7,mini:1,heroBoss:1,name:h.name+(h.ep?', '+h.ep:''),pc:ELC[h.el][0]};
   const e={type:'hboss',t:T,x:RC.x,y:RC.y-60,hp:T.hp,maxHp:T.hp,spd:T.spd,dmg:T.dmg,r:T.r,sc:T.sc,elite:false,big:true,flash:0,slowT:0,kx:0,ky:0,seed:rand(100),shootT:2,act:2,orbCD:0,dead:false,face:1,state:0,st:0,set:SPR[h.spr]};
-  enemies.push(e);G.boss=e;G.shake=6;sfx('boss');fx.push({k:'flash',t:0,dur:.5});toast('MAL VIAJE: '+h.name)}
+  enemies.push(e);G.boss=e;G.shake=6;sfx('boss');fx.push({k:'flash',t:0,dur:.5});toast('MAL VIAJE: '+h.name);
+  if(h.pet){const m=spawnEnemy('maxPet',RC.x+28,RC.y-52);if(m){m.hp=m.maxHp=Math.round(T.hp*.25);m.dmg=Math.round(T.dmg*.6)}}}
 function clampRift(){const dx=P.x-RC.x,dy=P.y-RC.y,d=Math.hypot(dx,dy);if(d>RC.r-10){P.x=RC.x+dx/d*(RC.r-10);P.y=RC.y+dy/d*(RC.r-10)}
   for(const e of enemies){const ex=e.x-RC.x,ey=e.y-RC.y,ed=Math.hypot(ex,ey);if(ed>RC.r-8){e.x=RC.x+ex/ed*(RC.r-8);e.y=RC.y+ey/ed*(RC.r-8)}}}
 function heroBossAI(e,dt,dx,dy,d){const st=e.t.sty,el=e.t.el,kind=st==='magic'?'m':'p';e.act-=dt;
@@ -2687,7 +2689,7 @@ function heroBossAI(e,dt,dx,dy,d){const st=e.t.sty,el=e.t.el,kind=st==='magic'?'
     if(st==='melee'){e.act=2.2;if(Math.random()<.6){e.st=.55;e.cvx=dx*210;e.cvy=dy*210;G.shake=Math.max(G.shake,2)}else{const n=12;for(let i=0;i<n;i++){const a=i/n*6.283;eprojs.push({x:e.x,y:e.y-8,vx:Math.cos(a)*80,vy:Math.sin(a)*80,dmg:e.dmg*.8,life:1.2,el,dt:kind})}sfx('nova')}}
     else if(st==='ranged'){e.act=1.5;sh(randi(3,5),.18,130,e.dmg*.7);sfx('shoot')}
     else{e.act=2.6;if(Math.random()<.5){const n=16,off=rand(6.28);for(let i=0;i<n;i++){const a=off+i/n*6.283;eprojs.push({x:e.x,y:e.y-10,vx:Math.cos(a)*75,vy:Math.sin(a)*75,dmg:e.dmg*.8,life:4,el,dt:kind})}sfx('nova')}else{sh(1,0,110,e.dmg*1.2);sh(2,.5,95,e.dmg*.8);sfx('zap')}}}}
-function riftReward(e){G.loot.gticket=(G.loot.gticket||0)+1;let msg='+1 BOLSITA DORADA';if(Math.random()<.3){G.loot.rgem=(G.loot.rgem||0)+1;msg+=' · +1 GEMA RÚNICA'}buildHudItems();toast(msg,1);G.boss=null;
+function riftReward(e){for(const o of enemies)if(o.t===ET.maxPet&&!o.dead){o.dead=true;for(let i=0;i<10;i++)parts.push(mkPart(o.x,o.y,rand(-40,40),rand(-50,0),.5,'#f4f0e8',2))}G.loot.gticket=(G.loot.gticket||0)+1;let msg='+1 BOLSITA DORADA';if(Math.random()<.3){G.loot.rgem=(G.loot.rgem||0)+1;msg+=' · +1 GEMA RÚNICA'}buildHudItems();toast(msg,1);G.boss=null;
   setTimeout(()=>{if(G.state==='play'&&G.inRift)openFuse()},900)}
 // un Vínculo admite como máximo 4 habilidades; se une una habilidad suelta a otra suelta o a un Vínculo que no esté lleno (nunca dos Vínculos entre sí)
 const LINK_MAX=4;function canLink(a,b){return (a.length===1||b.length===1)&&a.length+b.length<=LINK_MAX}
