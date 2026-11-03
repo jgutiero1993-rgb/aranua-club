@@ -1916,6 +1916,7 @@ const CLUB_AB={
    c.abil.push(key);keep.add(key)})}
  for(const k in ATK)if(!keep.has(k))delete ATK[k]} // fuera todas las habilidades genéricas que sobran
 
+for(const c of CHARS){c.abEl=c.el;c.el='neutral'} // las habilidades ya tienen su elemento; el personaje no
 // tipo de daño de cada ataque: físico (cuerpo a cuerpo y a distancia) o mágico; de los neutros, los Orbes son mágicos y Hacha y Cuchillos físicos
 for(const k in ATK){const D=ATK[k];D.dt=D.m==='buff'?null:D.sty==='magic'||k==='orbs'?'m':'p'}
 
@@ -2445,7 +2446,7 @@ let toastT=0;function toast(msg,small){const t=$('#toast');t.textContent=msg;t.s
 
 /* ---------------- Menú ---------------- */
 function setChar(d){const own=CHARS.map((c,i)=>i).filter(i=>heroStars(CHARS[i]));let k=own.indexOf(G.char);if(k<0)k=0;G.char=own[(k+d+own.length)%own.length];SAVE.char=G.char;persist();refreshMenu()}
-function refreshMenu(){if(!heroStars(CHARS[G.char]))G.char=0;const c=CHARS[G.char];$('#c-stars').innerHTML=`<span class="rar" style="color:${RAR[c.rar].c}">${RAR[c.rar].n}</span>`;$('#c-tags').innerHTML=elTag(c.el)+styTag(c.sty);$('#c-name').innerHTML=c.name+(c.ep?`<div class="ep">${c.ep}</div>`:'');refreshTop();buildMenu();buildStats()}
+function refreshMenu(){if(!heroStars(CHARS[G.char]))G.char=0;const c=CHARS[G.char];$('#c-stars').innerHTML=`<span class="rar" style="color:${RAR[c.rar].c}">${RAR[c.rar].n}</span>`;$('#c-tags').innerHTML=styTag(c.sty);$('#c-name').innerHTML=c.name+(c.ep?`<div class="ep">${c.ep}</div>`:'');refreshTop();buildMenu();buildStats()}
 function accLevel(){const xp=SAVE.kills+SAVE.total/2;const l=Math.floor(Math.sqrt(xp/30))+1;const a=(l-1)*(l-1)*30,b=l*l*30;return [l,(xp-a)/(b-a)]}
 function refreshTop(){const [l,f]=accLevel();$('#m-name').textContent=SAVE.name;$('#m-lvl').textContent='NIV. '+l;$('#m-xp').style.width=(f*100)+'%';$('#m-gold').textContent=fmtN(SAVE.gold);$('#m-items').innerHTML=ITEMS.map(i=>`<span class="it" title="${i.name}: ${SAVE.items[i.id]||0}"><img src="${ICON[i.icon]}" alt=""><b>${SAVE.items[i.id]||0}</b></span>`).join('');drawPortrait($('#m-port'));fitTop()}
 const fmtHM=t=>{const m=Math.floor(t/60);return m>=60?Math.floor(m/60)+'h '+(m%60)+'m':m+'m'};
@@ -2476,20 +2477,20 @@ function goTitle(){$('#main').classList.add('hidden');$('#sub').classList.add('h
 function openSub(id){if(id==='chars')charView=null;regionPick=false;subId=id;G.state='sub';const m=MENU.find(x=>x.id===id);$('#sub-title').innerHTML=`<img src="${ICON[m.icon]}" alt="">${m.name.toUpperCase()}`;renderSub();$('#sub').classList.remove('hidden');$('#sub .mbox').scrollTop=0}
 function closeSub(){if(G.state!=='sub')return;regionPick=false;$('#sub').classList.add('hidden');G.state='menu';subId=null;refreshMenu()}
 function renderSub(){const B=$('#sub-body');B.innerHTML='';({chars:subChars,ups:subUps,shop:subShop,altar:subAltar,missions:subMissions,ach:subAch,rank:subRank,opts:subOpts})[subId](B)}
-function typeChart(){return `<div class="tchart"><b>Tipos:</b> 💧 Agua › 🔥 Fuego › ⛰️ Tierra › ⚡ Viento/Rayo › 💧 Agua · ☀️ Luz ⇄ 🌑 Oscuridad · Ventaja ×1,5 · Desventaja ×0,75. El elemento de tu personaje también decide cuánto daño recibes.</div>`}
+function typeChart(){return `<div class="tchart"><b>Tipos:</b> 💧 Agua › 🔥 Fuego › ⛰️ Tierra › ⚡ Viento/Rayo › 💧 Agua · ☀️ Luz ⇄ 🌑 Oscuridad · Ventaja ×1,5 · Desventaja ×0,75. Los elementos son de las habilidades: cada una hace más o menos daño según el elemento del enemigo.</div>`}
 let charView=null,charReg='all';
 function subChars(B){if(charView===null)charView=G.char;
   B.innerHTML=typeChart()+`<p class="lead hl">Toca un personaje para verlo y pulsa <b>Elegir</b> para jugar con él. Cada personaje se mejora por separado en <a href="#" id="go-ups">Mejoras</a>.<a href="#" id="go-altar" hidden></a></p><div class="regf" id="regf"></div><div class="grid g5" id="cg"></div><div class="pickbar" id="pickbar"></div>`;const g=$('#cg');
   const rf=$('#regf');[['all','Todas']].concat(Object.entries(REG)).forEach(([k,n])=>{const own=k==='all'?ownedCount():CHARS.filter(c=>c.reg===k&&heroStars(c)).length,tot=k==='all'?CHARS.length:CHARS.filter(c=>c.reg===k).length;const b=document.createElement('button');b.className='chip'+(charReg===k?' on':'');b.textContent=`${n} ${own}/${tot}`;b.onclick=()=>{charReg=k;sfx('pick');renderSub()};rf.appendChild(b)});
   $('#go-altar').onclick=e=>{e.preventDefault();openSub('altar')};$('#go-ups').onclick=e=>{e.preventDefault();upHero=CHARS[G.char].id;openSub('ups')};
   CHARS.forEach((c,i)=>{if(charReg!=='all'&&c.reg!==charReg)return;const st=heroStars(c),R=RAR[c.rar];const d=document.createElement('button');d.dataset.i=i;d.className='cardx'+(i===G.char?' sel':'')+(st?'':' lock');
-    d.innerHTML=`<canvas width="32" height="39"></canvas><b>${c.name}</b>${c.ep?`<span class="ep">${c.ep}</span>`:''}<span class="rar" style="color:${R.c}">${R.n}</span>${st?`<div class="small">Mejoras: ${upTotal(c)} / ${UPMAX}</div>`:''}<div class="c-tags">${elTag(c.el)}${styTag(c.sty)}</div><div class="abil">${(c.abil||[]).map(id=>{const D=id==='orbs'?c.orb:ATK[id];return `<img src="${ICON[D.icon]}" title="${D.name}" alt="">`}).join('')}</div><p>Ataque: ${ATK[c.start].name}<br>${stTxt(c.st)} · Vida ${c.hp}${c.pd?'<br>'+c.pd:''}</p><span class="small">${st?(i===G.char?'✔ En uso':''):'🔒 Invócalo en la Máquina'}</span>`;
+    d.innerHTML=`<canvas width="32" height="39"></canvas><b>${c.name}</b>${c.ep?`<span class="ep">${c.ep}</span>`:''}<span class="rar" style="color:${R.c}">${R.n}</span>${st?`<div class="small">Mejoras: ${upTotal(c)} / ${UPMAX}</div>`:''}<div class="c-tags">${styTag(c.sty)}</div><div class="abil">${(c.abil||[]).map(id=>{const D=id==='orbs'?c.orb:ATK[id];return `<img src="${ICON[D.icon]}" title="${D.name}" alt="">`}).join('')}</div><p>Ataque: ${ATK[c.start].name}<br>${stTxt(c.st)} · Vida ${c.hp}${c.pd?'<br>'+c.pd:''}</p><span class="small">${st?(i===G.char?'✔ En uso':''):'🔒 Invócalo en la Máquina'}</span>`;
     drawHeroTo(d.querySelector('canvas'),c,!st);
     d.onclick=()=>{charView=i;sfx('pick');charViewUpd()};g.appendChild(d)});
   charViewUpd()}
 function charViewUpd(){for(const d of $('#cg').children){const i=+d.dataset.i;d.classList.toggle('view',i===charView);d.style.borderColor=i!==G.char&&i!==charView?RAR[CHARS[i].rar].c:''}
   const c=CHARS[charView],st=heroStars(c),pb=$('#pickbar');
-  pb.innerHTML=`<canvas width="32" height="39"></canvas><div class="grow"><b>${c.name}</b> <span class="rar" style="color:${RAR[c.rar].c}">${RAR[c.rar].n}</span><div class="c-tags" style="justify-content:flex-start">${elTag(c.el)}${styTag(c.sty)}</div><div class="pd">Ataque: ${ATK[c.start].name} · ${stTxt(c.st)} · Vida ${c.hp}${c.pd?' · '+c.pd:''}${st?` · Mejoras ${upTotal(c)}/${UPMAX}`:''}</div></div>`+
+  pb.innerHTML=`<canvas width="32" height="39"></canvas><div class="grow"><b>${c.name}</b> <span class="rar" style="color:${RAR[c.rar].c}">${RAR[c.rar].n}</span><div class="c-tags" style="justify-content:flex-start">${styTag(c.sty)}</div><div class="pd">Ataque: ${ATK[c.start].name} · ${stTxt(c.st)} · Vida ${c.hp}${c.pd?' · '+c.pd:''}${st?` · Mejoras ${upTotal(c)}/${UPMAX}`:''}</div></div>`+
     (!st?'<button class="btn" id="pk-go">🔒 Ir a la Máquina</button>':charView===G.char?'<span class="small">✔ En uso</span>':'<button class="btn gold" id="pk-go">Elegir</button>');
   drawHeroTo(pb.querySelector('canvas'),c,!st);
   const bt=$('#pk-go');if(bt)bt.onclick=()=>{if(!st){openSub('altar');return}G.char=charView;SAVE.char=charView;persist();sfx('level');renderSub();refreshTop()}}
@@ -2503,7 +2504,7 @@ function upCycle(d){const own=CHARS.filter(c=>heroStars(c));let k=own.findIndex(
 function subUps(B){if(!upHero||!heroStars(CHARS.find(c=>c.id===upHero)))upHero=CHARS[G.char].id;const C=CHARS.find(c=>c.id===upHero),U=heroUp(C),many=ownedCount()>1;
   B.innerHTML=`<p class="lead">Cada personaje se mejora por separado con monedas de oro. Tienes <span class="price" style="display:inline-flex"><img src="${ICON.coin}" alt="">${fmtN(SAVE.gold)}</span> de oro.</p>
   <div class="upsel">${many?'<button class="arrow" id="up-prev" aria-label="Anterior">‹</button>':''}
-   <div class="upsum"><canvas width="32" height="39"></canvas><div class="grow"><b>${C.name}</b> <span class="rar" style="color:${RAR[C.rar].c}">${RAR[C.rar].n}</span>${C.id===CHARS[G.char].id?' <span class="inuse">✔ En uso</span>':''}<div class="c-tags" style="justify-content:flex-start;margin:3px 0">${elTag(C.el)}${styTag(C.sty)}</div><p class="small">Vida ${C.hp+(U.hp||0)*10} · ${(()=>{const b=C.st,a=1+(U.dmg||0)*.05,m=1+(U.mdmg||0)*.05,d=1+(U.def||0)*.05;return stTxt({atk:Math.round(b.atk*a),spa:Math.round(b.spa*m),def:Math.round(b.def*d),sdf:Math.round(b.sdf*d)})})()} · Velocidad +${(U.spd||0)*3}% · Atracción +${(U.mag||0)*10}% · Experiencia +${(U.xp||0)*5}% · Re-tiradas ${3+(U.rr||0)} · Mejoras ${upTotal(C)} / ${UPMAX}</p></div>${many?`<button class="btn" id="up-chg">${upOpen?'▲ Cerrar':'▼ Cambiar'}</button>`:''}</div>
+   <div class="upsum"><canvas width="32" height="39"></canvas><div class="grow"><b>${C.name}</b> <span class="rar" style="color:${RAR[C.rar].c}">${RAR[C.rar].n}</span>${C.id===CHARS[G.char].id?' <span class="inuse">✔ En uso</span>':''}<div class="c-tags" style="justify-content:flex-start;margin:3px 0">${styTag(C.sty)}</div><p class="small">Vida ${C.hp+(U.hp||0)*10} · ${(()=>{const b=C.st,a=1+(U.dmg||0)*.05,m=1+(U.mdmg||0)*.05,d=1+(U.def||0)*.05;return stTxt({atk:Math.round(b.atk*a),spa:Math.round(b.spa*m),def:Math.round(b.def*d),sdf:Math.round(b.sdf*d)})})()} · Velocidad +${(U.spd||0)*3}% · Atracción +${(U.mag||0)*10}% · Experiencia +${(U.xp||0)*5}% · Re-tiradas ${3+(U.rr||0)} · Mejoras ${upTotal(C)} / ${UPMAX}</p></div>${many?`<button class="btn" id="up-chg">${upOpen?'▲ Cerrar':'▼ Cambiar'}</button>`:''}</div>
    ${many?'<button class="arrow" id="up-next" aria-label="Siguiente">›</button>':''}</div>
   <div class="roster uplist${upOpen?'':' hidden'}" id="uph"></div>
   <div id="upl"></div>`;
