@@ -674,7 +674,7 @@ function heroFrame(sp,f){const G=new Pnt(32,32);const bob=f%2?-1:0,Y=y=>y+bob+(s
   if(sp.gloves){G.part('armF').rect(hx-1,Y(16),hx+1,Y(18),b2);G.part('gloveF').rect(hx,Y(13)-arm,hx+3,Y(17)-arm,sp.gloves);G.part('cuff','flat').rect(hx,Y(17)-arm,hx+3,Y(17)-arm,'w')}
   else{G.part('armF').rect(hx-1,Y(16),hx+1,hy,sp.armC||b2);if(sp.stripes&&!sp.armC)G.part('armS','flat').line(hx+1,Y(16),hx+1,hy,sp.stripes);if(sp.armC&&!sp.tank)G.part('sleeve').rect(hx-1,Y(16),hx+1,Y(17),b2);
     if(sp.tattoo){G.part('tat','flat');const T=sp.tattoo;G.set(hx-1,Y(18),T[0]).set(hx,Y(19),T[0]).set(hx+1,Y(18),T[1]).set(hx-1,Y(20),T[1]).set(hx,Y(21),T[2]).set(hx+1,Y(20),T[0]).set(hx,Y(18),T[2])}
-    G.part('handF','skin').rect(hx,hy+1,hx+3,hy+2,s1);if(sp.tatBody){G.part('tatA','flat').set(hx-1,Y(17),'a').set(hx,Y(18),'f').set(hx+1,Y(19),'c').set(hx-1,Y(20),'r').set(hx,Y(21),'h')}if(sp.watch)G.part('watch','metal').rect(hx-1,hy,hx+1,hy,'q');if(sp.joint)G.part('jnt','flat').line(hx+3,hy,hx+5,hy-2,'w').set(hx+6,hy-3,'f')}
+    G.part('handF','skin').rect(hx,hy+1,hx+3,hy+2,s1);if(sp.tatBody){G.part('armEdge','flat').line(hx-2,Y(16),hx-2,hy+1,'#14141a').line(hx+2,Y(16),hx+2,hy,'#14141a');G.part('tatA','flat').set(hx-1,Y(17),'a').set(hx,Y(18),'f').set(hx+1,Y(19),'c').set(hx-1,Y(20),'r').set(hx,Y(21),'h')}if(sp.watch)G.part('watch','metal').rect(hx-1,hy,hx+1,hy,'q');if(sp.joint)G.part('jnt','flat').line(hx+3,hy,hx+5,hy-2,'w').set(hx+6,hy-3,'f')}
   // ---- escudo (por delante del cuerpo, en el brazo trasero)
   const sh=sp.shield;
   if(sh==='scutum'){G.part('shield').rect(4,Y(15),10,Y(27),'r');G.part('rim','metal').rect(4,Y(15),4,Y(27),'Y').rect(4,Y(15),10,Y(15),'Y').rect(4,Y(27),10,Y(27),'Y');G.part('boss','metal').ell(7,Y(21),1.5,1.5,'y');
@@ -1170,7 +1170,7 @@ const HSPEC={
  genghis:{skin:['u','U'],head:'mongol',mus:'x',body:['R','x'],chest:'lamellar',lam:['Y','R'],belt:'Y',skirt:['R','x'],legs:['N','x'],cape:'n',weapon:'bow'}};
 const HSPEC_CLUB={
  christian:{stub:1,head:'hair',hc:'#1e1a1a',beard:'#1e1a1a',body:['#2a2732','#1c1a22'],hoodDown:'#45404f',legs:['X','x'],boots:'w',gloves:'r'},
- giuliano:{head:'hair',hc:'#a8804a',longHair:1,midPart:1,beard:'#8a4a1e',fat:1,tatBody:1,watch:1,body:['#3a3a46','#2c2c36'],legs:['#c8c4bc','#a8a49c'],boots:'w'},
+ giuliano:{head:'hair',hc:'#d8b060',longHair:1,midPart:1,beard:'#c89a48',fat:1,tatBody:1,watch:1,armC:'#8a8aa8',tank:1,body:['#3a3a46','#2c2c36'],legs:['#c8c4bc','#a8a49c'],boots:'w'},
  pablo:{tall:3,head:'smooth',phones:['#c8c8d4','#ff3ab0'],chain:1,zip:1,body:['#2a4ab0','#1e3480'],legs:['#2a4ab0','#1e3480'],stripes:'w',boots:'w'},
  ferrero:{tall:3,head:'hair',hc:'#4a3020',beard:'#4a3020',earring:1,body:['w','g'],armC:'s',tattoo:['s','s','O'],legs:['#2a2a36','#1a1a24'],boots:'w'},
  gianni:{tall:3,head:'hair',hc:'#6a5a4a',longHair:1,stub:1,beard:'#5a4a3a',body:['#4a4030','#38301f'],shirt:'#9ab8d8',coat:1,legs:['#1a1a22','#101016'],boots:'X',joint:1},
