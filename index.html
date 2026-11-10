@@ -2645,15 +2645,16 @@ const ACH=[
 function subAch(B){const n=ACH.filter(a=>a.val()>=a.goal).length;B.innerHTML=`<p class="lead">Desbloqueados: <b>${n} / ${ACH.length}</b></p>`;
   ACH.forEach(a=>{const v=Math.min(a.val(),a.goal),done=v>=a.goal,f=a.f||fmtN;const r=document.createElement('div');r.className='row2'+(done?'':' lock');
     r.innerHTML=`<img src="${ICON.trophy}" alt=""><div class="grow"><b>${a.name}</b><p>${a.desc} · ${f(v)} / ${f(a.goal)}</p><div class="bar"><i style="width:${v/a.goal*100}%"></i></div></div><span class="small">${done?'✔ Conseguido':'🔒'}</span>`;B.appendChild(r)})}
-const LB={url:'',key:''}; // ranking del club: URL del proyecto y clave pública (anon) de Supabase
+const LB={url:'https://vhjtmgwikexrekygtmcx.supabase.co',key:'sb_publishable_vfi_LXsZRkql5r1NdCW8aQ_RbMvxn9C'};
+const lbH=()=>LB.key.startsWith('sb_')?{apikey:LB.key}:{apikey:LB.key,Authorization:'Bearer '+LB.key}; // ranking del club: URL del proyecto y clave pública (anon) de Supabase
 const lbOn=()=>!!(LB.url&&LB.key);
-function lbSend(r){if(!lbOn())return;try{fetch(LB.url+'/rest/v1/scores',{method:'POST',headers:{apikey:LB.key,Authorization:'Bearer '+LB.key,'Content-Type':'application/json',Prefer:'return=minimal'},
+function lbSend(r){if(!lbOn())return;try{fetch(LB.url+'/rest/v1/scores',{method:'POST',headers:Object.assign(lbH(),{'Content-Type':'application/json',Prefer:'return=minimal'}),
   body:JSON.stringify({name:String(r.n).slice(0,12),hero:r.h,time:Math.round(r.t),lvl:r.l,kills:r.k,king:!!r.v})}).catch(()=>{})}catch(e){}}
 let rankTab='club',rankHero='all';
 async function lbLoad(el){if(!lbOn()){el.innerHTML='<p class="soon small">El ranking del club todavía no está activado. Cuando lo esté, aquí saldrán las mejores partidas de todos los socios.</p>';return}
   el.innerHTML='<p class="small">Cargando el ranking del club…</p>';
   try{const q=LB.url+'/rest/v1/scores?select=name,hero,time,lvl,kills,king&order=time.desc,kills.desc&limit=25'+(rankHero!=='all'?'&hero=eq.'+encodeURIComponent(rankHero):'');
-    const res=await fetch(q,{headers:{apikey:LB.key,Authorization:'Bearer '+LB.key}});if(!res.ok)throw new Error(res.status);const R=await res.json();
+    const res=await fetch(q,{headers:lbH()});if(!res.ok)throw new Error(res.status);const R=await res.json();
     if(subId!=='rank'||rankTab!=='club')return;
     el.innerHTML=R.length?`<table class="rk"><tr><th>#</th><th>Socio</th><th>Personaje</th><th class="n">Tiempo</th><th class="n">Nivel</th><th class="n">Enemigos</th></tr>${R.map((r,i)=>{const c=CHARS.find(c=>c.id===r.hero);return `<tr${r.name===SAVE.name?' class="me"':''}><td>${i<3?['🥇','🥈','🥉'][i]:i+1}</td><td>${esc(r.name)}</td><td>${c?c.name:esc(r.hero)}</td><td class="n">${fmtTime(r.time)}${r.king?' 👑':''}</td><td class="n">${r.lvl}</td><td class="n">${fmtN(r.kills)}</td></tr>`}).join('')}</table>`
       :'<p class="soon small">Todavía no hay partidas en el ranking. ¡Sé el primero!</p>'}
