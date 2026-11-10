@@ -325,6 +325,7 @@ a{color:#ffcf5a}
 .abil{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;margin:5px 0 3px}.abil img{width:100%;image-rendering:pixelated;background:rgba(0,0,0,.35);border-radius:3px;padding:1px}
 .mcenter .card{width:clamp(300px,52vh,380px);flex:none;box-sizing:border-box}.mcenter .card .c-mid{min-width:0}.mcenter .card .c-tags{flex-wrap:nowrap}
 .rk tr.me td{color:#ffd04a;font-weight:700}
+#nk-in{width:100%;box-sizing:border-box;font:inherit;font-size:1.25em;padding:9px;margin-top:8px;border:2px solid #b8862a;background:#14081a;color:#ffe27a;border-radius:4px;text-align:center;outline:none}#nk-in:focus{border-color:#ffd04a;box-shadow:0 0 10px #ffb02a55}
 </style>
 </head>
 <body>
@@ -439,6 +440,16 @@ a{color:#ffcf5a}
     <div class="relic-box"><img id="rl-ic" alt=""><div class="t"><b id="rl-name"></b><p class="small" id="rl-desc"></p></div></div>
     <p class="small" id="rl-cur"></p>
     <div class="mbtns"><button id="rl-take" class="btn gold">[1] Equipar</button><button id="rl-skip" class="btn">[2] Dejar</button></div>
+  </div>
+</div>
+
+<div id="nickm" class="modal hidden">
+  <div class="mbox panel">
+    <h2>¿CÓMO TE LLAMAS, SOCIO?</h2>
+    <p class="small">Es el nombre con el que saldrás en el ranking del club. Podrás cambiarlo cuando quieras en Opciones.</p>
+    <input id="nk-in" type="text" maxlength="12" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Tu nombre">
+    <p class="small" id="nk-err" style="color:#ff7a7a;min-height:1.2em"></p>
+    <div class="mbtns"><button id="nk-ok" class="btn gold">Entrar al club</button></div>
   </div>
 </div>
 
@@ -2937,6 +2948,12 @@ function bossPetDraw(){for(const e of enemies){const M=e.pet;if(!M||e.dead)conti
 {const _dp2=drawPlayer;drawPlayer=function(l){bossPetDraw();_dp2(l)}}
 buildHudItems=function(){const h=$('#h-items');if(h)h.innerHTML=''};
 {const _rt=refreshTop;refreshTop=function(){_rt();const m=$('#m-items');if(m)m.innerHTML=''}}
+const nickNeeded=()=>!SAVE.nickSet&&(!SAVE.name||SAVE.name==='Socio');
+function showNick(){const m=$('#nickm'),i=$('#nk-in'),er=$('#nk-err');if(!m)return;i.value='';er.textContent='';m.classList.remove('hidden');setTimeout(()=>{try{i.focus()}catch(e){}},80);
+  const ok=()=>{const v=i.value.trim().replace(/\s+/g,' ').slice(0,12);if(!v){er.textContent='Escribe un nombre para entrar.';i.focus();return}
+    SAVE.name=v;SAVE.nickSet=true;persist();m.classList.add('hidden');try{i.blur()}catch(e){}sfx('level');refreshTop();toast('¡BIENVENIDO AL CLUB, '+v.toUpperCase()+'!',1)};
+  $('#nk-ok').onclick=ok;i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();ok()}};i.onkeyup=e=>e.stopPropagation()}
+{const _gm=goMain;goMain=function(){const r=_gm.apply(this,arguments);if(nickNeeded())setTimeout(showNick,300);return r}}
 /* ---------------- HUD ---------------- */
 const mm=$('#minimap').getContext('2d');let hudT=0;const hudCache={};
 function setTxt(id,v){if(hudCache[id]!==v){hudCache[id]=v;$(id).textContent=v}}
