@@ -1332,7 +1332,13 @@ const CLUB_IC={
  botijoI:G=>{G.part('b').ell(8,10,5,4.5,'#c86a3a').rect(6,3,9,6,'#c86a3a');G.part('a').line(5,4,11,4,'#a8502a');G.part('s').line(12,7,14,3,'#c86a3a');G.part('t','flat').set(7,2,'#a8502a').set(14,2,'c');G.part('l','flat').set(6,9,'#e08a5a').set(5,10,'#e08a5a')},
  guitarI:G=>{G.part('n').line(9,7,14,1,'N').line(10,7,15,1,'N');G.part('hd').rect(14,0,15,1,'n');G.part('b').ell(5,11,4,3.5,'#c8803a').ell(8,8,2.6,2.4,'#c8803a');G.part('o','flat').ell(6,10,1.2,1.2,'x');G.part('s','flat').line(4,12,14,1,'w')},
  jamonI:G=>{G.part('j').poly([[2,6],[6,3],[11,4],[13,8],[10,12],[5,12],[2,10]],'#8a2a2a');G.part('f','flat').line(3,6,6,4,'w').line(6,4,10,5,'w');G.part('m','flat').set(6,8,'#c84a4a').set(8,9,'#c84a4a');G.part('b').line(11,11,14,14,'w').line(12,11,15,14,'w');G.part('r','flat').set(11,10,'y').set(12,10,'r')},
- bullI:G=>{G.part('h').ell(8,9,4.5,4.5,'#1a1a20');G.part('hn').line(4,7,1,3,'w').line(1,3,2,1,'w').line(12,7,15,3,'w').line(15,3,14,1,'w');G.part('e','flat').set(6,8,'r').set(10,8,'r');G.part('n','flat').rect(6,12,10,13,'#3a3a44').set(7,12,'x').set(9,12,'x');G.part('ri','metal').ell(8,14,1.4,1,'Y')},
+ bullI:G=>{G.part('fl','flat').rect(0,0,15,3,'r').rect(0,4,15,11,'y').rect(0,12,15,15,'r');G.part('h').ell(8,9,4.5,4.5,'#1a1a20');G.part('hn').line(4,7,1,3,'w').line(1,3,2,1,'w').line(12,7,15,3,'w').line(15,3,14,1,'w');G.part('e','flat').set(6,8,'r').set(10,8,'r');G.part('n','flat').rect(6,12,10,13,'#3a3a44').set(7,12,'x').set(9,12,'x');G.part('ri','metal').ell(8,14,1.4,1,'Y')},
+ spainFlag:G=>{G.part('p','metal').line(1,0,1,15,'q');G.part('f').rect(2,1,14,3,'r').rect(2,4,14,8,'y').rect(2,9,14,11,'r');G.part('e','flat').rect(5,5,6,7,'R').set(6,5,'f');G.part('t','metal').set(1,0,'Y')},
+ borgonaI:G=>{G.part('f').rect(1,1,14,14,'w');G.part('x','flat');for(let i=0;i<12;i++){G.set(2+i,2+i,'r').set(3+i,2+i,'r').set(13-i,2+i,'r').set(12-i,2+i,'r')}G.set(5,3,'r').set(11,4,'r').set(4,11,'r').set(10,12,'r')},
+ lemonI:G=>{G.part('l').ell(8,9,6,4.5,'y');G.part('t','flat').set(1,9,'Y').set(15,9,'Y').set(5,7,'w').set(6,7,'w');G.part('h').poly([[8,4],[11,0],[13,2],[10,5]],'a');G.part('s','flat').line(8,4,9,3,'L')},
+ fanSpain:G=>{G.part('f','flat');for(let a=3.3;a<=6.13;a+=.05)for(let r=2;r<=7.5;r+=.5){const k=(a-3.3)/2.83;G.set(8+Math.cos(a)*r,13+Math.sin(a)*r,k<.28||k>.72?'r':'y')}for(let a=3.3;a<=6.13;a+=.05)G.set(8+Math.cos(a)*7.5,13+Math.sin(a)*7.5,'R');G.part('h').rect(7,13,8,15,'n')},
+ paparajoteI:G=>{G.part('lf').poly([[2,13],[5,5],[10,1],[14,3],[12,9],[6,14]],'l');G.part('v','flat').line(3,12,12,3,'L');G.part('m').ell(8,8,4,3.5,'#e8c070');G.part('s','flat').set(6,7,'w').set(8,6,'w').set(10,8,'w').set(7,10,'w').set(9,9,'#c89a48')},
+ cryI:G=>{G.part('b').poly([[1,1],[15,1],[15,10],[7,10],[3,14],[4,10],[1,10]],'w');G.part('fl','flat').rect(2,2,14,3,'r').rect(2,4,14,6,'y').rect(2,7,14,9,'r');G.part('x','flat').rect(8,3,8,6,'x').set(8,8,'x')},
  bassI:G=>{G.part('neck').line(7,9,13,2,'n').line(8,9,14,2,'n');G.part('head').rect(13,0,15,2,'N');G.part('body').ell(5,11,3.8,3.2,'r').ell(7,9,2.2,2,'r');G.part('pk','flat').rect(4,10,6,11,'x');G.part('st','flat').line(5,11,14,1,'q');G.part('z','flat').line(1,3,3,5,'y').line(3,5,1,6,'y').line(1,6,3,8,'y')},
  noteI:G=>{G.part('h').ell(5,12,3,2.3,'y');G.part('s').line(7,12,7,2,'y').line(8,12,8,2,'y');G.part('f').line(8,2,12,5,'y').line(12,5,12,9,'y').line(8,3,11,6,'y')},
  grooveI:G=>{G.part('sp').ell(3,8,2,2.5,'X');G.part('w','flat');for(let a=-.9;a<.95;a+=.1){G.set(3+Math.cos(a)*5,8+Math.sin(a)*5,'p');G.set(3+Math.cos(a)*8,8+Math.sin(a)*8,'c');G.set(3+Math.cos(a)*11,8+Math.sin(a)*11,'y')}},
@@ -1826,7 +1832,7 @@ poli|javivi|JAVIVI|Pequeño pero Matón|3|earth|ranged|javivi
 poli|pablo|PABLO Y MAX|El DJ y su Bully|3|wind|melee|pablo
 arco|ferrero|FERRERO|El Bombón del Club|3|dark|ranged|ferrero
 arco|gianni|GIANNI|El Funk|3|light|magic|gianni
-barrio|puche|EL PUCHE|El Templario del Club|3|fire|melee|puche`;
+barrio|puche|EL PUCHE|El Templario Murciano|3|fire|melee|puche`;
 const EXCL={puche:['Mandoble Templario','tizona','tizona','Gira su espada templaria y golpea a todos los que le rodean.','swordT'],gianni:['Slap de Bajo','chain','slap','Un slap en el bajo eléctrico: la descarga salta de enemigo en enemigo.','bassI'],ferrero:['Lluvia de Bombones','horde','bombon','Una lluvia de bombones dorados cae sobre el grupo de enemigos más cercano.','bombonI'],pablo:['Mordisco de Max','katana','bite','Max se lanza a por el enemigo más cercano y muerde en arco a todos los que tiene delante.','biteI'],mascota:['Lágrimas de Resina','ra','resin','Gotas de resina dorada que caen del cielo sobre tus enemigos.'],christian:['Directo de Derecha','spartan','glove','Un directo de boxeo que atraviesa la fila entera y suelta una onda de choque a tu alrededor.','gloveI'],giuliano:['Koi del Tatuaje','souls','koi','Las carpas koi de su tatuaje japonés salen del brazo y persiguen a los enemigos.','koiI'],javivi:['Lluvia de Cogollos','darts','bud','Lanza un abanico de cogollos contra el enemigo más cercano.','budI']};
 const STYF={magic:['mproj','mfall','mwave'],ranged:['rshot','rfan','rrain'],melee:['cslash','cspin','cthrust']};
 // Ataque, Ataque Especial, Defensa y Defensa Especial según el estilo (100 = normal); el rango las sube todas
@@ -1947,16 +1953,16 @@ const CLUB_AB={
   ['cslash','Tajo de la Cruzada','Un tajo en arco con la espada templaria contra todos los que tiene delante.','crossSlashI'],
   ['cthrust','Estocada de Santiago','Una estocada que atraviesa la fila entera y suelta una onda a su alrededor.','santiagoI'],
   ['cshield','Escudo del Temple','Levanta el escudo de la cruz roja: absorbe el siguiente golpe y contraataca con una explosión.','shieldT'],
-  ['cbanner','Estandarte Templario','Planta el estandarte de la orden: daña la zona y le cura si está dentro.','bannerT'],
-  ['cquake','Carga de Caballería','Una carga a caballo que levanta una línea de explosiones hacia delante.','horseI'],
+  ['cbanner','Rojigualda al Viento','Planta la bandera de España: daña la zona y le cura si está dentro.','spainFlag'],
+  ['cquake','Carga de los Tercios','Carga bajo la Cruz de Borgoña como los viejos Tercios: una línea de explosiones hacia delante.','borgonaI'],
   ['caura','Nube de Índica','Una nube de humo de índica a su alrededor que daña a quien se acerca.','indicaCloud'],
   ['mvortex','Remolino Índica','Un remolino de humo morado que atrae a los enemigos hacia el centro, como un buen sofá.','indicaSw'],
   ['bdef','Modo Sofá','Mejora temporal: +8% de Defensa y Defensa Especial por carga. Con índica no hay quien le mueva.','sofaI'],
   ['bphy','Calada de Índica','Mejora temporal: +10% de Ataque por carga.','jointP'],
-  ['mfall','Paellas del Cielo','Paelleras enteras caen del cielo y estallan sobre las hordas.','paellaI'],
-  ['axe','Abanico Flamenco','Lanza un abanico flamenco que va y vuelve cortando todo a su paso.','fanI'],
-  ['rtrap','Botijos Trampa','Deja botijos que explotan cuando se acerca un enemigo.','botijoI'],
-  ['mwave','Rasgueo Flamenco','Un rasgueo de guitarra española que estalla a su alrededor y ralentiza. ¡Olé!','guitarI'],
+  ['mfall','Limones de Murcia','Limones de la huerta murciana caen del cielo y estallan sobre las hordas. ¡Acho!','lemonI'],
+  ['axe','Abanico Rojigualda','Lanza un abanico rojo y gualda que va y vuelve cortando todo a su paso.','fanSpain'],
+  ['rtrap','Paparajotes Trampa','Deja paparajotes murcianos que explotan cuando se acerca un enemigo. Pero no te comas la hoja.','paparajoteI'],
+  ['mwave','¡Santiago y Cierra España!','El grito de guerra de la hispanidad: una onda que estalla a su alrededor y ralentiza.','cryI'],
   ['rheavy','Jamonazo','Lanza una pata de jamón que atraviesa toda la fila.','jamonI'],
   ['bspd','Corre el Toro','Mejora temporal: +8% de velocidad de movimiento por carga.','bullI']],
  javivi:[['x',0,0,'budI'],
