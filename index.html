@@ -595,6 +595,7 @@ function heroFrame(sp,f){const G=new Pnt(32,32);const bob=f%2?-1:0,Y=y=>y+bob+(s
   if(sp.elf)G.part('ear','skin').poly([[12,Y(10)],[7,Y(5)],[9,Y(9)],[11,Y(12)]],s1);
   // ---- tocados (delante)
   if(['hair','laurel','braids','crown','cap','bob','incacrown','mongol','turban'].includes(hd))hairCap();
+  if(sp.quiff)G.part('quiff').rect(14,Y(3.4),18,Y(3.4),hc).rect(15,Y(2.6),17,Y(2.6),hc);
   if(sp.midPart)G.part('part','skin').set(15,Y(3.6),s1).set(16,Y(3.6),s1);
   if(sp.earring)G.part('earr','metal').set(11,Y(12),'i').set(11,Y(13),'q');
   if(hd==='smooth'){G.tone(13,Y(6),0);G.tone(14,Y(5),0);G.tone(15,Y(5),0)}
@@ -1174,6 +1175,7 @@ const HSPEC_CLUB={
  pablo:{tall:3,head:'smooth',phones:['#c8c8d4','#ff3ab0'],chain:1,zip:1,body:['#2a4ab0','#1e3480'],legs:['#2a4ab0','#1e3480'],stripes:'w',boots:'w'},
  ferrero:{tall:3,head:'hair',hc:'#4a3020',beard:'#4a3020',earring:1,body:['w','g'],armC:'s',tattoo:['s','s','O'],legs:['#2a2a36','#1a1a24'],boots:'w'},
  gianni:{tall:3,head:'hair',hc:'#6a5a4a',longHair:1,stub:1,beard:'#5a4a3a',body:['#4a4030','#38301f'],shirt:'#9ab8d8',coat:1,legs:['#1a1a22','#101016'],boots:'X',joint:1},
+ puche:{head:'buzz',quiff:1,hc:'#2a221e',stub:1,beard:'#6a5a52',chest:'tabardC',cape:'w',weapon:'sword',body:['#8a8a96','#6a6a76'],legs:['#7a7a86','#5a5a66'],boots:'n'},
  javivi:{short:2,head:'hair',hc:'n',body:['v','V'],logo:1,legs:['B','#1e2a5a'],boots:'w'}};
 const SPR={};
 function initSprites(){
@@ -1315,6 +1317,22 @@ const CLUB_IC={
  vinylI:G=>{G.part('v').ell(8,8,7,7,'#14141a');G.part('g','flat');icRing(G,8,8,5,'#34343c');icRing(G,8,8,3.4,'#34343c');G.part('lab').ell(8,8,2,2,'#ff3ab0');G.part('h','flat').set(8,8,'x').set(4,4,'w').set(5,3,'w')},
  speakerI:G=>{G.part('b').rect(3,1,12,15,'#22222a');G.part('w1').ell(7.5,5,2.5,2.5,'#5a5a66');G.part('w2').ell(7.5,11,3.5,3.5,'#5a5a66');G.part('c','flat').set(7,5,'x').set(7,11,'x').set(8,11,'#ff3ab0');G.part('s','flat').line(14,8,15,6,'#ff3ab0').line(14,10,15,12,'#ff3ab0').set(13,3,'#ff3ab0')},
  smokeNoteI:G=>{G.part('a').ell(5,11,3.5,3,'#8ae08a').ell(11,10,4,3.5,'#8ae08a').ell(8,5,4,3.5,'#8ae08a');G.part('n','flat').ell(7,9.5,1.6,1.2,'w').line(8,9,8,5,'w').line(8,5,10,6,'w');G.part('l','flat').set(12,4,'L').set(11,5,'L').set(13,5,'L').set(12,6,'L')},
+ swordT:G=>{G.part('b','metal').line(7,0,7,10,'i').line(8,0,8,10,'i').set(7,0,'w');G.part('g','metal').rect(3,10,12,11,'Y');G.part('c','flat').set(7,10,'r').set(8,10,'r').set(7,11,'r').set(8,11,'r');G.part('h').rect(7,12,8,14,'n');G.part('p','metal').ell(7.5,15,1.3,1,'Y')},
+ crossSlashI:G=>{G.part('a','flat');for(let a=-1.4;a<1.45;a+=.1)G.set(8+Math.cos(a)*7,8+Math.sin(a)*7,'w');G.part('c','flat').rect(4,4,5,12,'r').rect(2,6,7,7,'r')},
+ santiagoI:G=>{G.part('c','flat').line(7,1,7,13,'r').line(8,1,8,13,'r').set(7,14,'r').set(7,15,'r').rect(2,5,13,6,'r').set(1,4,'r').set(1,7,'r').set(14,4,'r').set(14,7,'r').set(6,0,'r').set(9,0,'r');G.part('g','flat').set(7,3,'R').set(8,9,'R')},
+ shieldT:G=>{G.part('s','metal').poly([[2,1],[14,1],[14,8],[8,15],[2,8]],'w');G.part('c','flat').rect(7,2,8,13,'r').rect(3,5,13,6,'r')},
+ bannerT:G=>{G.part('p').line(2,0,2,15,'n');G.part('f').poly([[3,1],[14,1],[14,10],[11,8],[8,10],[3,10]],'w');G.part('c','flat').rect(8,2,9,8,'r').rect(5,4,12,5,'r');G.part('t','metal').set(2,0,'Y')},
+ horseI:G=>{G.part('h').poly([[4,15],[5,9],[8,3],[11,1],[14,4],[14,7],[11,7],[9,10],[10,15]],'n');G.part('m','flat').line(7,4,4,10,'N').line(8,3,5,9,'N');G.part('e','flat').set(11,4,'x');G.part('r','flat').line(12,7,10,10,'r');G.part('w','flat').rect(5,13,9,15,'w');G.part('cr','flat').set(7,14,'r')},
+ indicaCloud:G=>{G.part('a').ell(5,11,3.8,3,'#8a5ad0').ell(11,10,4,3.5,'#8a5ad0').ell(8,5,4,3.5,'#8a5ad0');G.part('e','flat').line(5,8,7,8,'x').line(9,8,11,8,'x').line(7,11,9,11,'x');G.part('z','flat').set(13,2,'w').set(14,2,'w').set(13,4,'w').set(14,3,'w')},
+ indicaSw:G=>{G.part('s','flat');for(let t=0;t<11;t+=.25)G.set(8+Math.cos(t)*t*.62,8+Math.sin(t)*t*.62,(t%1.6<.8)?'#5a2aa0':'#b48ae0')},
+ sofaI:G=>{G.part('s').rect(2,4,13,9,'#7a3cc8').rect(0,7,2,13,'#5a2aa0').rect(14,7,15,13,'#5a2aa0');G.part('c').rect(2,9,13,12,'#8a4ad8');G.part('l','flat').rect(1,13,2,14,'n').rect(13,13,14,14,'n');G.part('z','flat').line(9,0,12,0,'w').line(12,0,9,3,'w').line(9,3,12,3,'w')},
+ jointP:G=>{G.part('j').line(1,14,10,5,'w').line(2,14,11,5,'w');G.part('fi','flat').line(1,14,3,12,'Q');G.part('t','flat').set(11,4,'f').set(10,5,'e');G.part('sm','flat').set(12,2,'#b48ae0').set(13,1,'#b48ae0').set(14,2,'#8a5ad0').set(13,0,'#b48ae0').set(15,0,'#8a5ad0')},
+ paellaI:G=>{G.part('h','metal').rect(0,8,2,9,'O').rect(13,8,15,9,'O');G.part('p','metal').ell(7.5,9,6.5,4.5,'O');G.part('r').ell(7.5,9,5.5,3.5,'Y');G.part('x','flat').set(5,8,'f').set(6,8,'f').set(9,10,'f').set(10,9,'f').set(7,10,'a').set(4,10,'a').set(11,8,'a').set(8,7,'y').set(9,7,'y')},
+ fanI:G=>{G.part('f','flat');for(let a=3.3;a<=6.13;a+=.05)for(let r=2;r<=7.5;r+=.5)G.set(8+Math.cos(a)*r,13+Math.sin(a)*r,(Math.floor((a-3.3)*4)%2)?'r':'R');for(let a=3.3;a<=6.13;a+=.05)G.set(8+Math.cos(a)*7.5,13+Math.sin(a)*7.5,'y');G.part('h').rect(7,13,8,15,'n')},
+ botijoI:G=>{G.part('b').ell(8,10,5,4.5,'#c86a3a').rect(6,3,9,6,'#c86a3a');G.part('a').line(5,4,11,4,'#a8502a');G.part('s').line(12,7,14,3,'#c86a3a');G.part('t','flat').set(7,2,'#a8502a').set(14,2,'c');G.part('l','flat').set(6,9,'#e08a5a').set(5,10,'#e08a5a')},
+ guitarI:G=>{G.part('n').line(9,7,14,1,'N').line(10,7,15,1,'N');G.part('hd').rect(14,0,15,1,'n');G.part('b').ell(5,11,4,3.5,'#c8803a').ell(8,8,2.6,2.4,'#c8803a');G.part('o','flat').ell(6,10,1.2,1.2,'x');G.part('s','flat').line(4,12,14,1,'w')},
+ jamonI:G=>{G.part('j').poly([[2,6],[6,3],[11,4],[13,8],[10,12],[5,12],[2,10]],'#8a2a2a');G.part('f','flat').line(3,6,6,4,'w').line(6,4,10,5,'w');G.part('m','flat').set(6,8,'#c84a4a').set(8,9,'#c84a4a');G.part('b').line(11,11,14,14,'w').line(12,11,15,14,'w');G.part('r','flat').set(11,10,'y').set(12,10,'r')},
+ bullI:G=>{G.part('h').ell(8,9,4.5,4.5,'#1a1a20');G.part('hn').line(4,7,1,3,'w').line(1,3,2,1,'w').line(12,7,15,3,'w').line(15,3,14,1,'w');G.part('e','flat').set(6,8,'r').set(10,8,'r');G.part('n','flat').rect(6,12,10,13,'#3a3a44').set(7,12,'x').set(9,12,'x');G.part('ri','metal').ell(8,14,1.4,1,'Y')},
  bassI:G=>{G.part('neck').line(7,9,13,2,'n').line(8,9,14,2,'n');G.part('head').rect(13,0,15,2,'N');G.part('body').ell(5,11,3.8,3.2,'r').ell(7,9,2.2,2,'r');G.part('pk','flat').rect(4,10,6,11,'x');G.part('st','flat').line(5,11,14,1,'q');G.part('z','flat').line(1,3,3,5,'y').line(3,5,1,6,'y').line(1,6,3,8,'y')},
  noteI:G=>{G.part('h').ell(5,12,3,2.3,'y');G.part('s').line(7,12,7,2,'y').line(8,12,8,2,'y');G.part('f').line(8,2,12,5,'y').line(12,5,12,9,'y').line(8,3,11,6,'y')},
  grooveI:G=>{G.part('sp').ell(3,8,2,2.5,'X');G.part('w','flat');for(let a=-.9;a<.95;a+=.1){G.set(3+Math.cos(a)*5,8+Math.sin(a)*5,'p');G.set(3+Math.cos(a)*8,8+Math.sin(a)*8,'c');G.set(3+Math.cos(a)*11,8+Math.sin(a)*11,'y')}},
@@ -1807,14 +1825,15 @@ barrio|giuliano|GIULIANO|El Tatuado|3|water|magic|giuliano
 poli|javivi|JAVIVI|Pequeño pero Matón|3|earth|ranged|javivi
 poli|pablo|PABLO Y MAX|El DJ y su Bully|3|wind|melee|pablo
 arco|ferrero|FERRERO|El Bombón del Club|3|dark|ranged|ferrero
-arco|gianni|GIANNI|El Funk|3|light|magic|gianni`;
-const EXCL={gianni:['Slap de Bajo','chain','slap','Un slap en el bajo eléctrico: la descarga salta de enemigo en enemigo.','bassI'],ferrero:['Lluvia de Bombones','horde','bombon','Una lluvia de bombones dorados cae sobre el grupo de enemigos más cercano.','bombonI'],pablo:['Mordisco de Max','katana','bite','Max se lanza a por el enemigo más cercano y muerde en arco a todos los que tiene delante.','biteI'],mascota:['Lágrimas de Resina','ra','resin','Gotas de resina dorada que caen del cielo sobre tus enemigos.'],christian:['Directo de Derecha','spartan','glove','Un directo de boxeo que atraviesa la fila entera y suelta una onda de choque a tu alrededor.','gloveI'],giuliano:['Koi del Tatuaje','souls','koi','Las carpas koi de su tatuaje japonés salen del brazo y persiguen a los enemigos.','koiI'],javivi:['Lluvia de Cogollos','darts','bud','Lanza un abanico de cogollos contra el enemigo más cercano.','budI']};
+arco|gianni|GIANNI|El Funk|3|light|magic|gianni
+barrio|puche|EL PUCHE|El Templario del Club|3|fire|melee|puche`;
+const EXCL={puche:['Mandoble Templario','tizona','tizona','Gira su espada templaria y golpea a todos los que le rodean.','swordT'],gianni:['Slap de Bajo','chain','slap','Un slap en el bajo eléctrico: la descarga salta de enemigo en enemigo.','bassI'],ferrero:['Lluvia de Bombones','horde','bombon','Una lluvia de bombones dorados cae sobre el grupo de enemigos más cercano.','bombonI'],pablo:['Mordisco de Max','katana','bite','Max se lanza a por el enemigo más cercano y muerde en arco a todos los que tiene delante.','biteI'],mascota:['Lágrimas de Resina','ra','resin','Gotas de resina dorada que caen del cielo sobre tus enemigos.'],christian:['Directo de Derecha','spartan','glove','Un directo de boxeo que atraviesa la fila entera y suelta una onda de choque a tu alrededor.','gloveI'],giuliano:['Koi del Tatuaje','souls','koi','Las carpas koi de su tatuaje japonés salen del brazo y persiguen a los enemigos.','koiI'],javivi:['Lluvia de Cogollos','darts','bud','Lanza un abanico de cogollos contra el enemigo más cercano.','budI']};
 const STYF={magic:['mproj','mfall','mwave'],ranged:['rshot','rfan','rrain'],melee:['cslash','cspin','cthrust']};
 // Ataque, Ataque Especial, Defensa y Defensa Especial según el estilo (100 = normal); el rango las sube todas
 // el rango apenas cambia la dificultad: diferencias pequeñas de vida y estadísticas (antes C ×1 y 100 de vida, SS ×1,2 y 145)
 const STY_ST={melee:[110,95,115,90],ranged:[110,95,95,95],magic:[95,110,85,115]},RANK_ST=[1.12,1.13,1.14,1.15,1.16],RANK_HP=[124,125,126,127,128];
 // potencia de los ataques exclusivos de S/SS igualada a la de los ataques normales de su estilo (medido en simulación; 1 = sin cambio)
-const EXN={"gianni":1.6,"ferrero":0.88,"pablo":1.5,"mascota":0.6,"christian":1.55,"giuliano":1.6,"javivi":1.6};
+const EXN={"puche":1.5,"gianni":1.6,"ferrero":0.88,"pablo":1.5,"mascota":0.6,"christian":1.55,"giuliano":1.6,"javivi":1.6};
 function heroStats(sty,rar){const b=STY_ST[sty],k=RANK_ST[rar];return {atk:Math.round(b[0]*k),spa:Math.round(b[1]*k),def:Math.round(b[2]*k),sdf:Math.round(b[3]*k)}}
 const stTxt=t=>`Atq ${t.atk} · AtqE ${t.spa} · Def ${t.def} · DefE ${t.sdf}`;
 function autoPerk(r,sty){const p={};if(sty==='ranged'){p.spd=.07;p.crit=.05}else if(sty==='magic'){p.xp=.1;p.cd=.05}return p} // igual para todos los rangos
@@ -1924,6 +1943,22 @@ const CLUB_AB={
   ['bmag','Calada de Sativa','Una calada de sativa antes de tocar. Mejora temporal: +10% de Ataque Especial por carga.','jointG'],
   ['bspd','Paso de Baile','Mejora temporal: +8% de velocidad de movimiento por carga.','shoeFunk'],
   ['bdef','Chaqueta de Cuero','Mejora temporal: +8% de Defensa y Defensa Especial por carga.','jacketI']],
+ puche:[['x',0,0,'swordT'],
+  ['cslash','Tajo de la Cruzada','Un tajo en arco con la espada templaria contra todos los que tiene delante.','crossSlashI'],
+  ['cthrust','Estocada de Santiago','Una estocada que atraviesa la fila entera y suelta una onda a su alrededor.','santiagoI'],
+  ['cshield','Escudo del Temple','Levanta el escudo de la cruz roja: absorbe el siguiente golpe y contraataca con una explosión.','shieldT'],
+  ['cbanner','Estandarte Templario','Planta el estandarte de la orden: daña la zona y le cura si está dentro.','bannerT'],
+  ['cquake','Carga de Caballería','Una carga a caballo que levanta una línea de explosiones hacia delante.','horseI'],
+  ['caura','Nube de Índica','Una nube de humo de índica a su alrededor que daña a quien se acerca.','indicaCloud'],
+  ['mvortex','Remolino Índica','Un remolino de humo morado que atrae a los enemigos hacia el centro, como un buen sofá.','indicaSw'],
+  ['bdef','Modo Sofá','Mejora temporal: +8% de Defensa y Defensa Especial por carga. Con índica no hay quien le mueva.','sofaI'],
+  ['bphy','Calada de Índica','Mejora temporal: +10% de Ataque por carga.','jointP'],
+  ['mfall','Paellas del Cielo','Paelleras enteras caen del cielo y estallan sobre las hordas.','paellaI'],
+  ['axe','Abanico Flamenco','Lanza un abanico flamenco que va y vuelve cortando todo a su paso.','fanI'],
+  ['rtrap','Botijos Trampa','Deja botijos que explotan cuando se acerca un enemigo.','botijoI'],
+  ['mwave','Rasgueo Flamenco','Un rasgueo de guitarra española que estalla a su alrededor y ralentiza. ¡Olé!','guitarI'],
+  ['rheavy','Jamonazo','Lanza una pata de jamón que atraviesa toda la fila.','jamonI'],
+  ['bspd','Corre el Toro','Mejora temporal: +8% de velocidad de movimiento por carga.','bullI']],
  javivi:[['x',0,0,'budI'],
   ['rshot','Papelillo Afilado','Un papelillo lanzado como un shuriken que atraviesa a varios enemigos.','paperI'],
   ['rcluster','Semillazo','Una semilla que al impactar revienta en metralla de semillas.','seedsI'],
