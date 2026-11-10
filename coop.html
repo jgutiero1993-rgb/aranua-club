@@ -348,6 +348,17 @@ a{color:#ffcf5a}
 .coop .co-who canvas{width:64px;height:78px;image-rendering:pixelated}
 .coop .co-note{opacity:.8}
 @media (max-width:560px){.coop .co-opts{grid-template-columns:1fr}}
+.coop .co-roomhead{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.coop .co-roomhead .co-code span{font-size:26px}
+.coop .co-pls{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.coop .co-pl{display:flex;align-items:center;gap:6px;border:2px solid #5a3a7a;border-radius:8px;padding:3px 6px;background:rgba(255,255,255,.04);min-height:46px}
+.coop .co-pl.empty{justify-content:center;border-style:dashed;opacity:.6}.coop .co-pl canvas{width:34px;height:42px;image-rendering:pixelated}
+.coop .co-pl>div{display:flex;flex-direction:column;min-width:0}.coop .co-pl .co-chg{flex-direction:row;margin-left:auto;gap:3px}.coop .co-pl .co-chg .btn{padding:2px 8px}
+.coop .fr-inv,.coop .co-box{display:flex;flex-direction:column;gap:5px}.coop .fr-inv>b{color:#ffd04a}
+.coop .fr-row{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(200,160,255,.15)}.coop .fr-n{font-weight:bold;min-width:80px}.coop .fr-c{opacity:.6;letter-spacing:.1em}
+.coop .fr-row .btn{margin-left:auto;padding:3px 10px}.coop .fr-row .fr-del{padding:2px 8px}
+.fr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#888;border:1px solid #000}.fr-dot.on{background:#4ae04a}.fr-dot.busy{background:#ffb030}.fr-dot.off{background:#704050}
+.coop .fr-add{display:flex;gap:6px}.coop .fr-add input{flex:1}
+#invm{z-index:60}
 #duhud{position:fixed;left:50%;top:52px;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:10px;pointer-events:none;width:min(92vw,620px)}
 #duhud.hidden{display:none}
 #duhud .du-s{flex:1;background:rgba(14,6,24,.85);border:2px solid #b07ae0;border-radius:8px;padding:4px 8px;min-width:0}
@@ -2902,13 +2913,13 @@ function render(){const W=VIEW.w,H=VIEW.h;
   drawHazards(lights);
   // entidades
   for(const e of enemies){const sx=e.x-camX,sy=e.y-camY;if(sx<-60||sx>W+60||sy<-60||sy>H+60)continue;draw.push({y:e.y+e.set.H*e.sc*.5,e})}
-  if(!MENUISH()){draw.push({y:P.y+11,p:1});if(CO.run&&CO.o)draw.push({y:CO.o.y+11,p:2})}
+  if(!MENUISH()){draw.push({y:P.y+11,p:1});if(CO.run)for(const i of CO.ids)if(i!==CO.me&&CO.ps[i])draw.push({y:CO.ps[i].o.y+11,q:i})}
   if(G.intro&&!MENUISH()){const I=G.intro,s=SPR.demonKing,a=Math.min(1,I.t/1,(7.5-I.t)/1.5),sx=Math.round(P.x-camX),sy=Math.round(P.y-camY-60+Math.sin(G.t*2)*3);ctx.globalAlpha=Math.max(0,a);ctx.drawImage(s.n[Math.floor(G.t*2)%s.n.length],sx-(s.W>>1),sy-s.H,s.W,s.H);ctx.globalAlpha=1;lights.push([sx,sy-20,90,L_RED])}
   draw.sort((a,b)=>a.y-b.y);
   for(const d of draw){try{
     if(d.o){const o=d.o,sx=Math.round(o.x-camX),sy=Math.round(o.y-camY);
       if(o.torch)drawTorch(sx,sy,o.ph);else{ctx.drawImage(SHADOW,0,0,16,6,sx-o.s.width*.45,sy-3,o.s.width*.9,6);ctx.drawImage(o.s,sx-(o.s.width>>1),sy-o.s.height)}}
-    else if(d.sh)drawShrineOrb(d);else if(d.e)drawEnemy(d.e,lights);else if(d.p===2)coWith(3-CO.me,()=>drawPlayer(lights));else drawPlayer(lights)}catch(err){logErr(err)}}
+    else if(d.sh)drawShrineOrb(d);else if(d.e)drawEnemy(d.e,lights);else if(d.q)coWith(d.q,()=>drawPlayer(lights));else drawPlayer(lights)}catch(err){logErr(err)}}
   // proyectiles
   coDual(()=>{
   if(!MENUISH())for(const id of (P.slots[P.active]||[])){const D=ATK[id];if(D.m!=='aura'||!P.atk[id])continue;const R=D.rad[P.atk[id].lvl-1];ctx.globalAlpha=.3+.12*Math.sin(G.t*5);ctx.strokeStyle=D.fam?ELC[D.el][1]:'#ffdc78';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(P.x-camX,P.y-camY+4,R,R*.8,0,0,6.283);ctx.stroke();ctx.globalAlpha=1;lights.push([P.x-camX,P.y-camY,R*1.1,D.fam?elLight(D.el):L_GOLD])}
@@ -3149,28 +3160,66 @@ function orbHud(){let el=document.getElementById('orbbuf');if(!el){const b=$('#b
 {const _s=startRun;startRun=function(){P.ob={};orbKills=0;return _s()}}
 {const _u=update;update=function(dt){_u(dt);if(G.state==='play'&&!MENUISH())updateOrbs(dt);orbZoom();if(!MENUISH())orbHud()}}
 
-/* ================= COOPERATIVO: 2 jugadores con código de sala =================
-   El anfitrión simula toda la partida; el invitado manda su posición y sus elecciones
-   y recibe ~20 fotos por segundo de lo que hay a su alrededor. Para simular al segundo
-   jugador en el anfitrión se intercambia el contenido de P, ST, G.char y PET (Max). */
-const CO={run:false,role:null,me:1,sw:false,o:null,ost:null,ochar:0,opet:null,conn:null,peer:null,code:'',pn:'',pc:0,ui:'idle',msg:'',
-  seed:0,noEnd:0,noSep:0,pendEnd:null,gOpen:false,gOpts:null,gl:null,ens:new Map(),nid:0,snapT:0,posT:0,psq:0,pSent:0,moSent:0,snd:[],
-  actT:0,hs:'play',spd:60,sig:'',bsig:'',remoteEnd:0,allPk:null,waitTxt:''};
-const CO_PRE='aranuaclub-';
-function coSwap(){const a=Object.assign({},P);for(const k in P)delete P[k];Object.assign(P,CO.o);CO.o=a;
-  const s=ST;ST=CO.ost;CO.ost=s;const c=G.char;G.char=CO.ochar;CO.ochar=c;
-  const pe=Object.assign({},PET);Object.assign(PET,CO.opet);CO.opet=pe;CO.sw=!CO.sw;setOrbsStyle()}
+/* ================= Fusión paso a paso: primero una habilidad, luego con cuál se vincula ================= */
+function fuseMerge(slots,i,j){const a=slots[i],b=slots[j],keep=b.length>1&&a.length===1?j:i,other=keep===i?j:i;const ids=slots[keep].concat(slots[other]);slots[keep]=ids;slots[other]=[];return keep}
+function fuseUI(slots,done,skipTxt){const box=$('#fuse-opts'),info=$('#fusem .small');let first=null;
+  const label=s=>s.map(id=>ATK[id].name).join(' + '),icons=s=>s.map(id=>`<img src="${ICON[ATK[id].icon]}" alt="" style="width:30px;height:30px">`).join('');
+  const partners=i=>slots.map((s,j)=>j).filter(j=>j!==i&&slots[j].length&&canLink(slots[i],slots[j]));
+  const draw=()=>{box.innerHTML='';let k=0;
+    if(first===null){info.textContent='Has vencido al guardián del portal. Paso 1: elige la habilidad (o el vínculo) que quieres vincular.';
+      slots.forEach((s,i)=>{if(!s.length||!partners(i).length)return;const b=document.createElement('button');b.className='opt';
+        b.innerHTML=`<span class="k">[${++k}]</span><div>${icons(s)}</div><b>${s.length>1?'Vínculo de '+s.length:'Ranura '+(i+1)}</b>${s.length>1?'<em class="link">VÍNCULO</em>':''}<p>${label(s)}</p>`;
+        b.onclick=()=>{first=i;sfx('pick');draw()};box.appendChild(b)});
+      if(!k)box.innerHTML='<p class="small">No hay Vínculos posibles: un Vínculo admite como máximo 4 habilidades y solo se pueden unir habilidades que aún no estén vinculadas.</p>'}
+    else{const S=slots[first];info.textContent=S.length>1?'Paso 2: elige la habilidad que añadirás a '+label(S)+'.':'Paso 2: elige con qué se vincula '+label(S)+'.';
+      for(const j of partners(first)){const s=slots[j],b=document.createElement('button');b.className='opt';
+        b.innerHTML=`<span class="k">[${++k}]</span><div>${icons(S)}<span style="font-size:22px;padding:0 4px">+</span>${icons(s)}</div><b>${s.length>1?'Vínculo de '+s.length:'Ranura '+(j+1)}</b><em class="link">VINCULAR</em><p>${label(s)}</p>`;
+        b.onclick=()=>{sfx('level');done(first,j)};box.appendChild(b)}
+      const bk=document.createElement('button');bk.className='btn';bk.textContent='‹ Elegir otra';bk.style.gridColumn='1/-1';bk.onclick=()=>{first=null;sfx('pick');draw()};box.appendChild(bk)}};
+  draw()}
+openFuse=function(){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;
+  fuseUI(P.slots,(i,j)=>{const keep=fuseMerge(P.slots,i,j);if(!P.slots[P.active].length)P.active=keep;G.runLinks++;buildSlots();exitRift()});
+  $('#fusem').classList.remove('hidden');sfx('level')};
+
+/* ================= COOPERATIVO: hasta 4 jugadores en una sala =================
+   El anfitrión (jugador 1) simula toda la partida; los invitados (2-4) mandan su posición y sus
+   elecciones y reciben ~20 fotos por segundo de lo que tienen alrededor. Para simular a cada
+   invitado en el anfitrión se intercambia el contenido de P, ST, G.char y PET con el suyo. */
+const CO={run:false,role:null,me:1,cur:1,sw:false,ps:{},ids:[1],hc:null,peer:null,code:'',ui:'idle',msg:'',mode:'coop',room:[],
+  seed:0,noEnd:0,noSep:0,pendEnd:null,lv:{},gl:null,fz:new Set(),fzH:false,ens:new Map(),nid:0,snapT:0,posT:0,psq:0,snd:[],
+  actT:0,hs:'play',wn:'',spd:60,sig:'',bsig:'',remoteEnd:0,allPk:null,waitTxt:'',hpm:1.5,mytp:0,rt:null,fuseAt:0,pendRift:false};
+const CO_PRE='aranuaclub-',CO_COL=['','#ffd04a','#d8a8ff','#7ae0ff','#8aff8a'];
+function coMax(){return CO.mode==='duel'?2:4}
+function coOth(){for(const k in CO.ps){const i=+k;if(i!==CO.me)return i}return CO.me===1?2:1}
+function coSlot(i){return CO.ps[i]||(CO.ps[i]={o:{x:0,y:0,hp:1,maxHp:1,slots:[[],[],[],[]],atk:{},buffs:{}},st:{},ch:0,pet:{x:0,y:0,anim:0,face:1,t:0,lg:null,mv:false},name:'',c:0,pSent:0,moSent:0})}
+// atajos para el modo de 2 jugadores (Duelo): "el otro"
+Object.defineProperties(CO,{
+  o:{get(){const s=CO.ps[coOth()];return s?s.o:null},set(v){coSlot(coOth()).o=v}},
+  ost:{get(){const s=CO.ps[coOth()];return s?s.st:null},set(v){coSlot(coOth()).st=v}},
+  ochar:{get(){const s=CO.ps[coOth()];return s?s.ch:0},set(v){coSlot(coOth()).ch=v}},
+  opet:{get(){const s=CO.ps[coOth()];return s?s.pet:null},set(v){coSlot(coOth()).pet=v}},
+  pn:{get(){const s=CO.ps[coOth()];return s?s.name:''},set(v){coSlot(coOth()).name=v}},
+  pc:{get(){const s=CO.ps[coOth()];return s?s.c:0}},
+  conn:{get(){if(CO.role==='guest')return CO.hc;for(const k in CO.ps)if(CO.ps[k].conn)return CO.ps[k].conn;return null}}});
+function coName(i){return i===CO.me?SAVE.name:(CO.ps[i]&&CO.ps[i].name)||'Socio'}
+function coOthers(){return CO.ids.filter(i=>i!==CO.me&&CO.ps[i])}
+// intercambia al jugador de esta pantalla con el jugador i (y al revés)
+function coSwapI(i){const S=CO.ps[i];const a=Object.assign({},P);for(const k in P)delete P[k];Object.assign(P,S.o);S.o=a;
+  const s=ST;ST=S.st;S.st=s;const c=G.char;G.char=S.ch;S.ch=c;const pe=Object.assign({},PET);Object.assign(PET,S.pet);S.pet=pe;
+  CO.cur=CO.cur===CO.me?i:CO.me;CO.sw=CO.cur!==CO.me;setOrbsStyle()}
+function coSwap(){coSwapI(coOth())}
+// ejecuta fn con el jugador i como P
+function coWith(i,fn){if(i===CO.cur){fn();return}const back=CO.cur;if(back!==CO.me)coSwapI(back);if(i!==CO.me)coSwapI(i);
+  try{fn()}finally{if(i!==CO.me)coSwapI(i);if(back!==CO.me)coSwapI(back)}}
 const COAR={get projs(){return projs},set projs(v){projs=v},get zones(){return zones},set zones(v){zones=v},get meteors(){return meteors},set meteors(v){meteors=v},get wfx(){return wfx},set wfx(v){wfx=v}};
 const COK=['projs','zones','meteors','wfx'];
-// ejecuta fn con el jugador o (1 anfitrión, 2 invitado) como P
-function coWith(o,fn){const s=o!==CO.me;if(s)coSwap();try{fn()}finally{if(s)coSwap()}}
-// igual, pero además deja ver a fn solo los proyectiles/zonas/efectos de ese jugador (y marca los nuevos como suyos)
-function coRun(o,fn){const s=o!==CO.me;if(s)coSwap();const keep={};
+// igual, pero fn solo ve los proyectiles/zonas/efectos de ese jugador (y los nuevos quedan marcados como suyos)
+function coRun(o,fn){coWith(o,()=>{const keep={};
   for(const k of COK){const m=[],r=[];for(const x of COAR[k])((x.ow||1)===o?m:r).push(x);keep[k]=r;COAR[k]=m}
-  try{fn()}finally{for(const k of COK){const m=COAR[k];for(const x of m)x.ow=o;COAR[k]=keep[k].concat(m)}if(s)coSwap()}}
-function coPl(o){return o===CO.me?P:CO.o}
-// jugador vivo más cercano a un punto
-function coNear(x,y){const a=!P.down,b=!CO.o.down,me=CO.me;if(a&&!b)return me;if(b&&!a)return 3-me;return dist2(x,y,P.x,P.y)<=dist2(x,y,CO.o.x,CO.o.y)?me:3-me}
+  try{fn()}finally{for(const k of COK){const m=COAR[k];for(const x of m)x.ow=o;COAR[k]=keep[k].concat(m)}}})}
+function coPl(i){return i===CO.me?P:CO.ps[i].o}
+function coAlive(){return CO.ids.filter(i=>!coPl(i).down)}
+function coNear(x,y){let b=CO.me,bd=1e18;for(const i of CO.ids){const p=coPl(i);if(p.down)continue;const d=dist2(x,y,p.x,p.y);if(d<bd){bd=d;b=i}}return b}
 
 /* ---------- simulación en el anfitrión ---------- */
 function coInput(){let mx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),my=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);
@@ -3179,57 +3228,57 @@ function coInput(){let mx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.Arro
   const ml=Math.hypot(mx,my);if(ml>1){mx/=ml;my/=ml}return [mx,my,ml]}
 function coMove(dt,spd){const [mx,my,ml]=coInput();P.moving=ml>.05;if(P.moving){const mm=Math.hypot(mx,my)||1;P.dirx=mx/mm;P.diry=my/mm;P.x+=mx*spd*dt;P.y+=my*spd*dt;P.anim+=dt*8;if(Math.abs(mx)>.1)P.face=mx>0?1:-1;if(frameN%6===0)parts.push(mkPart(P.x+rand(-3,3),P.y+10,rand(-8,8),-5,.35,'#6b5a40',1))}}
 function coRegen(dt){if(P.inv>0)P.inv-=dt;if(!P.down&&ST.reg>0&&P.hp<P.maxHp){P.regenAcc+=ST.reg*dt;if(P.regenAcc>=1){P.hp=Math.min(P.maxHp,P.hp+Math.floor(P.regenAcc));P.regenAcc%=1}}}
-function coEnemies(dt){const all=enemies,a=[],b=[];for(const e of all)(coNear(e.x,e.y)===1?a:b).push(e);const n1=a.length,n2=b.length;
-  enemies=a;try{updateEnemies(dt)}finally{enemies=all}const add1=a.slice(n1);
-  CO.noSep=1;try{coWith(2,()=>{enemies=b;try{updateEnemies(dt)}finally{enemies=all}})}finally{CO.noSep=0}
-  for(const e of add1)all.push(e);for(const e of b.slice(n2))all.push(e)}
-function coHaz(dt){coWith(2,()=>{if(P.down)return;for(const h of hazards){if(dist2(h.x,h.y,P.x,P.y)>=h.r*h.r)continue;
-  if(h.delay>0){if(h.delay-dt<=0)hurtPlayer(h.dmg,h.el,'m')}else{h.t2=(h.t2||0)-dt;if(h.t2<=0){h.t2=.5;hurtPlayer(h.dmg,h.el,'p')}}}});updateHazards(dt)}
-function coPickups(dt){const all=pickups,a=[],b=[];CO.allPk=all;
-  for(const p of all){if(p.got)continue;const o=p.mag&&p.mo&&!coPl(p.mo).down?p.mo:coNear(p.x,p.y);(o===1?a:b).push(p)}
-  try{pickups=a;updatePickups(dt);for(const p of pickups)if(p.mag&&!p.mo)p.mo=1;const r1=pickups;let r2=b;
-    coWith(2,()=>{pickups=b;updatePickups(dt);for(const p of pickups)if(p.mag&&!p.mo)p.mo=2;r2=pickups});pickups=r1.concat(r2)}
-  finally{CO.allPk=null}}
-function coRevive(dt){const pl=[P,CO.o];for(let i=0;i<2;i++){const d=pl[i],h=pl[1-i];if(!d.down)continue;
-  if(!h.down&&dist2(d.x,d.y,h.x,h.y)<28*28){d.rv=(d.rv||0)+dt;if(frameN%5===0)parts.push(mkPart(d.x+rand(-7,7),d.y-2,0,-22,.6,'#9fff9f',1))}else d.rv=Math.max(0,(d.rv||0)-dt*.5);
-  if(d.rv>=3){d.down=false;d.rv=0;d.hp=Math.round(d.maxHp*.4);d.inv=2;sfx('level');toast('¡'+(i===0?SAVE.name:CO.pn).toUpperCase()+' VUELVE A LA FIESTA!',1);
+function coEnemies(dt){const all=enemies,grp={};for(const e of all){const o=coNear(e.x,e.y);(grp[o]||(grp[o]=[])).push(e)}let first=true;const add=[];
+  for(const i of CO.ids){const g=grp[i];if(!g)continue;const n=g.length;CO.noSep=first?0:1;first=false;
+    try{coWith(i,()=>{enemies=g;try{updateEnemies(dt)}finally{enemies=all}})}finally{CO.noSep=0}for(const e of g.slice(n))add.push(e)}
+  for(const e of add)all.push(e)}
+function coHaz(dt){for(const i of coOthers())coWith(i,()=>{if(P.down)return;for(const h of hazards){if(dist2(h.x,h.y,P.x,P.y)>=h.r*h.r)continue;
+  if(h.delay>0){if(h.delay-dt<=0)hurtPlayer(h.dmg,h.el,'m')}else{const k='t'+i;h[k]=(h[k]||0)-dt;if(h[k]<=0){h[k]=.5;hurtPlayer(h.dmg,h.el,'p')}}}});updateHazards(dt)}
+function coPickups(dt){const all=pickups,grp={};CO.allPk=all;
+  for(const p of all){if(p.got)continue;const o=p.mag&&p.mo&&CO.ps[p.mo]!==undefined&&!coPl(p.mo).down||p.mag&&p.mo===CO.me&&!P.down?p.mo:coNear(p.x,p.y);(grp[o]||(grp[o]=[])).push(p)}
+  let out=[];try{for(const i of CO.ids){const g=grp[i];if(!g)continue;coWith(i,()=>{pickups=g;updatePickups(dt);for(const p of pickups)if(p.mag&&!p.mo)p.mo=i;out=out.concat(pickups)})}}
+  finally{pickups=out;CO.allPk=null}}
+function coRevive(dt){for(const di of CO.ids){const d=coPl(di);if(!d.down)continue;
+  const near=CO.ids.some(hi=>hi!==di&&!coPl(hi).down&&dist2(d.x,d.y,coPl(hi).x,coPl(hi).y)<28*28);
+  if(near){d.rv=(d.rv||0)+dt;if(frameN%5===0)parts.push(mkPart(d.x+rand(-7,7),d.y-2,0,-22,.6,'#9fff9f',1))}else d.rv=Math.max(0,(d.rv||0)-dt*.5);
+  if(d.rv>=3){d.down=false;d.rv=0;d.hp=Math.round(d.maxHp*.4);d.inv=2;sfx('level');toast('¡'+coName(di).toUpperCase()+' VUELVE A LA FIESTA!',1);
     for(let k=0;k<16;k++){const a=k/16*6.283;parts.push(mkPart(d.x,d.y-4,Math.cos(a)*40,Math.sin(a)*40-20,.6,'#9fff9f',2))}}}}
 function coUpdate(dt){frameN++;G.t+=dt;genBudget=1;
   if(G.state!=='play')return;
   G.time+=dt;
   if(!P.down)coMove(dt,ST.spd);else P.moving=false;
-  coRegen(dt);coWith(2,()=>coRegen(dt));
+  for(const i of CO.ids)coWith(i,()=>coRegen(dt));
   if(frameN%20===0){const [b,,e]=bioInfo(P.x,P.y);if(b!==G.bio&&e>40){if(G.bio!==null)toast(BIO[b].name.toUpperCase(),1);G.bio=b}}
-  const a1=!P.down,a2=!CO.o.down,dc=a1&&a2?(Math.random()<.5?1:2):a1?1:2;
-  if(!G.inRift){coWith(dc,()=>director(dt));coWith(dc,()=>riftDirector(dt));coWith(1,spawnBarrels);coWith(2,spawnBarrels);
-    if(G.portal&&(CO.pendRift||!P.down&&dist2(G.portal.x,G.portal.y,P.x,P.y)<14*14||!CO.o.down&&dist2(G.portal.x,G.portal.y,CO.o.x,CO.o.y)<14*14))coEnterRift()}
-  else{clampRift();coWith(2,clampRift)}
+  const al=coAlive(),dc=al.length?pick(al):CO.me;
+  if(!G.inRift){coWith(dc,()=>director(dt));coWith(dc,()=>riftDirector(dt));for(const i of CO.ids)coWith(i,spawnBarrels);
+    if(G.portal&&(CO.pendRift||al.some(i=>{const p=coPl(i);return dist2(G.portal.x,G.portal.y,p.x,p.y)<14*14})))coEnterRift()}
+  else for(const i of CO.ids)coWith(i,clampRift);
   buildGrid();coEnemies(dt);
-  if(a1)coRun(1,()=>updateAttacks(dt));else P.orbPts=null;
-  if(a2)coRun(2,()=>updateAttacks(dt));else CO.o.orbPts=null;
-  coRun(1,()=>updateBuffs(dt));coRun(2,()=>updateBuffs(dt));
-  coRun(1,()=>updateProjs(dt));
-  coRun(2,()=>{if(!P.down)for(const p of eprojs)if(p.life>0&&dist2(p.x,p.y,P.x,P.y-6)<49){hurtPlayer(p.dmg,p.el,p.dt);p.life=0}const ep=eprojs;eprojs=[];try{updateProjs(dt)}finally{eprojs=ep}});
-  coRun(1,()=>updateWfx(dt));coRun(2,()=>updateWfx(dt));
+  for(const i of CO.ids){if(!coPl(i).down)coRun(i,()=>updateAttacks(dt));else coPl(i).orbPts=null}
+  for(const i of CO.ids)coRun(i,()=>updateBuffs(dt));
+  coRun(CO.me,()=>updateProjs(dt));
+  for(const i of coOthers())coRun(i,()=>{if(!P.down)for(const p of eprojs)if(p.life>0&&dist2(p.x,p.y,P.x,P.y-6)<49){hurtPlayer(p.dmg,p.el,p.dt);p.life=0}const ep=eprojs;eprojs=[];try{updateProjs(dt)}finally{eprojs=ep}});
+  for(const i of CO.ids)coRun(i,()=>updateWfx(dt));
   coHaz(dt);updateIntro(dt);
   prune(enemies,e=>!e.dead);coPickups(dt);updateParts(dt);
   if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25);
-  if(P.pendingLv>6)P.pendingLv=6;if(CO.o.pendingLv>6)CO.o.pendingLv=6;
+  for(const i of CO.ids){const p=coPl(i);if(p.pendingLv>6)p.pendingLv=6}
   coRevive(dt);
   if(CO.pendEnd!==null){const v=CO.pendEnd;CO.pendEnd=null;endRun(v);return}
-  if(P.down&&CO.o.down){endRun(false);return}
+  if(CO.ids.every(i=>coPl(i).down)){endRun(false);return}
   if(CO.fuseAt&&G.t>=CO.fuseAt&&G.state==='play'&&G.inRift){CO.fuseAt=0;openFuse();return}
   if(G.state==='play'&&P.pendingLv>0)openLevelUp();else if(G.state==='play'&&G.pendingRelic){G.pendingRelic=0;offerRelic()}}
-// mejoras del invitado: se eligen en su pantalla y se aplican aquí
-function coGuestLvl(){if(!CO.run||CO.role!=='host'||CO.gOpen||!CO.o||CO.o.pendingLv<=0)return;if(G.state!=='play'&&G.state!=='levelup')return;CO.gOpen=true;coSendOpts();if(G.state==='play')G.state='levelup'}
-function coSendOpts(){let inf=[];coWith(2,()=>{CO.gOpts=buildOptions();inf=CO.gOpts.map(o=>{const i=optInfo(o);return{icon:i.icon,name:i.name,tag:i.tag,cls:i.cls||'',desc:i.desc}})});coNet({t:'lvl',o:inf,rr:G.rerolls})}
-function coApplyPick(i){if(!CO.gOpen||!CO.gOpts)return;const o=CO.gOpts[i];if(!o)return;CO.gOpts=null;
-  coWith(2,()=>{if(o.t==='new'){P.atk[o.id]={lvl:1,cd:0};const fs=freeSlot();if(fs>=0){P.slots[fs]=[o.id];P.active=fs}}else if(o.t==='up')P.atk[o.id].lvl++;else if(o.t==='pas')P.pas[o.id]=(P.pas[o.id]||0)+1;else if(o.t==='heal')heal(P.maxHp*.5);else G.gold+=40;
+// mejoras de los invitados: se eligen en su pantalla y se aplican aquí
+function coGuestLvl(){if(!CO.run||CO.role!=='host')return;if(G.state!=='play'&&G.state!=='levelup')return;
+  for(const i of coOthers()){if(CO.lv[i])continue;if(coPl(i).pendingLv>0){coSendOpts(i);if(G.state==='play')G.state='levelup'}}}
+function coSendOpts(i){let inf=[];coWith(i,()=>{const opts=buildOptions();CO.lv[i]=opts;inf=opts.map(o=>{const f=optInfo(o);return{icon:f.icon,name:f.name,tag:f.tag,cls:f.cls||'',desc:f.desc}})});coSendTo(i,{t:'lvl',o:inf,rr:G.rerolls})}
+function coApplyPick(i,k){const opts=CO.lv[i];if(!opts)return;const o=opts[k];if(!o)return;delete CO.lv[i];
+  coWith(i,()=>{if(o.t==='new'){P.atk[o.id]={lvl:1,cd:0};const fs=freeSlot();if(fs>=0){P.slots[fs]=[o.id];P.active=fs}}else if(o.t==='up')P.atk[o.id].lvl++;else if(o.t==='pas')P.pas[o.id]=(P.pas[o.id]||0)+1;else if(o.t==='heal')heal(P.maxHp*.5);else G.gold+=40;
     calcStats();P.pendingLv--;P.inv=Math.max(P.inv,.6)});
-  if(CO.o.pendingLv>0){coSendOpts();return}
-  CO.gOpen=false;if(G.state==='levelup'&&$('#lvl').classList.contains('hidden')){G.state='play';P.inv=Math.max(P.inv,.6)}}
+  if(coPl(i).pendingLv>0){coSendOpts(i);return}coMaybeResume()}
+function coMaybeResume(){if(Object.keys(CO.lv).length)return;if(G.state==='levelup'&&$('#lvl').classList.contains('hidden')){G.state='play';P.inv=Math.max(P.inv,.6)}}
 
-/* ---------- fotos de la partida (anfitrión → invitado) ---------- */
+/* ---------- fotos de la partida (anfitrión → invitados) ---------- */
 const coR=v=>Math.round(v*100)/100;
 function coPlain(o){const r={};for(const k in o){const v=o[k],t=typeof v;if(t==='number')r[k]=coR(v);else if(t==='string'||t==='boolean')r[k]=v;else if(k==='pts'&&Array.isArray(v))r[k]=v.map(q=>[Math.round(q[0]),Math.round(q[1])])}return r}
 function coNearList(arr,x,y,R,max){const R2=R*R,out=[];for(const o of arr){if(o.x===undefined||dist2(o.x,o.y,x,y)<R2){out.push(coPlain(o));if(out.length>=max)break}}return out}
@@ -3237,19 +3286,22 @@ function coPData(p,st,ci,pet){return {x:coR(p.x),y:coR(p.y),hp:Math.ceil(p.hp),m
   slots:p.slots,active:p.active,atk:Object.fromEntries(Object.entries(p.atk).map(([k,a])=>[k,{lvl:a.lvl,cd:coR(a.cd||0),cdMax:coR(a.cdMax||0)}])),buffs:p.buffs,pas:p.pas,relic:p.relic,
   orbPts:p.orbPts?p.orbPts.map(q=>[Math.round(q[0]),Math.round(q[1]),coR(q[2])]):null,shield:p.shield?coPlain(p.shield):null,dash:p.dash?coPlain(p.dash):null,
   down:!!p.down,rv:coR(p.rv||0),tp:p.tp||0,ob:p.ob||{},shr:p.shr||null,dirx:p.dirx,diry:p.diry,c:CHARS[ci].id,spd:st.spd||60,lg:pet.lg?{x:Math.round(pet.lg.x),y:Math.round(pet.lg.y),t:coR(pet.lg.t)}:null}}
-function coSnap(){const gx=CO.o.x,gy=CO.o.y,R=440,R2=340;
+function coWaitNames(){const n=[];if(G.state==='levelup'){if(!$('#lvl').classList.contains('hidden'))n.push(SAVE.name);for(const k in CO.lv)n.push(coName(+k))}
+  else if(G.state==='fuse'){if(!CO.fzH)n.push(SAVE.name);for(const k of CO.fz)n.push(coName(k))}else if(G.state==='paused'||G.state==='relic')n.push(SAVE.name);return n.join(', ')}
+function coSnap(gi){const S=CO.ps[gi],gx=S.o.x,gy=S.o.y,R=440,R2=340;
   const ens=[];for(const e of enemies){if(e.dead)continue;if(e!==G.boss&&(ens.length>=260||dist2(e.x,e.y,gx,gy)>R*R))continue;
     ens.push([e.nid,e.type,Math.round(e.x),Math.round(e.y),(e.face<0?1:0)|(e.flash>0?2:0)|(e.slowT>0?4:0)|(e.elite?8:0)|(e.big?16:0)|(e.pet?32:0),Math.round(clamp(e.hp/e.maxHp,0,1)*1000)])}
-  const np=[];for(const p of parts)if(p.sq>CO.pSent&&np.length<160&&dist2(p.x,p.y,gx,gy)<R2*R2)np.push([Math.round(p.x),Math.round(p.y),Math.round(p.vx),Math.round(p.vy),coR(p.life),coR(p.max),p.col,p.s]);CO.pSent=CO.psq;
-  let mo=[];if(G.mapObjs&&G.mapObjs.size>CO.moSent){mo=[...G.mapObjs].slice(CO.moSent);CO.moSent=G.mapObjs.size}
-  const s={t:'s',g:{st:G.state,time:coR(G.time),kills:G.kills,gold:G.gold,bossDmg:Math.round(G.bossDmg),act2At:G.act2At,runKing:G.runKing,runDemon:G.runDemon,shake:coR(G.shake),intro:G.intro?{t:coR(G.intro.t)}:null,ir:!!G.inRift,po:G.portal?{x:Math.round(G.portal.x),y:Math.round(G.portal.y)}:null,rt:G.inRift?CO.rt:null},
+  const np=[];for(const p of parts)if(p.sq>S.pSent&&np.length<160&&dist2(p.x,p.y,gx,gy)<R2*R2)np.push([Math.round(p.x),Math.round(p.y),Math.round(p.vx),Math.round(p.vy),coR(p.life),coR(p.max),p.col,p.s]);S.pSent=CO.psq;
+  let mo=[];if(G.mapObjs&&G.mapObjs.size>S.moSent){mo=[...G.mapObjs].slice(S.moSent);S.moSent=G.mapObjs.size}
+  const pl={};for(const i of CO.ids){if(i===CO.me)pl[i]=coPData(P,ST,G.char,PET);else{const T=CO.ps[i];pl[i]=coPData(T.o,T.st,T.ch,T.pet)}}
+  return{t:'s',g:{st:G.state,wn:coWaitNames(),time:coR(G.time),kills:G.kills,gold:G.gold,bossDmg:Math.round(G.bossDmg),act2At:G.act2At,runKing:G.runKing,runDemon:G.runDemon,shake:coR(G.shake),intro:G.intro?{t:coR(G.intro.t)}:null,ir:!!G.inRift,po:G.portal?{x:Math.round(G.portal.x),y:Math.round(G.portal.y)}:null,rt:G.inRift?CO.rt:null},
     e:ens,bs:G.boss&&!G.boss.dead?G.boss.nid:0,pr:coNearList(projs,gx,gy,R2,260),ep:coNearList(eprojs,gx,gy,R2,160),fx:coNearList(fx,gx,gy,R2,120),me:coNearList(meteors,gx,gy,R2,60),
     zo:coNearList(zones,gx,gy,R2,40),wf:coNearList(wfx,gx,gy,R2,60),pk:coNearList(pickups,gx,gy,R2,260),hz:coNearList(hazards,gx,gy,R2,80),tx:coNearList(texts,gx,gy,R2,80),
-    pl:[coPData(P,ST,G.char,PET),coPData(CO.o,CO.ost,CO.ochar,CO.opet)],sh:typeof SHR!=='undefined'?SHR.map(q=>({id:q.id,x:Math.round(q.x),y:Math.round(q.y),cd:coR(q.cd),ph:coR(q.ph)})):[],np,mo,snd:CO.snd};CO.snd=[];return s}
-function coHostNet(dt){CO.snapT-=dt;if(CO.snapT<=0&&CO.run){CO.snapT=G.state==='play'?.05:.2;coNet(coSnap())}}
+    pl,sh:typeof SHR!=='undefined'?SHR.map(q=>({id:q.id,x:Math.round(q.x),y:Math.round(q.y),cd:coR(q.cd),ph:coR(q.ph)})):[],np,mo,snd:CO.snd}}
+function coHostNet(dt){CO.snapT-=dt;if(CO.snapT<=0&&CO.run){CO.snapT=G.state==='play'?.05:.2;for(const i of coOthers())coSendTo(i,coSnap(i));CO.snd=[]}}
 
 /* ---------- invitado ---------- */
-function coApply(s){const g=s.g;CO.hs=g.st;Object.assign(G,{time:g.time,kills:g.kills,gold:g.gold,bossDmg:g.bossDmg,act2At:g.act2At,runKing:g.runKing,runDemon:g.runDemon,intro:g.intro,inRift:g.ir,portal:g.po});if(g.rt)CO.rt=g.rt;G.shake=Math.max(G.shake,g.shake);
+function coApply(s){const g=s.g;CO.hs=g.st;CO.wn=g.wn||'';Object.assign(G,{time:g.time,kills:g.kills,gold:g.gold,bossDmg:g.bossDmg,act2At:g.act2At,runKing:g.runKing,runDemon:g.runDemon,intro:g.intro,inRift:g.ir,portal:g.po});if(g.rt)CO.rt=g.rt;G.shake=Math.max(G.shake,g.shake);
   const M=CO.ens,seen=new Set(),arr=[];
   for(const q of s.e){let e=M.get(q[0]);const t=q[1]==='hboss'?coRiftT():ET[q[1]];if(!t)continue;
     if(!e){const el=!!(q[4]&8);e={nid:q[0],type:q[1],t,x:q[2],y:q[3],elite:el,big:!!(q[4]&16),sc:(t.sc||1)*(el?1.3:1),seed:(q[0]*37.7)%100,r:t.r*(el?1.3:1),maxHp:1000,hp:1000,dead:false,face:1,flash:0,slowT:0};e.set=SPR[t.spr+(el?'E':'')]||SPR[t.spr];if(q[4]&32)e.pet={x:q[2]-20,y:q[3]+8,face:1,anim:0,mv:false,lg:null,bit:false};M.set(q[0],e)}
@@ -3259,17 +3311,17 @@ function coApply(s){const g=s.g;CO.hs=g.st;Object.assign(G,{time:g.time,kills:g.
   for(const q of s.np)parts.push({x:q[0],y:q[1],vx:q[2],vy:q[3],life:q[4],max:q[5],col:q[6],s:q[7]});
   if(G.mapObjs)for(const k of s.mo)G.mapObjs.add(k);
   for(const n of s.snd)if(n!=='hurt'&&n!=='die')sfx(n);
-  // compañero
-  const ot=s.pl[0],o=CO.o,px=o.x,py=o.y;Object.assign(o,ot);o.tx=ot.x;o.ty=ot.y;if(Math.hypot(px-ot.x,py-ot.y)<150){o.x=px;o.y=py}
-  {const ci=CHARS.findIndex(c=>c.id===ot.c);if(ci>=0)CO.ochar=ci}if(ot.lg&&ot.lg.t>.25&&!CO.opet.lg)CO.opet.lg=ot.lg;
-  // yo
-  const me=s.pl[1],k={x:P.x,y:P.y,face:P.face,moving:P.moving,anim:P.anim,dirx:P.dirx,diry:P.diry,active:P.active},wasDown=!!P.down,hp0=P.hp;
+  CO.ids=Object.keys(s.pl).map(Number).sort();
+  for(const k in s.pl){const i=+k;if(i===CO.me)continue;const ot=s.pl[k],S=coSlot(i),o=S.o,px=o.x,py=o.y;Object.assign(o,ot);o.tx=ot.x;o.ty=ot.y;if(px!==undefined&&Math.hypot(px-ot.x,py-ot.y)<150){o.x=px;o.y=py}
+    const ci=CHARS.findIndex(c=>c.id===ot.c);if(ci>=0)S.ch=ci;if(ot.lg&&ot.lg.t>.25&&!S.pet.lg)S.pet.lg=ot.lg}
+  for(const k in CO.ps)if(!s.pl[k])delete CO.ps[k];
+  const me=s.pl[CO.me];if(!me)return;const k={x:P.x,y:P.y,face:P.face,moving:P.moving,anim:P.anim,dirx:P.dirx,diry:P.diry,active:P.active},wasDown=!!P.down,hp0=P.hp;
   const lg=me.lg;delete me.lg;Object.assign(P,me);if(lg&&lg.t>.25&&!PET.lg)PET.lg=lg;
   const tpd=(me.tp||0)!==(CO.mytp||0);CO.mytp=me.tp||0;
   if(!(me.dash||me.down||wasDown||tpd))Object.assign(P,{x:k.x,y:k.y,face:k.face,moving:k.moving,anim:k.anim,dirx:k.dirx,diry:k.diry});
   if(G.t<CO.actT)P.active=k.active;CO.spd=me.spd;{const ci=CHARS.findIndex(c=>c.id===me.c);if(ci>=0&&ci!==G.char){G.char=ci;setOrbsStyle();drawPortrait($('#portrait'));CO.sig=''}}
   if(P.hp<hp0&&!me.down){VIGN.classList.add('hit');clearTimeout(coApply.t);coApply.t=setTimeout(()=>VIGN.classList.remove('hit'),180);sfx('hurt')}
-  if(me.down&&!wasDown){sfx('die');toast('¡TE HAS QUEDADO FRITO! '+CO.pn.toUpperCase()+' PUEDE REANIMARTE',1)}
+  if(me.down&&!wasDown){sfx('die');toast('¡TE HAS QUEDADO FRITO! TUS COLEGAS PUEDEN REANIMARTE',1)}
   const sig=JSON.stringify([P.slots,P.active,Object.keys(P.atk).map(id=>id+P.atk[id].lvl)]);if(sig!==CO.sig){CO.sig=sig;buildSlots()}
   const bs=Object.keys(P.buffs).join();if(bs!==CO.bsig){CO.bsig=bs;buildBuffHud()}}
 function coGuestUpdate(dt){frameN++;G.t+=dt;genBudget=1;
@@ -3281,189 +3333,256 @@ function coGuestUpdate(dt){frameN++;G.t+=dt;genBudget=1;
   if(CO.hs==='play'){const k=Math.min(1,dt*12);
     for(const e of enemies){if(e.tx===undefined)continue;if(Math.abs(e.tx-e.x)>80||Math.abs(e.ty-e.y)>80){e.x=e.tx;e.y=e.ty}else{e.x+=(e.tx-e.x)*k;e.y+=(e.ty-e.y)*k}}
     for(const p of projs)if(!(p.wait>0)&&p.vx!==undefined){p.x+=p.vx*dt;p.y+=p.vy*dt}for(const p of eprojs){p.x+=p.vx*dt;p.y+=p.vy*dt}for(const m of meteors)m.t=Math.max(.001,m.t-dt);
-    const o=CO.o;if(o&&o.tx!==undefined){if(Math.hypot(o.tx-o.x,o.ty-o.y)>150){o.x=o.tx;o.y=o.ty}else{o.x+=(o.tx-o.x)*k;o.y+=(o.ty-o.y)*k}}
+    for(const i of coOthers()){const o=CO.ps[i].o;if(o.tx===undefined)continue;if(Math.hypot(o.tx-o.x,o.ty-o.y)>150){o.x=o.tx;o.y=o.ty}else{o.x+=(o.tx-o.x)*k;o.y+=(o.ty-o.y)*k}}
     updateParts(dt)}
   if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25)}
 function coGuestShowLvl(m){CO.gl=m.o;G.state='levelup';const box=$('#lvl-opts');box.innerHTML='';
   m.o.forEach((inf,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span class="k">[${i+1}]</span><img src="${inf.icon}" alt=""><b>${inf.name}</b><em class="${inf.cls||''}">${inf.tag}</em><p>${inf.desc}</p>`;b.onclick=()=>chooseOpt(i);box.appendChild(b)});
   const r=$('#reroll');r.textContent=`↻ Volver a tirar (${m.rr}) [R]`;r.disabled=m.rr<=0;$('#pause').classList.add('hidden');$('#lvl').classList.remove('hidden');sfx('level');joy.on=false;joy.dx=joy.dy=0}
 
-/* ---------- conexión (PeerJS; ?cobc=1 usa un canal local para pruebas) ---------- */
-function coNet(m){if(CO.conn)CO.conn.send(m)}
-function coUseBC(){return /[?&]cobc=1/.test(location.search)}
+/* ---------- conexión (PeerJS) ---------- */
+function coNet(m){if(CO.role==='guest'){if(CO.hc)CO.hc.send(m)}else for(const k in CO.ps){const c=CO.ps[k].conn;if(c)c.send(m)}}
+function coSendTo(i,m){const S=CO.ps[i];if(S&&S.conn)S.conn.send(m)}
 function coOpts(){const h=new URLSearchParams(location.search).get('peer');if(!h)return{debug:0};const [host,port]=h.split(':');return{host,port:+port||9000,path:'/',secure:false,debug:0}}
-function coLoadPeer(){if(window.Peer)return Promise.resolve();return new Promise((ok,ko)=>{const s=document.createElement('script');s.src='https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';s.onload=ok;s.onerror=()=>ko(new Error('net'));document.head.appendChild(s)})}
-function coMkCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
-function coWrap(c){return{send:o=>{try{if(c.open&&!(c.dataChannel&&c.dataChannel.bufferedAmount>1e6))c.send(o)}catch(e){}},close:()=>{try{c.close()}catch(e){}},onData:f=>c.on('data',f),onClose:f=>{c.on('close',f);c.on('error',f)}}}
-function coBC(code,isHost,onConn){const ch=new BroadcastChannel('aranua-'+code),me=Math.random().toString(36).slice(2);let peer=null;const h={};
-  const conn={send:o=>{try{ch.postMessage({to:peer,from:me,d:o})}catch(e){}},close:()=>{try{ch.postMessage({to:peer,from:me,bye:1});ch.close()}catch(e){}},onData:f=>{h.data=f},onClose:f=>{h.close=f}};
-  ch.onmessage=ev=>{const m=ev.data;if(isHost&&m.join&&!peer){peer=m.from;ch.postMessage({to:peer,from:me,ok:1});onConn(conn);return}
-    if(!isHost&&m.ok&&m.to===me&&!peer){peer=m.from;onConn(conn);return}if(m.to!==me||m.from!==peer)return;if(m.bye){h.close&&h.close();return}h.data&&h.data(m.d)};
-  if(!isHost)setTimeout(()=>ch.postMessage({join:1,from:me}),50);return{destroy:()=>{try{ch.close()}catch(e){}}}}
-function coClose(){const c=CO.conn,p=CO.peer;CO.conn=null;CO.peer=null;if(c)c.close();if(p)try{p.destroy()}catch(e){}clearTimeout(CO.jt)}
-function coGotConn(c){CO.conn=c;c.onData(m=>{try{CO.role==='host'?coOnHost(m):coOnGuest(m)}catch(e){logErr(e)}});c.onClose(()=>{if(CO.conn===c)coPartnerLeft()});clearTimeout(CO.jt);
-  coNet({t:'hello',n:SAVE.name,c:CHARS[G.char].id,mode:CO.mode||'coop'});CO.msg='';coUi()}
-function coHost(){coClose();Object.assign(CO,{role:'host',me:1,ui:'hosting',code:coMkCode(),msg:'Creando sala…',pn:''});coUi();
-  if(coUseBC()){CO.peer=coBC(CO.code,true,c=>coGotConn(c));CO.msg='';coUi();return}
+function coLoadPeer(){if(window.Peer)return Promise.resolve();if(coLoadPeer.p)return coLoadPeer.p;return coLoadPeer.p=new Promise((ok,ko)=>{const s=document.createElement('script');s.src='https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';s.onload=ok;s.onerror=()=>{coLoadPeer.p=null;ko(new Error('net'))};document.head.appendChild(s)})}
+function coMkCode(n){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<(n||4);i++)s+=A[Math.floor(Math.random()*A.length)];return s}
+function coWrap(c){return{send:o=>{try{if(c.open&&!(c.dataChannel&&c.dataChannel.bufferedAmount>1e6))c.send(o)}catch(e){}},close:()=>{try{c.close()}catch(e){}},raw:c}}
+function coClose(){const p=CO.peer;if(CO.hc)CO.hc.close();for(const k in CO.ps)if(CO.ps[k].conn)CO.ps[k].conn.close();CO.hc=null;CO.peer=null;CO.ps={};CO.room=[];if(p)try{p.destroy()}catch(e){}clearTimeout(CO.jt)}
+function coRoster(){return[{i:1,n:SAVE.name,c:CHARS[G.char].id}].concat(Object.keys(CO.ps).map(Number).sort().map(i=>({i,n:CO.ps[i].name,c:CHARS[CO.ps[i].c]?CHARS[CO.ps[i].c].id:CHARS[0].id})))}
+function coBroadcastRoom(){if(CO.role!=='host')return;CO.room=coRoster();coNet({t:'room',pl:CO.room,code:CO.code,mode:CO.mode});coUi()}
+function coHost(){coClose();Object.assign(CO,{role:'host',me:1,cur:1,ids:[1],ui:'hosting',code:coMkCode(),msg:'Creando sala…'});CO.room=coRoster();coUi();
   coLoadPeer().then(()=>{if(CO.ui!=='hosting')return;const p=new Peer(CO_PRE+CO.code.toLowerCase(),coOpts());CO.peer=p;
     p.on('open',()=>{CO.msg='';coUi()});
-    p.on('connection',c=>{if(CO.conn){c.close();return}c.on('open',()=>coGotConn(coWrap(c)))});
-    p.on('error',e=>{if(e.type==='unavailable-id'){coHost();return}if(CO.conn)return;CO.msg='Error de conexión ('+e.type+'). Vuelve a intentarlo.';coUi()});
-    p.on('disconnected',()=>{try{if(!p.destroyed)p.reconnect()}catch(e){}})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo cargar el cooperativo. ¿Tienes internet?';coUi()})}
+    p.on('connection',c=>{c.on('open',()=>{const w=coWrap(c);let idx=0;
+      c.on('data',m=>{try{if(!idx){if(m.t!=='hello')return;if(CO.run||Object.keys(CO.ps).length>=coMax()-1){w.send({t:'full'});setTimeout(()=>w.close(),300);return}
+          if((m.mode||'coop')!==CO.mode){w.send({t:'badmode',mode:CO.mode});setTimeout(()=>w.close(),300);return}
+          for(let k=2;k<=coMax();k++)if(!CO.ps[k]){idx=k;break}const S=coSlot(idx);S.conn=w;S.name=String(m.n||'Socio').slice(0,12);S.c=Math.max(0,CHARS.findIndex(x=>x.id===m.c));S.uid=m.uid;
+          w.send({t:'welcome',i:idx});sfx('coin');toast(S.name.toUpperCase()+' ENTRA EN LA SALA',1);coBroadcastRoom();return}
+        coOnHost(idx,m)}catch(e){logErr(e)}});
+      const gone=()=>{if(idx&&CO.ps[idx]&&CO.ps[idx].conn===w){const i=idx;idx=0;coPartnerLeft(i)}};c.on('close',gone);c.on('error',gone)})});
+    p.on('error',e=>{if(e.type==='unavailable-id'){coHost();return}if(Object.keys(CO.ps).length)return;CO.msg='Error de conexión ('+e.type+'). Vuelve a intentarlo.';coUi()});
+    p.on('disconnected',()=>{try{if(!p.destroyed)p.reconnect()}catch(e){}})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo crear la sala. ¿Tienes internet?';coUi()})}
 function coJoin(code){code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length!==4){CO.msg='El código tiene 4 letras o números.';coUi();return}
-  coClose();Object.assign(CO,{role:'guest',me:2,code,ui:'joining',msg:'Conectando…',pn:''});coUi();
-  CO.jt=setTimeout(()=>{if(CO.ui==='joining'){coClose();CO.ui='idle';CO.msg='No se ha podido conectar. Comprobad el código y que los dos tengáis internet.';coUi()}},15000);
-  if(coUseBC()){CO.peer=coBC(code,false,c=>{CO.ui='joined';coGotConn(c)});return}
+  coClose();Object.assign(CO,{role:'guest',me:2,cur:2,code,ui:'joining',msg:'Conectando…'});coUi();
+  CO.jt=setTimeout(()=>{if(CO.ui==='joining'){coClose();CO.ui='idle';CO.msg='No se ha podido conectar. Comprobad el código y que tengáis internet.';coUi()}},15000);
   coLoadPeer().then(()=>{const p=new Peer(coOpts());CO.peer=p;
-    p.on('open',()=>{const c=p.connect(CO_PRE+code.toLowerCase(),{serialization:'json',reliable:true});c.on('open',()=>{CO.ui='joined';coGotConn(coWrap(c))})});
-    p.on('error',e=>{if(CO.conn)return;coClose();CO.ui='idle';CO.msg=e.type==='peer-unavailable'?'No hay ninguna sala con ese código.':'Error de conexión ('+e.type+').';coUi()})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo cargar el cooperativo. ¿Tienes internet?';coUi()})}
-function coLeave(){if(CO.conn)coNet({t:'bye'});coClose();CO.run=false;CO.ui='idle';CO.role=null;CO.msg='';$('#cowait').classList.add('hidden')}
-function coPartnerLeft(){if(!CO.conn)return;const was=CO.run,nm=(CO.pn||'tu colega').toUpperCase();coClose();CO.ui='idle';CO.msg=nm+' se ha desconectado.';$('#cowait').classList.add('hidden');
-  if(!was){coUi();return}toast(nm+' SE HA DESCONECTADO',1);
-  if(CO.role==='host'){if(CO.sw)coSwap();CO.run=false;if(G.inRift&&G.state==='fuse'&&CO.fzH){CO.fzH=false;_coExitRift()}if(G.inRift&&CO.fuseAt){CO.fuseAt=0;setTimeout(()=>{if(G.state==='play'&&G.inRift)openFuse()},300)}if(G.state==='levelup'&&$('#lvl').classList.contains('hidden'))G.state='play';if(P.down){P.down=false;P.hp=0;endRun(false)}}
-  else{CO.run=false;CO.remoteEnd=1;try{endRun(false)}finally{CO.remoteEnd=0}}}
-function coOnHost(m){const o=CO.o;switch(m.t){
-  case'hello':if(coModeBad(m))return;CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
-  case'p':if(!CO.run||!o)return;if(!o.dash&&!o.down&&(m.tp||0)===(o.tp||0)){o.x=m.x;o.y=m.y}o.face=m.f;o.moving=!!m.m&&!o.down;o.anim=m.a;o.dirx=m.dx;o.diry=m.dy;break;
-  case'slot':if(CO.run&&o&&o.slots[m.i]&&o.slots[m.i].length)o.active=m.i;break;
-  case'pick':if(CO.run)coApplyPick(m.i);break;
-  case'rr':if(CO.run&&CO.gOpen&&G.rerolls>0){G.rerolls--;coSendOpts()}break;
-  case'fz':if(CO.run)coFuseGot(m.k);break;
-  case'bye':coPartnerLeft();break;
+    p.on('open',()=>{const c=p.connect(CO_PRE+code.toLowerCase(),{reliable:true});
+      c.on('open',()=>{const w=coWrap(c);CO.hc=w;c.on('data',m=>{try{coOnGuest(m)}catch(e){logErr(e)}});const gone=()=>{if(CO.hc===w)coPartnerLeft(1)};c.on('close',gone);c.on('error',gone);
+        w.send({t:'hello',n:SAVE.name,c:CHARS[G.char].id,mode:CO.mode,uid:SAVE.uid})})});
+    p.on('error',e=>{if(CO.hc)return;coClose();CO.ui='idle';CO.msg=e.type==='peer-unavailable'?'No hay ninguna sala con ese código.':'Error de conexión ('+e.type+').';coUi()})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo conectar. ¿Tienes internet?';coUi()})}
+function coLeave(){if(CO.role)coNet({t:'bye'});coClose();CO.run=false;CO.ui='idle';CO.role=null;CO.msg='';CO.ids=[CO.me];CO.lv={};CO.fz=new Set();const w=$('#cowait');if(w)w.classList.add('hidden')}
+// alguien se ha ido: en el anfitrión, el jugador i; en un invitado, el anfitrión (se cierra la sala)
+function coPartnerLeft(i){if(CO.role==='host')coPlayerLeft(i);else coHostLeft()}
+function coPlayerLeft(i){const S=CO.ps[i];if(!S)return;const nm=(S.name||'un colega').toUpperCase();if(S.conn)S.conn.close();
+  const swapped=CO.cur===i;if(swapped)coSwapI(i);delete CO.ps[i];CO.ids=CO.ids.filter(k=>k!==i);delete CO.lv[i];CO.fz.delete(i);
+  toast(nm+' SE HA IDO',1);coBroadcastRoom();
+  if(!CO.run)return;
+  if(CO.ids.length<2){CO.run=false;$('#cowait').classList.add('hidden');if(G.inRift&&G.state==='fuse'&&CO.fzH){CO.fzH=false;_coExitRift()}if(G.state==='levelup'&&$('#lvl').classList.contains('hidden'))G.state='play';if(P.down){P.down=false;P.hp=0;endRun(false)}return}
+  coMaybeResume();coTryExit();if(CO.ids.every(k=>coPl(k).down))endRun(false)}
+function coHostLeft(){if(!CO.hc)return;const was=CO.run,nm=(coName(1)||'El anfitrión').toUpperCase();coClose();CO.ui='idle';CO.role=null;CO.msg=nm+' ha cerrado la sala.';$('#cowait').classList.add('hidden');
+  if(!was){coUi();return}toast(nm+' HA CERRADO LA SALA',1);CO.run=false;CO.remoteEnd=1;try{endRun(false)}finally{CO.remoteEnd=0}}
+function coOnHost(i,m){const S=CO.ps[i];if(!S)return;const o=S.o;switch(m.t){
+  case'p':if(!CO.run||CO.cur!==CO.me)return;if(!o.dash&&!o.down&&(m.tp||0)===(o.tp||0)){o.x=m.x;o.y=m.y}o.face=m.f;o.moving=!!m.m&&!o.down;o.anim=m.a;o.dirx=m.dx;o.diry=m.dy;break;
+  case'slot':if(CO.run&&o.slots&&o.slots[m.i]&&o.slots[m.i].length)o.active=m.i;break;
+  case'pick':if(CO.run)coApplyPick(i,m.i);break;
+  case'rr':if(CO.run&&CO.lv[i]&&G.rerolls>0){G.rerolls--;coSendOpts(i)}break;
+  case'fz':if(CO.run)coFuseGot(i,m);break;
+  case'char':S.c=Math.max(0,CHARS.findIndex(x=>x.id===m.c));coBroadcastRoom();break;
+  case'bye':coPartnerLeft(i);break;
   default:if(typeof duMsg==='function')duMsg(m)}}
-function coModeBad(m){const a=m.mode||'coop',b=CO.mode||'coop';if(a===b)return false;coLeave();CO.msg=a==='duel'?'Esa sala es de Duelo 3 contra 3.':'Esa sala es de Cooperativo.';coUi();return true}
 function coOnGuest(m){switch(m.t){
-  case'hello':if(coModeBad(m))return;CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
+  case'welcome':CO.me=m.i;CO.cur=m.i;CO.ui='joined';CO.msg='';clearTimeout(CO.jt);coUi();break;
+  case'room':CO.room=m.pl;for(const r of m.pl){if(r.i===CO.me)continue;const S=coSlot(r.i);S.name=r.n;S.c=Math.max(0,CHARS.findIndex(x=>x.id===r.c))}
+    for(const k in CO.ps)if(!m.pl.some(r=>r.i===+k))delete CO.ps[k];coUi();break;
+  case'full':CO.msg='La sala está llena o la partida ya ha empezado.';coLeave();CO.msg='La sala está llena o la partida ya ha empezado.';coUi();break;
+  case'badmode':coLeave();CO.msg=m.mode==='duel'?'Esa sala es de Duelo 3 contra 3.':'Esa sala es de Cooperativo.';coUi();break;
   case'start':coStartGuest(m);break;
   case's':if(CO.run)coApply(m);break;
   case'lvl':if(CO.run)coGuestShowLvl(m);break;
-  case'fuse':if(CO.run)coGuestFuse(m);break;
+  case'fuse':if(CO.run)coGuestFuse();break;
   case'over':if(!CO.run)return;Object.assign(G,m.g);CO.remoteEnd=1;try{endRun(m.v)}finally{CO.remoteEnd=0}break;
-  case'bye':coPartnerLeft();break;
+  case'bye':coPartnerLeft(1);break;
   default:if(typeof duMsg==='function')duMsg(m)}}
-function coStartHost(){if(!CO.conn||CO.role!=='host')return;const gci=CO.pc;CO.seed=0;CO.run=false;
+function coStartHost(){if(CO.role!=='host')return;CO.seed=0;CO.run=false;
+  const gs=Object.keys(CO.ps).map(Number).sort();if(!gs.length)return;
   startRun();
-  Object.assign(CO,{run:true,sw:false,pendEnd:null,pendRift:false,fuseAt:0,fzH:false,fzG:false,rt:null,gOpen:false,gOpts:null,snapT:0,pSent:CO.psq,moSent:0,snd:[]});
-  P.down=false;P.rv=0;
-  CO.o=JSON.parse(JSON.stringify(P));CO.o.x=26;CO.o.y=0;CO.ochar=gci;CO.ost=Object.assign({},ST);CO.opet={x:26,y:6,anim:0,face:1,t:G.t,lg:null,mv:false};
-  coSwap();{const gc=CHARS[G.char];Object.assign(P,{slots:[[gc.start],[],[],[]],active:0,atk:{[gc.start]:{lvl:1,cd:0}},pas:{},relic:null,buffs:{},orbPts:null,down:false,rv:0,dash:null,shield:null});P.maxHp=0;calcStats();P.hp=P.maxHp}coSwap();
-  coNet({t:'start',seed:WORLD.seed,st:WORLD.start,hc:CHARS[G.char].id,gc:CHARS[gci].id,hn:SAVE.name});
+  CO.ids=[1].concat(gs);CO.hpm=1+.25*CO.ids.length;
+  Object.assign(CO,{run:true,sw:false,cur:1,pendEnd:null,pendRift:false,fuseAt:0,fzH:false,fz:new Set(),rt:null,lv:{},snapT:0,snd:[]});
+  P.down=false;P.rv=0;P.tp=0;const base=JSON.stringify(P),off=[[0,0],[26,0],[-26,0],[0,24]];
+  for(const i of gs){const S=CO.ps[i];S.o=JSON.parse(base);S.o.x=off[i-1][0];S.o.y=off[i-1][1];S.st=Object.assign({},ST);S.pet={x:S.o.x,y:S.o.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};S.pSent=CO.psq;S.moSent=0;S.ch=S.c;
+    coWith(i,()=>{G.char=S.c;const gc=CHARS[G.char];Object.assign(P,{slots:[[gc.start],[],[],[]],active:0,atk:{[gc.start]:{lvl:1,cd:0}},pas:{},relic:null,buffs:{},orbPts:null,down:false,rv:0,dash:null,shield:null,ob:{},shr:null});P.maxHp=0;calcStats();P.hp=P.maxHp})}
+  const pl=CO.ids.map(i=>({i,n:coName(i),c:CHARS[i===1?G.char:CO.ps[i].ch].id}));
+  coNet({t:'start',seed:WORLD.seed,st:WORLD.start,pl});
   $('#ov-retry').classList.remove('hidden');toast('¡SOBREVIVID JUNTOS!')}
-function coStartGuest(m){const hi=CHARS.findIndex(c=>c.id===m.hc),gi=CHARS.findIndex(c=>c.id===m.gc);if(gi>=0)G.char=gi;
+function coStartGuest(m){const mine=m.pl.find(r=>r.i===CO.me);const gi=mine?CHARS.findIndex(c=>c.id===mine.c):-1;if(gi>=0)G.char=gi;
   CO.run=false;startRun();CO.seed=m.seed;newWorld(m.st);CO.seed=0;chunks.clear();
-  Object.assign(CO,{run:true,sw:false,mytp:0,rt:null,ens:new Map(),hs:'play',sig:'',bsig:'',actT:0,gl:null,pn:m.hn||CO.pn});
-  P.down=false;P.rv=0;P.x=26;P.y=0;
-  CO.o=JSON.parse(JSON.stringify(P));Object.assign(CO.o,{x:0,y:0,tx:0,ty:0});CO.ochar=hi>=0?hi:0;CO.ost={};CO.opet={x:0,y:6,anim:0,face:1,t:G.t,lg:null,mv:false};
-  toast('¡SOBREVIVID JUNTOS!')}
+  Object.assign(CO,{run:true,sw:false,cur:CO.me,mytp:0,rt:null,ens:new Map(),hs:'play',wn:'',sig:'',bsig:'',actT:0,gl:null});
+  const off=[[0,0],[26,0],[-26,0],[0,24]];CO.ids=m.pl.map(r=>r.i);
+  P.down=false;P.rv=0;P.x=off[CO.me-1][0];P.y=off[CO.me-1][1];
+  for(const r of m.pl){if(r.i===CO.me)continue;const S=coSlot(r.i);S.name=r.n;S.ch=Math.max(0,CHARS.findIndex(c=>c.id===r.c));S.o=JSON.parse(JSON.stringify(P));Object.assign(S.o,{x:off[r.i-1][0],y:off[r.i-1][1],tx:off[r.i-1][0],ty:off[r.i-1][1]});S.st={};S.pet={x:S.o.x,y:S.o.y+6,anim:0,face:1,t:G.t,lg:null,mv:false}}
+  $('#over').classList.add('hidden');toast('¡SOBREVIVID JUNTOS!')}
 
 /* ---------- enganches en el juego ---------- */
 {const _u=update;update=function(dt){if(CO.run&&CO.role==='host'){coUpdate(dt);if(G.state==='play'&&CO.run)coExtras(dt);coGuestLvl();coHostNet(dt);coHuds()}else if(CO.run&&CO.role==='guest'){coGuestUpdate(dt);coHuds()}else _u(dt);coWaitUi()}}
 // pilares y esferas de colores en cooperativo: cada jugador lleva las suyas
-function coExtras(dt){if(typeof updateShrines==='function'){updateShrines(dt);coWith(2,()=>shrTouch(dt))}if(typeof updateOrbs==='function'){updateOrbs(dt);coWith(2,()=>updateOrbs(dt))}}
+function coExtras(dt){if(typeof updateShrines==='function'){updateShrines(dt);for(const i of coOthers())coWith(i,()=>shrTouch(dt))}if(typeof updateOrbs==='function')for(const i of CO.ids)coWith(i,()=>updateOrbs(dt))}
 function coHuds(){if(typeof orbZoom==='function'){orbZoom();orbHud()}if(typeof shrHud==='function')shrHud()}
 {const _h=hurtPlayer;hurtPlayer=function(dmg,el,dt){if(!CO.run)return _h(dmg,el,dt);if(P.down)return false;
   const had=VIGN.classList.contains('hit');CO.noEnd=1;let r;try{r=_h(dmg,el,dt)}finally{CO.noEnd=0}if(CO.sw&&!had)VIGN.classList.remove('hit');return r}}
 {const _e=endRun;endRun=function(v){
-  if(CO.run&&CO.noEnd){P.hp=0;if(!P.down){Object.assign(P,{down:true,rv:0,orbPts:null,dash:null,shield:null,moving:false});toast((CO.sw?CO.pn:SAVE.name).toUpperCase()+' SE HA QUEDADO FRITO',1)}return}
+  if(CO.run&&CO.noEnd){P.hp=0;if(!P.down){Object.assign(P,{down:true,rv:0,orbPts:null,dash:null,shield:null,moving:false});toast(coName(CO.cur).toUpperCase()+' SE HA QUEDADO FRITO',1)}return}
   if(CO.run&&CO.role==='host'){if(CO.sw){CO.pendEnd=v;return}CO.run=false;$('#cowait').classList.add('hidden');
     coNet({t:'over',v:!!v,g:{time:G.time,kills:G.kills,gold:G.gold,bossDmg:G.bossDmg,runKing:G.runKing,runDemon:G.runDemon}})}
-  else if(CO.run&&CO.role==='guest'){CO.run=false;$('#cowait').classList.add('hidden');$('#lvl').classList.add('hidden');if(!CO.remoteEnd)coLeave()}
+  else if(CO.run&&CO.role==='guest'){CO.run=false;$('#cowait').classList.add('hidden');$('#lvl').classList.add('hidden');$('#fusem').classList.add('hidden');if(!CO.remoteEnd)coLeave()}
   P.down=false;const r=_e(v);
-  const g=CO.role==='guest'&&!!CO.conn,h=CO.role==='host'&&!!CO.conn;$('#ov-retry').classList.toggle('hidden',g);$('#ov-retry').textContent=h?'Otra partida juntos':'Reintentar';
-  if(g)$('#ov-rec').textContent=(($('#ov-rec').textContent||'')+' Esperando a que '+CO.pn+' empiece otra partida…').trim();return r}}
+  const g=CO.role==='guest'&&!!CO.hc,h=CO.role==='host'&&Object.keys(CO.ps).length>0;$('#ov-retry').classList.toggle('hidden',g);$('#ov-retry').textContent=h?'Otra partida juntos':'Reintentar';
+  if(g)$('#ov-rec').textContent=(($('#ov-rec').textContent||'')+' Esperando a que '+coName(1)+' empiece otra partida…').trim();return r}}
 {const _o=offerRelic;offerRelic=function(){if(CO.sw){G.pendingRelic=1;return}return _o()}}
 {const _b=buildBuffHud;buildBuffHud=function(){if(CO.sw)return;return _b()}}
-{const _g=gainXp;gainXp=function(v){_g(v);if(CO.run&&CO.role==='host'){coSwap();try{_g(v)}finally{coSwap()}}}}
-{const _s=spawnEnemy;spawnEnemy=function(t,x,y,o){const e=_s(t,x,y,o);e.nid=++CO.nid;if(CO.run&&!e.t.static){e.hp*=1.6;e.maxHp=e.hp}return e}}
+{const _g=gainXp;gainXp=function(v){_g(v);if(CO.run&&CO.role==='host'){const cur=CO.cur;for(const i of CO.ids)if(i!==cur)coWith(i,()=>_g(v))}}}
+{const _s=spawnEnemy;spawnEnemy=function(t,x,y,o){const e=_s(t,x,y,o);e.nid=++CO.nid;if(CO.run&&!e.t.static){e.hp*=CO.hpm;e.maxHp=e.hp}return e}}
 {const _m=mkPart;mkPart=function(a,b,c,d,e,f,g){const p=_m(a,b,c,d,e,f,g);p.sq=++CO.psq;return p}}
 {const _s=sfx;sfx=function(n){if(CO.run&&CO.role==='host'&&CO.snd.length<10&&!CO.snd.includes(n))CO.snd.push(n);return _s(n)}}
 {const _u=useSphere;useSphere=function(id){_u(id);if(id==='magnet'&&CO.allPk)for(const p of CO.allPk)if(p.k==='gem'||p.k==='coin'||p.k==='item'||p.k==='sphere')p.mag=true}}
 {const _c=chooseOpt;chooseOpt=function(i){
   if(CO.run&&CO.role==='guest'){if(G.state!=='levelup'||!CO.gl||!CO.gl[i])return;CO.gl=null;coNet({t:'pick',i});$('#lvl').classList.add('hidden');G.state='play';return}
   if(CO.run&&CO.role==='host'&&$('#lvl').classList.contains('hidden'))return;
-  _c(i);if(CO.run&&CO.role==='host'&&G.state==='play'&&CO.gOpen)G.state='levelup'}}
+  _c(i);if(CO.run&&CO.role==='host'&&G.state==='play'&&Object.keys(CO.lv).length)G.state='levelup'}}
 {const _r=reroll;reroll=function(){if(CO.run&&CO.role==='guest'){if(CO.gl)coNet({t:'rr'});return}if(CO.run&&$('#lvl').classList.contains('hidden'))return;_r()}}
 {const _s=selectSlot;selectSlot=function(i){_s(i);if(CO.run&&CO.role==='guest'&&P.slots[i]&&P.slots[i].length){CO.actT=G.t+.5;coNet({t:'slot',i})}}}
-{const _p=pauseGame;pauseGame=function(){_p();if(CO.run&&CO.role==='guest'){const q=$('#pause-info');if(q)q.insertAdjacentHTML('afterbegin','<span>Cooperativo</span><b class="small">La partida sigue para '+esc(CO.pn)+'</b>')}}}
-// dibujo: el compañero, su nombre, KO y reanimación
-function coCamPos(){if(CO.run&&P.down&&CO.o&&!CO.o.down)return [CO.o.x,CO.o.y];return [P.x,P.y]}
-function coDual(fn){if(!CO.run||!CO.o){fn();return}const all=wfx,me=CO.me,a=[],b=[];for(const w of all)((w.ow||1)===me?a:b).push(w);
-  try{wfx=a;if(!P.down)fn();coSwap();try{wfx=b;if(!P.down)fn()}finally{coSwap()}}finally{wfx=all}}
+{const _p=pauseGame;pauseGame=function(){_p();if(CO.run&&CO.role==='guest'){const q=$('#pause-info');if(q)q.insertAdjacentHTML('afterbegin','<span>Cooperativo</span><b class="small">La partida sigue para los demás</b>')}}}
+{const _sc=setChar;setChar=function(d){_sc(d);coCharChanged()}}
+function coCharChanged(){if(!CO.role||CO.run)return;if(CO.role==='host')coBroadcastRoom();else{coNet({t:'char',c:CHARS[G.char].id});coUi()}}
+// dibujo: los compañeros, sus nombres, KO y reanimación
+function coCamPos(){if(CO.run&&P.down){for(const i of coOthers()){const o=CO.ps[i].o;if(!o.down)return [o.x,o.y]}}return [P.x,P.y]}
+function coDual(fn){if(!CO.run){fn();return}const all=wfx,grp={};for(const w of all){const o=w.ow||1;(grp[o]||(grp[o]=[])).push(w)}
+  try{wfx=grp[CO.me]||[];if(!P.down)fn();for(const i of coOthers())coWith(i,()=>{wfx=grp[i]||[];if(!P.down)fn()})}finally{wfx=all}}
 {const _d=drawPlayer;drawPlayer=function(l){if(!CO.run)return _d(l);
   const sx=Math.round(P.x-camX),sy=Math.round(P.y-camY),set=SPR[CHARS[G.char].spr],top=sy+11-set.H;
   if(P.down){ctx.globalAlpha=.45;_d(l);ctx.globalAlpha=1;ctx.font='bold 8px monospace';ctx.textAlign='center';ctx.fillStyle='#000';ctx.fillText('KO',sx+1,top-3);ctx.fillStyle='#ff6a6a';ctx.fillText('KO',sx,top-4);
     ctx.strokeStyle='rgba(0,0,0,.5)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(sx,sy,15,0,6.283);ctx.stroke();
     if(P.rv>0){ctx.strokeStyle='#9fff9f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(sx,sy,15,-1.5708,-1.5708+6.283*Math.min(1,P.rv/3));ctx.stroke()}ctx.textAlign='left';return}
-  _d(l);const host=(CO.me===1)!==CO.sw,nm=CO.sw?CO.pn:SAVE.name;ctx.font='7px monospace';ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillText(nm,sx+1,top-4);ctx.fillStyle=host?'#ffd04a':'#d8a8ff';ctx.fillText(nm,sx,top-5);ctx.textAlign='left'}}
-{const _rn=render;render=function(){_rn();if(!CO.run||!CO.o||MENUISH())return;const host=CO.me!==1;
-  edgeMark(CO.o,VIEW.w,VIEW.h,(ex,ey)=>{ctx.fillStyle='#000';ctx.fillRect(ex-4,ey-4,9,9);ctx.fillStyle=CO.o.down?'#ff6a6a':host?'#ffd04a':'#d8a8ff';ctx.fillRect(ex-3,ey-3,7,7);ctx.fillStyle='#fff';ctx.fillRect(ex-1,ey-1,3,3)})}}
-{const _uh=updateHUD;updateHUD=function(dt){_uh(dt);if(!CO.run||!CO.o||MENUISH()||hudT!==.1)return;const S=90,R=320,x=clamp((CO.o.x-P.x)/R*S/2+S/2,2,S-2),y=clamp((CO.o.y-P.y)/R*S/2+S/2,2,S-2);
-  mm.fillStyle=CO.o.down?'#ff6a6a':CO.me===1?'#d8a8ff':'#ffd04a';mm.fillRect(x-2,y-2,5,5)}}
-// cartel de espera (pausa, mejoras del compañero)
+  _d(l);const nm=coName(CO.cur);ctx.font='7px monospace';ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillText(nm,sx+1,top-4);ctx.fillStyle=CO_COL[CO.cur]||'#fff';ctx.fillText(nm,sx,top-5);ctx.textAlign='left'}}
+{const _rn=render;render=function(){_rn();if(!CO.run||MENUISH())return;
+  for(const i of coOthers()){const o=CO.ps[i].o;edgeMark(o,VIEW.w,VIEW.h,(ex,ey)=>{ctx.fillStyle='#000';ctx.fillRect(ex-4,ey-4,9,9);ctx.fillStyle=o.down?'#ff6a6a':CO_COL[i];ctx.fillRect(ex-3,ey-3,7,7);ctx.fillStyle='#fff';ctx.fillRect(ex-1,ey-1,3,3)})}}}
+{const _uh=updateHUD;updateHUD=function(dt){_uh(dt);if(!CO.run||MENUISH()||hudT!==.1)return;const S=90,R=320;
+  for(const i of coOthers()){const o=CO.ps[i].o,x=clamp((o.x-P.x)/R*S/2+S/2,2,S-2),y=clamp((o.y-P.y)/R*S/2+S/2,2,S-2);mm.fillStyle=o.down?'#ff6a6a':CO_COL[i];mm.fillRect(x-2,y-2,5,5)}}}
+// cartel de espera (pausa, mejoras y vínculos de los demás)
 function coWaitUi(){const w=$('#cowait');if(!w)return;let t='';
-  if(CO.run&&CO.role==='host'&&G.state==='levelup'&&CO.gOpen&&$('#lvl').classList.contains('hidden'))t='Esperando a que '+CO.pn+' elija mejora…';
-  else if(CO.run&&CO.role==='host'&&G.state==='fuse'&&$('#fusem').classList.contains('hidden'))t='Esperando a que '+CO.pn+' elija vínculo…';
-  else if(CO.run&&CO.role==='guest'&&G.state==='play'&&CO.hs!=='play')t=CO.hs==='levelup'?CO.pn+' está eligiendo mejora…':CO.hs==='fuse'?CO.pn+' está eligiendo vínculo…':CO.hs==='relic'?CO.pn+' ha encontrado un objeto…':CO.hs==='paused'?CO.pn+' ha pausado la partida':'';
-  else if(CO.run&&P.down)t=(CO.o&&!CO.o.down)?'Estás frito: '+CO.pn+' puede reanimarte quedándose a tu lado':'';
+  if(CO.run&&CO.role==='host'&&G.state==='levelup'&&Object.keys(CO.lv).length&&$('#lvl').classList.contains('hidden'))t='Esperando a que '+Object.keys(CO.lv).map(k=>coName(+k)).join(', ')+' elija mejora…';
+  else if(CO.run&&CO.role==='host'&&G.state==='fuse'&&$('#fusem').classList.contains('hidden'))t='Esperando a que '+[...CO.fz].map(coName).join(', ')+' elija vínculo…';
+  else if(CO.run&&CO.role==='guest'&&G.state==='play'&&CO.hs!=='play'){const n=CO.wn||'el resto';t=CO.hs==='levelup'?'Esperando a que '+n+' elija mejora…':CO.hs==='fuse'?'Esperando a que '+n+' elija vínculo…':CO.hs==='relic'?n+' ha encontrado un objeto…':CO.hs==='paused'?n+' ha pausado la partida':''}
+  else if(CO.run&&P.down)t=coOthers().some(i=>!CO.ps[i].o.down)?'Estás frito: un colega puede reanimarte quedándose a tu lado':'';
   if(t!==CO.waitTxt){CO.waitTxt=t;w.textContent=t;w.classList.toggle('hidden',!t)}}
 
-/* ---------- menú Cooperativo ---------- */
-MENU.splice(1,0,{id:'coop',name:'Cooperativo',sub:'Jugad 2 en la misma partida',icon:'swords'});
+/* ---------- menú Cooperativo: crear sala, entrar e invitar ---------- */
+MENU.splice(1,0,{id:'coop',name:'Cooperativo',sub:'Hasta 4 socios en la misma partida',icon:'swords'});
 {const _rs=renderSub;renderSub=function(){if(subId==='coop'){subCoop($('#sub-body'));return}_rs()}}
 {const _cs=closeSub;closeSub=function(){if(subId==='coop'&&G.state==='sub'&&!CO.run)coLeave();_cs()}}
-function coUi(){if(G.state==='sub'&&(subId==='coop'||subId==='duel'))renderSub()}
-function subCoop(B){const me=CHARS[G.char],pc=CHARS[CO.pc]||CHARS[0],msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
-  if(CO.mode==='duel'&&!CO.conn&&CO.ui!=='idle'){CO.ui='idle'}
-  if(CO.ui==='hosting'){h=`<p class="small">Pasa este código a tu colega. Tiene que estar en la misma red wifi (o tener internet) y entrar en <b>Cooperativo → Unirse</b>.</p>
-      <div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>${msg}
-      ${CO.conn?`<div class="co-who"><canvas id="co-cv" class="px" width="32" height="39"></canvas><div><b>${esc(CO.pn)}</b> se ha unido<br><span class="small">Va con ${pc.name}</span></div></div>
-        <div class="mbtns"><button id="co-go" class="btn gold">▶ Empezar partida</button><button id="co-x" class="btn">Cancelar</button></div>`
-      :`<p class="co-wait">Esperando a tu colega…</p><div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`}`}
+function coUi(){if(G.state==='sub'&&(subId==='coop'||subId==='duel'||subId==='friends'))renderSub()}
+function coShare(){const url=location.origin+location.pathname,txt='Únete a mi sala del Aranua Club ('+(CO.mode==='duel'?'Duelo':'Cooperativo')+'). Código: '+CO.code+' · '+url;
+  if(navigator.share)navigator.share({text:txt}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>toast('CÓDIGO COPIADO',1)).catch(()=>{})}
+function coRoomHtml(){const n=coMax(),rows=[];for(let i=1;i<=n;i++){const r=CO.room.find(x=>x.i===i);if(!r){rows.push(`<div class="co-pl empty"><span class="small">Hueco libre</span></div>`);continue}
+    const c=CHARS.find(x=>x.id===r.c)||CHARS[0],me=r.i===CO.me;
+    rows.push(`<div class="co-pl${me?' me':''}" style="border-color:${CO_COL[i]}"><canvas class="px" width="32" height="39" data-c="${c.id}"></canvas><div><b style="color:${CO_COL[i]}">${esc(r.n)}${i===1?' 👑':''}</b><span class="small">${me?'Tú · ':''}${c.name}</span></div>${me&&!CO.run?'<div class="co-chg"><button class="btn co-cp">‹</button><button class="btn co-cn">›</button></div>':''}</div>`)}
+  return`<div class="co-roomhead"><span>Sala</span><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="co-share" class="btn">📤 Compartir código</button></div><div class="co-pls">${rows.join('')}</div>`}
+function coBindRoom(B){const q=s=>B.querySelector(s);if(q('#co-share'))q('#co-share').onclick=coShare;
+  B.querySelectorAll('.co-pl canvas').forEach(c=>drawHeroTo(c,CHARS.find(x=>x.id===c.dataset.c)||CHARS[0],false,0));
+  if(q('.co-cp'))q('.co-cp').onclick=()=>{setChar(-1);sfx('pick')};if(q('.co-cn'))q('.co-cn').onclick=()=>{setChar(1);sfx('pick')};frBindInv(B)}
+function subCoop(B){const msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
+  if(CO.mode==='duel'&&CO.ui!=='idle'&&CO.role){h=`<p class="small">Ahora mismo estás en una sala de Duelo.</p><div class="mbtns"><button id="co-x" class="btn">Salir de esa sala</button></div>`}
+  else if(CO.ui==='hosting'){const n=Object.keys(CO.ps).length;h=coRoomHtml()+msg+frInvHtml()+
+      `<div class="mbtns"><button id="co-go" class="btn gold"${n?'':' disabled'}>▶ Empezar partida</button><button id="co-x" class="btn">Cerrar sala</button></div>${n?'':'<p class="small co-note">Invita a tus amigos o pásales el código. Podéis ser hasta 4.</p>'}`}
   else if(CO.ui==='joining'){h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`}
-  else if(CO.ui==='joined'){h=`<div class="co-who"><canvas id="co-cv" class="px" width="32" height="39"></canvas><div>Estás en la sala de <b>${esc(CO.pn||'…')}</b><br><span class="small">Va con ${pc.name}</span></div></div>
-      <p class="co-wait">Esperando a que ${esc(CO.pn||'el anfitrión')} empiece la partida…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Salir de la sala</button></div>`}
-  else{h=`<p class="small">Uno crea la sala y el otro entra con el código. Funciona con los dos en la misma wifi. Cada uno elige su personaje en la pantalla principal antes de entrar.</p>
-      <div class="co-me">Vas con <b>${me.name}</b></div>
-      <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tú empiezas la partida.</p><button id="co-host" class="btn gold">Crear sala</button></div>
-      <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de tu colega.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="co-join" class="btn">Unirse</button></div></div>${msg}
-      <p class="small co-note">Las mejoras salen a la vez para los dos, la experiencia se comparte y, si uno se queda frito, el otro puede reanimarlo quedándose a su lado unos segundos.</p>`}
+  else if(CO.ui==='joined'){h=coRoomHtml()+`<p class="co-wait">Esperando a que ${esc(coName(1))} empiece la partida…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Salir de la sala</button></div>`}
+  else{h=`<p class="small">Crea una sala e invita a tus amigos desde dentro, o entra en la de un colega con su código. Podéis ser hasta 4 socios.</p>
+      <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tú empiezas la partida cuando estéis todos.</p><button id="co-host" class="btn gold">Crear sala</button></div>
+      <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de la sala.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="co-join" class="btn">Unirse</button></div></div>${msg}
+      <p class="small co-note">Las mejoras salen a la vez para todos, la experiencia se comparte y, si uno se queda frito, los demás pueden reanimarlo quedándose a su lado unos segundos. Los enemigos aguantan más cuantos más seáis.</p>`}
   B.innerHTML=`<div class="coop">${h}</div>`;
   const q=s=>B.querySelector(s);
   if(q('#co-host'))q('#co-host').onclick=()=>{sfx('pick');CO.mode='coop';coHost()};
   if(q('#co-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='coop';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#co-join').onclick=()=>{sfx('pick');CO.mode='coop';coJoin(i.value)}}
   if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();coUi()};
   if(q('#co-go'))q('#co-go').onclick=()=>{sfx('level');$('#sub').classList.add('hidden');subId=null;coStartHost()};
-  if(q('#co-cv'))drawHeroTo(q('#co-cv'),pc,false,0)}
-function coInit(){const d=document.createElement('div');d.id='cowait';d.className='hidden';document.body.appendChild(d);
-  $('#ov-retry').onclick=()=>{if(CO.conn&&CO.role==='host'){$('#over').classList.add('hidden');coStartHost()}else if(!CO.conn)startRun()};
-  $('#ov-menu').onclick=()=>{coLeave();toMenu()};$('#fuse-skip').onclick=()=>exitRift()}
+  if(CO.ui==='hosting'||CO.ui==='joined')coBindRoom(B)}
 
-/* ---------- grietas en cooperativo: entran los dos, cada uno elige su vínculo ---------- */
+/* ---------- amigos: código propio, lista y avisos de invitación ---------- */
+if(!SAVE.uid){SAVE.uid=coMkCode(6);persist()}if(!SAVE.friends)SAVE.friends=[];
+const FR={peer:null,st:{},t:0,inv:null};
+function frId(u){return CO_PRE+'u-'+String(u).toLowerCase()}
+function frStart(){if(FR.peer&&!FR.peer.destroyed)return;coLoadPeer().then(()=>{if(FR.peer&&!FR.peer.destroyed)return;const p=new Peer(frId(SAVE.uid),coOpts());FR.peer=p;
+  p.on('connection',c=>c.on('data',m=>{try{frIn(c,m)}catch(e){logErr(e)}}));
+  p.on('error',e=>{if(e.type==='unavailable-id'||e.type==='network'||e.type==='server-error'){try{p.destroy()}catch(_){}FR.peer=null;setTimeout(frStart,20000)}});
+  p.on('disconnected',()=>{try{if(!p.destroyed)p.reconnect()}catch(e){}})}).catch(()=>setTimeout(frStart,30000))}
+function frBusy(){return CO.run||['play','levelup','fuse','relic','paused'].includes(G.state)}
+function frIn(c,m){if(m.t==='ping')c.send({t:'pong',n:SAVE.name,busy:frBusy()});
+  else if(m.t==='add'){frAdd(m.id,m.n);c.send({t:'pong',n:SAVE.name});toast(String(m.n||'Alguien').toUpperCase()+' TE HA AÑADIDO COMO AMIGO',1)}
+  else if(m.t==='inv'){if(frBusy()){c.send({t:'busy'});return}c.send({t:'ok'});frInvited(m)}}
+function frAsk(id,msg,ms){return new Promise(res=>{const p=FR.peer;if(!p||p.destroyed||!p.open){res(null);return}let done=false;let c;
+  const fin=v=>{if(done)return;done=true;clearTimeout(t);try{c&&c.close()}catch(e){}res(v)},t=setTimeout(()=>fin(null),ms||4500);
+  try{c=p.connect(frId(id),{serialization:'json',reliable:true})}catch(e){fin(null);return}c.on('open',()=>c.send(msg));c.on('data',d=>fin(d));c.on('error',()=>fin(null))})}
+function frAdd(id,n){id=String(id||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6||id===SAVE.uid)return false;const f=SAVE.friends.find(x=>x.id===id);
+  if(f){if(n)f.n=String(n).slice(0,12)}else SAVE.friends.push({id,n:String(n||('Socio '+id)).slice(0,12)});persist();coUi();return true}
+function frRefresh(force){if(!force&&Date.now()-FR.t<8000)return;FR.t=Date.now();if(!FR.peer){frStart();setTimeout(()=>frRefresh(true),2500);return}
+  for(const f of SAVE.friends){if(!FR.st[f.id])FR.st[f.id]='…';frAsk(f.id,{t:'ping',id:SAVE.uid,n:SAVE.name}).then(d=>{FR.st[f.id]=d?(d.busy?'busy':'on'):'off';if(d&&d.n&&d.n!==f.n){f.n=String(d.n).slice(0,12);persist()}coUi()})}}
+function frDot(id){const s=FR.st[id]||'…';return`<i class="fr-dot ${s==='on'?'on':s==='busy'?'busy':s==='off'?'off':''}"></i><span class="small">${s==='on'?'Conectado':s==='busy'?'Jugando':s==='off'?'Desconectado':'Comprobando…'}</span>`}
+// lista de amigos para invitar desde una sala
+function frInvHtml(){if(CO.role!=='host')return'';const L=SAVE.friends;if(!L.length)return`<p class="small co-note">Añade amigos en el menú <b>Amigos</b> para invitarlos con un toque.</p>`;
+  setTimeout(()=>frRefresh(false),0);
+  return`<div class="fr-inv"><b>Invitar amigos</b>${L.map(f=>{const s=FR.st[f.id],inRoom=CO.room.some(r=>r.n===f.n);
+    return`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span>${frDot(f.id)}<button class="btn fr-go" data-id="${f.id}"${s==='on'&&!inRoom?'':' disabled'}>${inRoom?'En la sala':'Invitar'}</button></div>`}).join('')}</div>`}
+function frBindInv(B){B.querySelectorAll('.fr-go').forEach(b=>b.onclick=()=>{const id=b.dataset.id;b.disabled=true;b.textContent='Enviando…';
+  frAsk(id,{t:'inv',code:CO.code,mode:CO.mode,n:SAVE.name}).then(d=>{b.textContent=d&&d.t==='ok'?'¡Invitado!':d&&d.t==='busy'?'Está jugando':'No responde';setTimeout(()=>{b.disabled=false;b.textContent='Invitar'},4000)})})}
+function frInvited(m){FR.inv=m;let el=document.getElementById('invm');if(!el){el=document.createElement('div');el.id='invm';el.className='modal';document.body.appendChild(el)}
+  el.innerHTML=`<div class="mbox panel"><h2>¡TE INVITAN!</h2><p><b style="color:#ffd04a">${esc(String(m.n||'Un socio'))}</b> te invita a su sala de <b>${m.mode==='duel'?'Duelo 3 contra 3':'Cooperativo'}</b>.</p><div class="mbtns"><button id="inv-ok" class="btn gold">Entrar</button><button id="inv-no" class="btn">Ahora no</button></div></div>`;
+  el.classList.remove('hidden');sfx('level');
+  el.querySelector('#inv-no').onclick=()=>{el.classList.add('hidden');FR.inv=null};
+  el.querySelector('#inv-ok').onclick=()=>{el.classList.add('hidden');if(frBusy())return;if(CO.role)coLeave();CO.mode=m.mode==='duel'?'duel':'coop';
+    if(G.state==='title')goMain();if(G.state==='sub')closeSub();if(CO.mode==='duel'&&typeof DU!=='undefined'){DU.ph='pick';DU.ready=false;DU.opp=null}openSub(CO.mode==='duel'?'duel':'coop');coJoin(m.code)}}
+MENU.splice(3,0,{id:'friends',name:'Amigos',sub:'Tu código y tu lista de amigos',icon:'heart'});
+{const _rs=renderSub;renderSub=function(){if(subId==='friends'){subFriends($('#sub-body'));return}_rs()}}
+function subFriends(B){frRefresh(false);const L=SAVE.friends,msg=FR.msg?`<p class="co-msg">${esc(FR.msg)}</p>`:'';
+  B.innerHTML=`<div class="coop fr"><div class="co-box"><b>Tu código de amigo</b><div class="co-code">${SAVE.uid.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="fr-share" class="btn">📤 Compartir mi código</button></div>
+    <div class="co-box"><b>Añadir amigo</b><p class="small">Escribe su código de amigo (6 letras o números).</p><div class="fr-add"><input id="fr-code" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="fr-addb" class="btn gold">Añadir</button></div>${msg}</div>
+    <div class="co-box"><b>Tus amigos (${L.length})</b>${L.length?L.map(f=>`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span><span class="small fr-c">${f.id}</span>${frDot(f.id)}<button class="btn fr-del" data-id="${f.id}" title="Quitar">✕</button></div>`).join(''):'<p class="small">Todavía no tienes amigos añadidos.</p>'}
+    <div class="mbtns"><button id="fr-ref" class="btn">↻ Actualizar</button></div><p class="small co-note">Para invitar a un amigo tiene que tener el juego abierto. Si no, pásale el código de la sala por WhatsApp.</p></div></div>`;
+  const q=s=>B.querySelector(s),i=q('#fr-code');
+  q('#fr-share').onclick=()=>{const t='Mi código de amigo en el Aranua Club: '+SAVE.uid;if(navigator.share)navigator.share({text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast('CÓDIGO COPIADO',1)).catch(()=>{})};
+  i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')add()};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};
+  const add=()=>{const id=i.value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6){FR.msg='El código de amigo tiene 6 letras o números.';coUi();return}if(id===SAVE.uid){FR.msg='Ese es tu propio código.';coUi();return}
+    FR.msg='Buscando…';coUi();frAsk(id,{t:'add',id:SAVE.uid,n:SAVE.name}).then(d=>{frAdd(id,d&&d.n);FR.st[id]=d?(d.busy?'busy':'on'):'off';FR.msg=d?'¡'+d.n+' añadido!':'Añadido. Saldrá su nombre la próxima vez que esté conectado.';sfx('level');coUi()})};
+  q('#fr-addb').onclick=add;q('#fr-ref').onclick=()=>{sfx('pick');frRefresh(true);coUi()};
+  B.querySelectorAll('.fr-del').forEach(b=>b.onclick=()=>{SAVE.friends=SAVE.friends.filter(f=>f.id!==b.dataset.id);persist();sfx('pick');coUi()})}
+{const _cs=closeSub;closeSub=function(){if(subId==='friends')FR.msg='';_cs()}}
+
+function coInit(){const d=document.createElement('div');d.id='cowait';d.className='hidden';document.body.appendChild(d);
+  $('#ov-retry').onclick=()=>{if(CO.role==='host'&&Object.keys(CO.ps).length){$('#over').classList.add('hidden');coStartHost()}else if(!CO.role)startRun()};
+  $('#ov-menu').onclick=()=>{coLeave();toMenu()};$('#fuse-skip').onclick=()=>exitRift();
+  setTimeout(frStart,1500);addEventListener('online',()=>setTimeout(frStart,1000))}
+
+/* ---------- grietas en cooperativo: entran todos, cada uno elige su vínculo ---------- */
 const _coEnterRift=enterRift,_coExitRift=exitRift;
 function coRiftT(){const r=CO.rt||{};return{spr:r.spr||'hero',name:r.name||'',el:r.el||'neutral',sc:r.sc||1.7,r:r.r||9,heroBoss:1,mini:1}}
-function coEnterRift(){CO.pendRift=false;if(!G.portal||G.inRift)return;_coEnterRift();
-  Object.assign(CO.o,{x:RC.x+22,y:RC.y+90,inv:1.5,dash:null,tp:(CO.o.tp||0)+1});CO.opet.x=CO.o.x;CO.opet.y=CO.o.y+6;
-  const b=G.boss;if(b){b.hp*=1.8;b.maxHp=b.hp;b.nid=++CO.nid;CO.rt={spr:b.t.spr,name:b.t.name,el:b.t.el,sc:b.t.sc,r:b.t.r}}}
-function coExitRift(){_coExitRift();Object.assign(CO.o,{x:P.x+22,y:P.y,inv:2,dash:null,tp:(CO.o.tp||0)+1});CO.opet.x=CO.o.x;CO.opet.y=CO.o.y+6;CO.rt=null;
-  for(const [p,n] of [[P,SAVE.name],[CO.o,CO.pn]])if(p.down){p.down=false;p.rv=0;p.hp=Math.round(p.maxHp*.3);p.inv=2;toast('¡'+n.toUpperCase()+' VUELVE A LA FIESTA!',1)}}
+function coEnterRift(){CO.pendRift=false;if(!G.portal||G.inRift)return;_coEnterRift();const off=[[22,90],[-22,90],[0,112]];let k=0;
+  for(const i of coOthers()){const o=CO.ps[i].o,[dx,dy]=off[k++%3];Object.assign(o,{x:RC.x+dx,y:RC.y+dy,inv:1.5,dash:null,tp:(o.tp||0)+1});CO.ps[i].pet.x=o.x;CO.ps[i].pet.y=o.y+6}
+  const b=G.boss;if(b){b.hp*=1+.8*(CO.ids.length-1);b.maxHp=b.hp;b.nid=++CO.nid;CO.rt={spr:b.t.spr,name:b.t.name,el:b.t.el,sc:b.t.sc,r:b.t.r}}}
+function coExitRift(){_coExitRift();let k=0;const off=[[22,0],[-22,0],[0,22]];
+  for(const i of coOthers()){const o=CO.ps[i].o,[dx,dy]=off[k++%3];Object.assign(o,{x:P.x+dx,y:P.y+dy,inv:2,dash:null,tp:(o.tp||0)+1});CO.ps[i].pet.x=o.x;CO.ps[i].pet.y=o.y+6}CO.rt=null;
+  for(const i of CO.ids){const p=coPl(i);if(p.down){p.down=false;p.rv=0;p.hp=Math.round(p.maxHp*.3);p.inv=2;toast('¡'+coName(i).toUpperCase()+' VUELVE A LA FIESTA!',1)}}}
 enterRift=function(){if(CO.run&&CO.role==='host'){if(CO.sw){CO.pendRift=true;return}coEnterRift();return}return _coEnterRift()};
 exitRift=function(){
-  if(CO.run&&CO.role==='guest'){if(G.state==='fuse'){coNet({t:'fz',k:-1});$('#fusem').classList.add('hidden');G.state='play'}return}
+  if(CO.run&&CO.role==='guest'){if(G.state==='fuse'){coNet({t:'fz',skip:1});$('#fusem').classList.add('hidden');G.state='play'}return}
   if(CO.run&&CO.role==='host'&&G.inRift){CO.fzH=true;$('#fusem').classList.add('hidden');coTryExit();return}
   return _coExitRift()};
-function coTryExit(){if(CO.fzH&&!CO.fzG){CO.fzH=false;coExitRift()}}
+function coTryExit(){if(CO.run&&CO.fzH&&!CO.fz.size&&G.inRift){CO.fzH=false;coExitRift()}}
 {const _rr=riftReward;riftReward=function(e){if(!CO.run)return _rr(e);const gg=randi(60,120);G.gold+=gg;toast('+'+gg+' ORO',1);G.boss=null;CO.fuseAt=G.t+.9}}
-{const _of=openFuse;openFuse=function(){_of();if(CO.run&&CO.role==='host'){CO.fzH=false;coSendFuse()}}}
-function coSendFuse(){const L=[];coWith(2,()=>{const used=P.slots.map((s,i)=>[s,i]).filter(x=>x[0].length);
-  for(let a=0;a<used.length;a++)for(let b=a+1;b<used.length;b++){const i=used[a][1],j=used[b][1];if(canLink(P.slots[i],P.slots[j]))L.push({i,j,ids:P.slots[i].concat(P.slots[j])})}});
-  CO.fzL=L;CO.fzG=L.length>0;if(CO.fzG)coNet({t:'fuse',o:L})}
-function coFuseGot(k){if(!CO.fzG)return;const x=CO.fzL&&CO.fzL[k];
-  if(x){const o=CO.o;o.slots[x.i]=x.ids;o.slots[x.j]=[];if(o.active===x.j||!o.slots[o.active].length)o.active=x.i;G.runLinks++}
-  CO.fzG=false;coTryExit()}
-function coGuestFuse(m){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;const box=$('#fuse-opts');box.innerHTML='';
-  m.o.forEach((x,k)=>{const bt=document.createElement('button');bt.className='opt';
-    bt.innerHTML=`<span class="k">[${k+1}]</span><div>${x.ids.map(id=>`<img src="${ICON[ATK[id].icon]}" alt="" style="width:34px;height:34px">`).join('')}</div><b>Ranuras ${x.i+1} + ${x.j+1}</b><em class="link">VÍNCULO</em><p>${x.ids.map(id=>ATK[id].name).join(' + ')}</p>`;
-    bt.onclick=()=>{coNet({t:'fz',k});$('#fusem').classList.add('hidden');G.state='play';sfx('level')};box.appendChild(bt)});
+{const _of=openFuse;openFuse=function(){_of();if(CO.run&&CO.role==='host'){CO.fzH=false;CO.fz=new Set();
+  for(const i of coOthers()){let ok=false;coWith(i,()=>{const s=P.slots;for(let a=0;a<4&&!ok;a++)for(let b=a+1;b<4;b++)if(s[a].length&&s[b].length&&canLink(s[a],s[b])){ok=true;break}});if(ok){CO.fz.add(i);coSendTo(i,{t:'fuse'})}}}}}
+function coFuseGot(i,m){if(!CO.fz.has(i))return;if(!m.skip){const o=coPl(i),a=o.slots[m.i],b=o.slots[m.j];if(a&&b&&a.length&&b.length&&m.i!==m.j&&canLink(a,b)){const keep=fuseMerge(o.slots,m.i,m.j);if(!o.slots[o.active]||!o.slots[o.active].length)o.active=keep;G.runLinks++}}
+  CO.fz.delete(i);coTryExit()}
+function coGuestFuse(){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;const slots=P.slots.map(s=>s.slice());
+  fuseUI(slots,(i,j)=>{coNet({t:'fz',i,j});$('#fusem').classList.add('hidden');G.state='play'});
   $('#pause').classList.add('hidden');$('#lvl').classList.add('hidden');$('#fusem').classList.remove('hidden');sfx('level')}
 
 /* ================= DUELO 3 CONTRA 3 =================
@@ -3518,13 +3637,13 @@ function duResult(w){CO.run=false;DU.on=false;G.duel=null;DU.view=null;G.inRift=
 function duStartHost(){if(!CO.conn||CO.role!=='host'||!DU.opp)return;const t1=DU.team.slice(),t2=DU.opp.team.map(id=>CHARS.findIndex(c=>c.id===id));
   CO.run=false;G.char=t1[0];startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,thief:null,nextRift:1e9});RC.r=DU_R;
   G.duel={t:0,ko:0,kn:[false,false],teams:[null,t1,t2],links:[null,t1.map(i=>DU.links[CHARS[i].id]),DU.opp.links],chT:12,chest:null,idx:[0,0,0],dead:[null,[false,false,false],[false,false,false]],px:[null,duProxy(),duProxy()]};
-  Object.assign(CO,{run:true,sw:false,pendEnd:null,gOpen:false,snapT:0,pSent:CO.psq,moSent:0,snd:[]});
+  Object.assign(CO,{run:true,sw:false,cur:1,ids:[1,2],lv:{},pendEnd:null,snapT:0,snd:[]});
   CO.o={tp:0};CO.ochar=t2[0];CO.ost={};CO.opet={x:RC.x+90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};P.tp=0;
   DU.on=true;duSpawn(1);duSpawn(2);
   coNet({t:'dstart',t1:t1.map(i=>CHARS[i].id),t2:DU.opp.team,hn:SAVE.name});$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
 function duStartGuest(m){const i1=m.t1.map(id=>CHARS.findIndex(c=>c.id===id)),i2=m.t2.map(id=>CHARS.findIndex(c=>c.id===id));DU.opp={team:m.t1};DU.team=i2;
   G.char=i2[0];CO.run=false;startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,nextRift:1e9});RC.r=DU_R;
-  Object.assign(CO,{run:true,sw:false,mytp:-1,rt:null,ens:new Map(),hs:'play',sig:'',bsig:'',actT:0,gl:null,pn:m.hn||CO.pn});
+  Object.assign(CO,{run:true,sw:false,cur:CO.me,ids:[1,2],mytp:-1,rt:null,ens:new Map(),hs:'play',sig:'',bsig:'',actT:0,gl:null,pn:m.hn||CO.pn});
   P.x=RC.x+90;P.y=RC.y;CO.o=JSON.parse(JSON.stringify(P));Object.assign(CO.o,{x:RC.x-90,y:RC.y,tx:RC.x-90,ty:RC.y});CO.ochar=i1[0];CO.ost={};CO.opet={x:RC.x-90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};
   DU.on=true;DU.view=null;$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
 // marcador de arriba: los dos socios que pelean, su vida y cuántos les quedan
@@ -3554,11 +3673,11 @@ function duToLobby(){['#over','#hud','#duhud','#lvl','#pause'].forEach(s=>$(s).c
   if(CO.run&&DU.on&&CO.role==='host'){duUpdate(dt);coHostNet(dt);duHud();coHuds();coWaitUi();return}
   if(CO.run&&DU.on&&CO.role==='guest'){coGuestUpdate(dt);duHud();coHuds();coWaitUi();return}
   return _u(dt)}}
-{const _s=coSnap;coSnap=function(){const s=_s();const D=G.duel;if(D){s.d={r:coR(RC.r),dd:[D.dead[1],D.dead[2]]};if(D.ko>0)s.g.st='ko';s.pl[0].ds=P.ds||0;s.pl[1].ds=CO.o.ds||0;s.pl[0].dsh=!!P.dsh;s.pl[1].dsh=!!CO.o.dsh}return s}}
+{const _s=coSnap;coSnap=function(gi){const s=_s(gi);const D=G.duel;if(D){s.d={r:coR(RC.r),dd:[D.dead[1],D.dead[2]]};if(D.ko>0)s.g.st='ko';s.pl[1].ds=P.ds||0;s.pl[2].ds=CO.o.ds||0;s.pl[1].dsh=!!P.dsh;s.pl[2].dsh=!!CO.o.dsh}return s}}
 {const _a=coApply;coApply=function(s){_a(s);if(s.d){RC.r=s.d.r;DU.view=s.d}}}
 {const _c=calcStats;calcStats=function(){const du=DU.on&&P.maxHp>0;if(du){P.maxHp/=DU_HP;P.hp/=DU_HP}_c();if(DU.on){ST.pdmg*=DU_K;ST.mdmg*=DU_K;ST.maxHp*=DU_HP;P.maxHp*=DU_HP;P.hp*=DU_HP}}}
-{const _pl=coPartnerLeft;coPartnerLeft=function(){const was=DU.on&&CO.run;if(was){CO.run=false;CO.pn=CO.pn||'Tu rival'}if(!was)return _pl();
-  const n=CO.pn;coClose();CO.ui='idle';duResult(CO.me);$('#ov-title').textContent='¡'+n.toUpperCase()+' SE HA IDO! GANAS TÚ';$('#ov-retry').classList.add('hidden');$('#ov-rec').textContent=''}}
+{const _pl=coPartnerLeft;coPartnerLeft=function(...a){const was=DU.on&&CO.run;if(!was)return _pl(...a);CO.run=false;
+  const n=CO.pn||'Tu rival';coClose();CO.ui='idle';duResult(CO.me);$('#ov-title').textContent='¡'+n.toUpperCase()+' SE HA IDO! GANAS TÚ';$('#ov-retry').classList.add('hidden');$('#ov-rec').textContent=''}}
 {const _e=endRun;endRun=function(v){if(DU.on&&CO.run){const me=CO.me;coLeave();CO.me=me;duResult(3-me);$('#ov-title').textContent='HAS ABANDONADO EL DUELO';$('#ov-rec').textContent='';return}return _e(v)}}
 
 /* ---------- menú Duelo ---------- */
@@ -3571,7 +3690,7 @@ function duAbIcon(id,c){return ICON[id==='orbs'&&c.orb?c.orb.icon:ATK[id].icon]}
 function subDuel(B){const q=s=>B.querySelector(s),msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
   const ost={pick:'eligiendo socios…',links:'montando vínculos…',ready:'¡listo para pelear!'}[DU.oph]||'';
   if(!CO.conn){
-    if(CO.ui==='hosting'&&CO.mode==='duel')h=`<p class="small">Pasa este código a tu rival. Entra en <b>Duelo 3 contra 3 → Unirse</b>.</p><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>${msg}<p class="co-wait">Esperando a tu rival…</p><div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`;
+    if(CO.ui==='hosting'&&CO.mode==='duel')h=`<p class="small">Invita a un amigo o pasa el código a tu rival (entra en <b>Duelo 3 contra 3 → Unirse</b>).</p><div class="co-roomhead"><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="co-share" class="btn">📤 Compartir código</button></div>${msg}${frInvHtml()}<p class="co-wait">Esperando a tu rival…</p><div class="mbtns"><button id="co-x" class="btn">Cerrar sala</button></div>`;
     else if(CO.ui==='joining'&&CO.mode==='duel')h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`;
     else h=`<p class="small">Cada uno elige 3 socios del club y reparte sus 16 habilidades en 4 vínculos de 4. Peleáis uno contra uno: cuando cae un socio sale el siguiente, y gana quien deje al otro sin equipo. Todos van a nivel máximo y con 10 de cada mejora.</p>
       <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tu rival entra con el código.</p><button id="du-host" class="btn gold">Crear sala</button></div>
@@ -3590,6 +3709,7 @@ function subDuel(B){const q=s=>B.querySelector(s),msg=CO.msg?`<p class="co-msg">
   if(q('#du-host'))q('#du-host').onclick=()=>{sfx('pick');CO.mode='duel';coHost()};
   if(q('#du-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='duel';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#du-join').onclick=()=>{sfx('pick');CO.mode='duel';coJoin(i.value)}}
   if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();DU.ph='pick';DU.team=[];coUi()};
+  if(q('#co-share'))q('#co-share').onclick=coShare;frBindInv(B);
   B.querySelectorAll('.du-ch').forEach(b=>{const i=+b.dataset.i;drawHeroTo(b.querySelector('canvas'),CHARS[i],false,0);b.onclick=()=>{sfx('pick');const k=DU.team.indexOf(i);if(k>=0)DU.team.splice(k,1);else if(DU.team.length<3)DU.team.push(i);coUi()}});
   if(q('#du-next'))q('#du-next').onclick=()=>{if(DU.team.length!==3)return;for(const i of DU.team){const c=CHARS[i];if(!DU.links[c.id])DU.links[c.id]=duLinksFor(c)}DU.cur=0;DU.sel=null;sfx('level');duSetPh('links')};
   B.querySelectorAll('.du-tab').forEach(b=>{drawHeroTo(b.querySelector('canvas'),CHARS[DU.team[+b.dataset.k]],false,0);b.onclick=()=>{DU.cur=+b.dataset.k;DU.sel=null;sfx('pick');coUi()}});

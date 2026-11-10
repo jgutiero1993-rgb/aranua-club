@@ -3107,6 +3107,27 @@ function orbHud(){let el=document.getElementById('orbbuf');if(!el){const b=$('#b
 {const _s=startRun;startRun=function(){P.ob={};orbKills=0;return _s()}}
 {const _u=update;update=function(dt){_u(dt);if(G.state==='play'&&!MENUISH())updateOrbs(dt);orbZoom();if(!MENUISH())orbHud()}}
 
+/* ================= Fusión paso a paso: primero una habilidad, luego con cuál se vincula ================= */
+function fuseMerge(slots,i,j){const a=slots[i],b=slots[j],keep=b.length>1&&a.length===1?j:i,other=keep===i?j:i;const ids=slots[keep].concat(slots[other]);slots[keep]=ids;slots[other]=[];return keep}
+function fuseUI(slots,done,skipTxt){const box=$('#fuse-opts'),info=$('#fusem .small');let first=null;
+  const label=s=>s.map(id=>ATK[id].name).join(' + '),icons=s=>s.map(id=>`<img src="${ICON[ATK[id].icon]}" alt="" style="width:30px;height:30px">`).join('');
+  const partners=i=>slots.map((s,j)=>j).filter(j=>j!==i&&slots[j].length&&canLink(slots[i],slots[j]));
+  const draw=()=>{box.innerHTML='';let k=0;
+    if(first===null){info.textContent='Has vencido al guardián del portal. Paso 1: elige la habilidad (o el vínculo) que quieres vincular.';
+      slots.forEach((s,i)=>{if(!s.length||!partners(i).length)return;const b=document.createElement('button');b.className='opt';
+        b.innerHTML=`<span class="k">[${++k}]</span><div>${icons(s)}</div><b>${s.length>1?'Vínculo de '+s.length:'Ranura '+(i+1)}</b>${s.length>1?'<em class="link">VÍNCULO</em>':''}<p>${label(s)}</p>`;
+        b.onclick=()=>{first=i;sfx('pick');draw()};box.appendChild(b)});
+      if(!k)box.innerHTML='<p class="small">No hay Vínculos posibles: un Vínculo admite como máximo 4 habilidades y solo se pueden unir habilidades que aún no estén vinculadas.</p>'}
+    else{const S=slots[first];info.textContent=S.length>1?'Paso 2: elige la habilidad que añadirás a '+label(S)+'.':'Paso 2: elige con qué se vincula '+label(S)+'.';
+      for(const j of partners(first)){const s=slots[j],b=document.createElement('button');b.className='opt';
+        b.innerHTML=`<span class="k">[${++k}]</span><div>${icons(S)}<span style="font-size:22px;padding:0 4px">+</span>${icons(s)}</div><b>${s.length>1?'Vínculo de '+s.length:'Ranura '+(j+1)}</b><em class="link">VINCULAR</em><p>${label(s)}</p>`;
+        b.onclick=()=>{sfx('level');done(first,j)};box.appendChild(b)}
+      const bk=document.createElement('button');bk.className='btn';bk.textContent='‹ Elegir otra';bk.style.gridColumn='1/-1';bk.onclick=()=>{first=null;sfx('pick');draw()};box.appendChild(bk)}};
+  draw()}
+openFuse=function(){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;
+  fuseUI(P.slots,(i,j)=>{const keep=fuseMerge(P.slots,i,j);if(!P.slots[P.active].length)P.active=keep;G.runLinks++;buildSlots();exitRift()});
+  $('#fusem').classList.remove('hidden');sfx('level')};
+
 /* ---------------- Init ---------------- */
 function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
   $('#ic-coin').src=ICON.coin;$('#ic-skull').src=ICON.skull;$('#ic-coin2').src=ICON.coin;drawSword();
