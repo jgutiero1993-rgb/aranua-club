@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Aranua">
-<title>[COOP PRUEBA] Aranua Club — La Gran Fumada</title>
+<title>[PRUEBAS] Aranua Club — La Gran Fumada</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -345,6 +345,27 @@ a{color:#ffcf5a}
 .coop .co-who canvas{width:64px;height:78px;image-rendering:pixelated}
 .coop .co-note{opacity:.8}
 @media (max-width:560px){.coop .co-opts{grid-template-columns:1fr}}
+#duhud{position:fixed;left:50%;top:52px;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:10px;pointer-events:none;width:min(92vw,620px)}
+#duhud.hidden{display:none}
+#duhud .du-s{flex:1;background:rgba(14,6,24,.85);border:2px solid #b07ae0;border-radius:8px;padding:4px 8px;min-width:0}
+#duhud .du-s.op{border-color:#ff7a7a;text-align:right}
+#duhud .n{display:block;font-size:.8em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ffe9a8}
+#duhud .bar{height:7px;background:#2a0a10;border-radius:4px;overflow:hidden;margin-top:3px}#duhud .bar i{display:block;height:100%;background:linear-gradient(#7aff7a,#2aa02a);transition:width .1s}
+#duhud .op .bar i{margin-left:auto;background:linear-gradient(#ff8a7a,#c02a2a)}
+#duhud .pips u{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ffd04a;margin:0 2px;border:1px solid #000}#duhud .pips u.x{background:#3a2a3a}
+#duhud .vs{font-family:'Pirata One',serif;font-size:1.5em;color:#ffd04a;text-shadow:2px 2px 0 #000}
+.duel .du-top{display:flex;flex-direction:column;gap:2px}.duel .du-top b{color:#ffd04a;font-size:16px}
+.duel .du-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.duel .du-ch{position:relative;background:rgba(255,255,255,.05);border:2px solid rgba(200,160,255,.3);border-radius:8px;padding:4px;color:#fff;font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.duel .du-ch.on{border-color:#ffd04a;background:rgba(255,208,74,.12)}.duel .du-ch canvas{width:48px;height:58px;image-rendering:pixelated}
+.duel .du-ch em{position:absolute;top:2px;left:4px;font-style:normal;background:#ffd04a;color:#2a1040;border-radius:50%;width:18px;height:18px;line-height:18px;font-weight:bold}
+.duel .du-tabs{display:flex;gap:6px}.duel .du-tab{flex:1;display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:2px solid rgba(200,160,255,.3);border-radius:8px;color:#fff;font:inherit;font-size:12px;padding:2px 6px;cursor:pointer}
+.duel .du-tab.on{border-color:#ffd04a}.duel .du-tab canvas{width:26px;height:32px;image-rendering:pixelated}
+.duel .du-rows{display:flex;flex-direction:column;gap:5px}.duel .du-row{display:flex;align-items:center;gap:6px}.duel .du-row>b{width:74px;font-size:12px;color:#d8b8ff}
+.duel .du-ab{width:44px;height:44px;background:#1a0c28;border:2px solid #5a3a7a;border-radius:8px;padding:3px;cursor:pointer}.duel .du-ab img{width:100%;height:100%;image-rendering:pixelated}
+.duel .du-ab.on{border-color:#ffd04a;box-shadow:0 0 8px #ffd04a}
+.duel .du-info{min-height:2.4em}.duel .du-who{display:flex;justify-content:center;gap:10px}.duel .du-who canvas{width:56px;height:68px;image-rendering:pixelated}
+@media (max-width:560px){.duel .du-grid{grid-template-columns:repeat(4,1fr)}.duel .du-ab{width:38px;height:38px}}
 </style>
 </head>
 <body>
@@ -3211,14 +3232,14 @@ function coApply(s){const g=s.g;CO.hs=g.st;Object.assign(G,{time:g.time,kills:g.
   const lg=me.lg;delete me.lg;Object.assign(P,me);if(lg&&lg.t>.25&&!PET.lg)PET.lg=lg;
   const tpd=(me.tp||0)!==(CO.mytp||0);CO.mytp=me.tp||0;
   if(!(me.dash||me.down||wasDown||tpd))Object.assign(P,{x:k.x,y:k.y,face:k.face,moving:k.moving,anim:k.anim,dirx:k.dirx,diry:k.diry});
-  if(G.t<CO.actT)P.active=k.active;CO.spd=me.spd;
+  if(G.t<CO.actT)P.active=k.active;CO.spd=me.spd;{const ci=CHARS.findIndex(c=>c.id===me.c);if(ci>=0&&ci!==G.char){G.char=ci;setOrbsStyle();drawPortrait($('#portrait'));CO.sig=''}}
   if(P.hp<hp0&&!me.down){VIGN.classList.add('hit');clearTimeout(coApply.t);coApply.t=setTimeout(()=>VIGN.classList.remove('hit'),180);sfx('hurt')}
   if(me.down&&!wasDown){sfx('die');toast('¡TE HAS QUEDADO FRITO! '+CO.pn.toUpperCase()+' PUEDE REANIMARTE',1)}
   const sig=JSON.stringify([P.slots,P.active,Object.keys(P.atk).map(id=>id+P.atk[id].lvl)]);if(sig!==CO.sig){CO.sig=sig;buildSlots()}
   const bs=Object.keys(P.buffs).join();if(bs!==CO.bsig){CO.bsig=bs;buildBuffHud()}}
 function coGuestUpdate(dt){frameN++;G.t+=dt;genBudget=1;
-  const can=G.state==='play'&&CO.hs==='play'&&!P.down&&!P.dash;
-  if(can)coMove(dt,CO.spd);else P.moving=false;
+  const can=G.state==='play'&&CO.hs==='play'&&!P.down&&!P.dash&&P.ds!==2;
+  if(can)coMove(dt,CO.spd*(P.ds===1?.6:1));else P.moving=false;
   if(G.inRift){const dx=P.x-RC.x,dy=P.y-RC.y,d=Math.hypot(dx,dy);if(d>RC.r-10){P.x=RC.x+dx/d*(RC.r-10);P.y=RC.y+dy/d*(RC.r-10)}}
   if(P.inv>0)P.inv-=dt;
   CO.posT-=dt;if(CO.posT<=0&&G.state!=='over'){CO.posT=1/30;coNet({t:'p',tp:CO.mytp||0,x:coR(P.x),y:coR(P.y),f:P.face,m:!!P.moving,a:coR(P.anim||0),dx:coR(P.dirx||1),dy:coR(P.diry||0)})}
@@ -3246,7 +3267,7 @@ function coBC(code,isHost,onConn){const ch=new BroadcastChannel('aranua-'+code),
   if(!isHost)setTimeout(()=>ch.postMessage({join:1,from:me}),50);return{destroy:()=>{try{ch.close()}catch(e){}}}}
 function coClose(){const c=CO.conn,p=CO.peer;CO.conn=null;CO.peer=null;if(c)c.close();if(p)try{p.destroy()}catch(e){}clearTimeout(CO.jt)}
 function coGotConn(c){CO.conn=c;c.onData(m=>{try{CO.role==='host'?coOnHost(m):coOnGuest(m)}catch(e){logErr(e)}});c.onClose(()=>{if(CO.conn===c)coPartnerLeft()});clearTimeout(CO.jt);
-  coNet({t:'hello',n:SAVE.name,c:CHARS[G.char].id});CO.msg='';coUi()}
+  coNet({t:'hello',n:SAVE.name,c:CHARS[G.char].id,mode:CO.mode||'coop'});CO.msg='';coUi()}
 function coHost(){coClose();Object.assign(CO,{role:'host',me:1,ui:'hosting',code:coMkCode(),msg:'Creando sala…',pn:''});coUi();
   if(coUseBC()){CO.peer=coBC(CO.code,true,c=>coGotConn(c));CO.msg='';coUi();return}
   coLoadPeer().then(()=>{if(CO.ui!=='hosting')return;const p=new Peer(CO_PRE+CO.code.toLowerCase(),coOpts());CO.peer=p;
@@ -3267,21 +3288,24 @@ function coPartnerLeft(){if(!CO.conn)return;const was=CO.run,nm=(CO.pn||'tu cole
   if(CO.role==='host'){if(CO.sw)coSwap();CO.run=false;if(G.inRift&&G.state==='fuse'&&CO.fzH){CO.fzH=false;_coExitRift()}if(G.inRift&&CO.fuseAt){CO.fuseAt=0;setTimeout(()=>{if(G.state==='play'&&G.inRift)openFuse()},300)}if(G.state==='levelup'&&$('#lvl').classList.contains('hidden'))G.state='play';if(P.down){P.down=false;P.hp=0;endRun(false)}}
   else{CO.run=false;CO.remoteEnd=1;try{endRun(false)}finally{CO.remoteEnd=0}}}
 function coOnHost(m){const o=CO.o;switch(m.t){
-  case'hello':CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
+  case'hello':if(coModeBad(m))return;CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
   case'p':if(!CO.run||!o)return;if(!o.dash&&!o.down&&(m.tp||0)===(o.tp||0)){o.x=m.x;o.y=m.y}o.face=m.f;o.moving=!!m.m&&!o.down;o.anim=m.a;o.dirx=m.dx;o.diry=m.dy;break;
   case'slot':if(CO.run&&o&&o.slots[m.i]&&o.slots[m.i].length)o.active=m.i;break;
   case'pick':if(CO.run)coApplyPick(m.i);break;
   case'rr':if(CO.run&&CO.gOpen&&G.rerolls>0){G.rerolls--;coSendOpts()}break;
   case'fz':if(CO.run)coFuseGot(m.k);break;
-  case'bye':coPartnerLeft();break}}
+  case'bye':coPartnerLeft();break;
+  default:if(typeof duMsg==='function')duMsg(m)}}
+function coModeBad(m){const a=m.mode||'coop',b=CO.mode||'coop';if(a===b)return false;coLeave();CO.msg=a==='duel'?'Esa sala es de Duelo 3 contra 3.':'Esa sala es de Cooperativo.';coUi();return true}
 function coOnGuest(m){switch(m.t){
-  case'hello':CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
+  case'hello':if(coModeBad(m))return;CO.pn=String(m.n||'Socio').slice(0,12);CO.pc=Math.max(0,CHARS.findIndex(c=>c.id===m.c));coUi();break;
   case'start':coStartGuest(m);break;
   case's':if(CO.run)coApply(m);break;
   case'lvl':if(CO.run)coGuestShowLvl(m);break;
   case'fuse':if(CO.run)coGuestFuse(m);break;
   case'over':if(!CO.run)return;Object.assign(G,m.g);CO.remoteEnd=1;try{endRun(m.v)}finally{CO.remoteEnd=0}break;
-  case'bye':coPartnerLeft();break}}
+  case'bye':coPartnerLeft();break;
+  default:if(typeof duMsg==='function')duMsg(m)}}
 function coStartHost(){if(!CO.conn||CO.role!=='host')return;const gci=CO.pc;CO.seed=0;CO.run=false;
   startRun();
   Object.assign(CO,{run:true,sw:false,pendEnd:null,pendRift:false,fuseAt:0,fzH:false,fzG:false,rt:null,gOpen:false,gOpts:null,snapT:0,pSent:CO.psq,moSent:0,snd:[]});
@@ -3349,8 +3373,9 @@ function coWaitUi(){const w=$('#cowait');if(!w)return;let t='';
 MENU.splice(1,0,{id:'coop',name:'Cooperativo',sub:'Jugad 2 en la misma partida',icon:'swords'});
 {const _rs=renderSub;renderSub=function(){if(subId==='coop'){subCoop($('#sub-body'));return}_rs()}}
 {const _cs=closeSub;closeSub=function(){if(subId==='coop'&&G.state==='sub'&&!CO.run)coLeave();_cs()}}
-function coUi(){if(G.state==='sub'&&subId==='coop')renderSub()}
+function coUi(){if(G.state==='sub'&&(subId==='coop'||subId==='duel'))renderSub()}
 function subCoop(B){const me=CHARS[G.char],pc=CHARS[CO.pc]||CHARS[0],msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
+  if(CO.mode==='duel'&&!CO.conn&&CO.ui!=='idle'){CO.ui='idle'}
   if(CO.ui==='hosting'){h=`<p class="small">Pasa este código a tu colega. Tiene que estar en la misma red wifi (o tener internet) y entrar en <b>Cooperativo → Unirse</b>.</p>
       <div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>${msg}
       ${CO.conn?`<div class="co-who"><canvas id="co-cv" class="px" width="32" height="39"></canvas><div><b>${esc(CO.pn)}</b> se ha unido<br><span class="small">Va con ${pc.name}</span></div></div>
@@ -3366,8 +3391,8 @@ function subCoop(B){const me=CHARS[G.char],pc=CHARS[CO.pc]||CHARS[0],msg=CO.msg?
       <p class="small co-note">Las mejoras salen a la vez para los dos, la experiencia se comparte y, si uno se queda frito, el otro puede reanimarlo quedándose a su lado unos segundos.</p>`}
   B.innerHTML=`<div class="coop">${h}</div>`;
   const q=s=>B.querySelector(s);
-  if(q('#co-host'))q('#co-host').onclick=()=>{sfx('pick');coHost()};
-  if(q('#co-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')coJoin(i.value)};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#co-join').onclick=()=>{sfx('pick');coJoin(i.value)}}
+  if(q('#co-host'))q('#co-host').onclick=()=>{sfx('pick');CO.mode='coop';coHost()};
+  if(q('#co-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='coop';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#co-join').onclick=()=>{sfx('pick');CO.mode='coop';coJoin(i.value)}}
   if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();coUi()};
   if(q('#co-go'))q('#co-go').onclick=()=>{sfx('level');$('#sub').classList.add('hidden');subId=null;coStartHost()};
   if(q('#co-cv'))drawHeroTo(q('#co-cv'),pc,false,0)}
@@ -3403,6 +3428,143 @@ function coGuestFuse(m){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;const box=$(
     bt.onclick=()=>{coNet({t:'fz',k});$('#fusem').classList.add('hidden');G.state='play';sfx('level')};box.appendChild(bt)});
   $('#pause').classList.add('hidden');$('#lvl').classList.add('hidden');$('#fusem').classList.remove('hidden');sfx('level')}
 
+/* ================= DUELO 3 CONTRA 3 =================
+   Cada jugador elige 3 socios y reparte sus 16 habilidades en 4 vínculos de 4.
+   Combate uno contra uno en la arena de la grieta; el que cae deja paso al siguiente de su equipo.
+   El anfitrión simula; el rival de cada jugador es un "fantasma" (enemigo invisible) que recibe los golpes. */
+const DU={on:false,ph:'pick',team:[],links:{},cur:0,sel:null,ready:false,opp:null,oph:'pick',view:null};
+const DU_K=.06,DU_HP=3,DU_R=175;
+function duLinksFor(c){const sv=SAVE.duel&&SAVE.duel[c.id],set=new Set(c.abil);
+  if(sv&&sv.length===4&&sv.every(r=>r.length===4)&&new Set(sv.flat()).size===16&&sv.flat().every(id=>set.has(id)&&ATK[id]))return sv.map(r=>r.slice());
+  const a=c.abil.slice();return [a.slice(0,4),a.slice(4,8),a.slice(8,12),a.slice(12,16)]}
+function duFighter(ci,links){const C=CHARS[ci],atk={};for(const id of C.abil)atk[id]={lvl:5,cd:Math.random()*.6};const pas={};for(const id in PAS)pas[id]=10;
+  return{x:0,y:0,hp:0,maxHp:0,lvl:30,xp:0,xpNext:1e9,inv:1,face:1,moving:false,anim:0,pendingLv:0,pas,relic:null,slots:links.map(r=>r.slice()),active:0,atk,buffs:{},regenAcc:0,orbAng:0,orbPts:null,dirx:1,diry:0,dash:null,shield:null,down:false,rv:0,ds:0}}
+function duProxy(){return{type:'duel',duel:1,t:{el:'neutral',def:100,sdf:100,name:'',spr:'hero'},x:0,y:0,r:8,hp:1e9,maxHp:1e9,flash:0,slowT:0,kx:0,ky:0,seed:0,face:1,dead:false,big:false,elite:false,orbCD:0,sc:1,set:null,spd:0}}
+// coloca en el lado s el siguiente socio de su equipo
+function duSpawn(s){const D=G.duel,ci=D.teams[s][D.idx[s]],links=D.links[s][D.idx[s]];
+  coWith(s,()=>{const tp=(P.tp||0)+1;G.char=ci;const f=duFighter(ci,links);for(const k in P)delete P[k];Object.assign(P,f);P.x=RC.x+(s===1?-90:90);P.y=RC.y;P.face=s===1?1:-1;P.tp=tp;P.maxHp=0;calcStats();P.hp=P.maxHp;setOrbsStyle()});
+  const px=D.px[3-s];px.t.el=CHARS[ci].abEl||'neutral';px.set=SPR[CHARS[ci].spr];
+  if(s===CO.me){buildSlots();buildBuffHud();drawPortrait($('#portrait'))}}
+function duResetPos(){const D=G.duel;for(const s of [1,2])coWith(s,()=>{if(P.hp>0){P.x=RC.x+(s===1?-90:90);P.y=RC.y;P.tp=(P.tp||0)+1;P.dash=null;P.inv=1}});D.t=0;RC.r=DU_R}
+function duPass(s,dt){const D=G.duel,o=3-s,px=D.px[o],tg=coPl(o);if(coPl(s).hp<=0||tg.hp<=0)return;
+  const st=o===CO.me?ST:CO.ost;px.x=tg.x;px.y=tg.y;px.t.def=st.def||100;px.t.sdf=st.sdf||100;px.hp=1e9;px.dead=false;px.kx=px.ky=0;
+  enemies=[px];buildGrid();
+  try{coRun(s,()=>{enemyStatus(px,dt);if(px.slowT>0)px.slowT-=dt;updateAttacks(dt);updateBuffs(dt);updateProjs(dt);updateWfx(dt)})}finally{enemies=[]}
+  const d=1e9-px.hp,T=coPl(o);if(d>0){T.hp-=d;T.inv=Math.max(T.inv||0,.08)}
+  T.ds=px.rootT>0?2:(px.slowT>0||px.chillT>0)?1:0}
+function duUpdate(dt){frameN++;G.t+=dt;genBudget=1;if(G.state!=='play')return;const D=G.duel;if(!D)return;
+  if(D.ko>0){D.ko-=dt;updateParts(dt);if(D.ko<=0)duNext();return}
+  G.time+=dt;D.t+=dt;RC.r=D.t<50?DU_R:Math.max(70,DU_R-(D.t-50)*2);
+  if(P.ds!==2)coMove(dt,ST.spd*(P.ds===1?.6:1));else P.moving=false;
+  coRegen(dt);coWith(2,()=>coRegen(dt));clampRift();coWith(2,clampRift);
+  duPass(1,dt);duPass(2,dt);
+  updateParts(dt);if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25);
+  const k1=P.hp<=0,k2=CO.o.hp<=0;if(!k1&&!k2)return;
+  if(k1){P.hp=0;D.dead[1][D.idx[1]]=true}if(k2){CO.o.hp=0;D.dead[2][D.idx[2]]=true}
+  D.ko=2.4;D.kn=[k1,k2];projs=[];wfx=[];zones=[];meteors=[];P.orbPts=null;CO.o.orbPts=null;sfx('die');G.shake=8;fx.push({k:'flash',t:0,dur:.4});
+  const nm=s=>s===1?SAVE.name:CO.pn,ko=k1&&k2?'¡DOBLE K.O.!':'¡K.O.! '+CHARS[k1?G.char:CO.ochar].name.toUpperCase()+' ('+nm(k1?1:2).toUpperCase()+') CAE';
+  toast(ko);coNet({t:'dko',m:ko})}
+function duNext(){const D=G.duel;let lost=[false,false];
+  for(const s of [1,2])if(D.kn[s-1]){D.idx[s]++;if(D.idx[s]>=3)lost[s-1]=true}
+  if(lost[0]||lost[1]){duFinish(lost[0]&&lost[1]?0:lost[0]?2:1);return}
+  for(const s of [1,2])if(D.kn[s-1])duSpawn(s);duResetPos();
+  const nx=[];for(const s of [1,2])if(D.kn[s-1])nx.push(CHARS[D.teams[s][D.idx[s]]].name);toast('¡SALE '+nx.join(' Y ').toUpperCase()+'!');sfx('boss')}
+function duFinish(w){coNet({t:'dend',w});duResult(w)}
+function duResult(w){CO.run=false;DU.on=false;G.duel=null;DU.view=null;G.inRift=false;RC.r=DU_R;G.state='over';joy.on=false;$('#duhud').classList.add('hidden');$('#cowait').classList.add('hidden');
+  const win=w===CO.me;$('#ov-title').textContent=w===0?'¡EMPATE!':win?'¡HAS GANADO EL DUELO!':'HAS PERDIDO EL DUELO';
+  const mine=DU.team.map(i=>CHARS[i].name).join(', '),theirs=(DU.opp&&DU.opp.team||[]).map(id=>(CHARS.find(c=>c.id===id)||{}).name).join(', ');
+  $('#ov-grid').innerHTML=`<span>Tu equipo</span><b class="small">${mine}</b><span>Equipo de ${esc(CO.pn)}</span><b class="small">${theirs}</b><span>Duración</span><b>${fmtTime(G.time)}</b>`;
+  $('#ov-loot').innerHTML='';const host=CO.role==='host';$('#ov-rec').textContent=host?'':'Esperando a que '+CO.pn+' pida la revancha…';
+  $('#ov-retry').textContent='Revancha';$('#ov-retry').classList.toggle('hidden',!host||!CO.conn);sfx(win?'level':'die');setTimeout(()=>$('#over').classList.remove('hidden'),600)}
+function duStartHost(){if(!CO.conn||CO.role!=='host'||!DU.opp)return;const t1=DU.team.slice(),t2=DU.opp.team.map(id=>CHARS.findIndex(c=>c.id===id));
+  CO.run=false;G.char=t1[0];startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,thief:null,nextRift:1e9});RC.r=DU_R;
+  G.duel={t:0,ko:0,kn:[false,false],teams:[null,t1,t2],links:[null,t1.map(i=>DU.links[CHARS[i].id]),DU.opp.links],idx:[0,0,0],dead:[null,[false,false,false],[false,false,false]],px:[null,duProxy(),duProxy()]};
+  Object.assign(CO,{run:true,sw:false,pendEnd:null,gOpen:false,snapT:0,pSent:CO.psq,moSent:0,snd:[]});
+  CO.o={tp:0};CO.ochar=t2[0];CO.ost={};CO.opet={x:RC.x+90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};P.tp=0;
+  DU.on=true;duSpawn(1);duSpawn(2);
+  coNet({t:'dstart',t1:t1.map(i=>CHARS[i].id),t2:DU.opp.team,hn:SAVE.name});$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
+function duStartGuest(m){const i1=m.t1.map(id=>CHARS.findIndex(c=>c.id===id)),i2=m.t2.map(id=>CHARS.findIndex(c=>c.id===id));DU.opp={team:m.t1};DU.team=i2;
+  G.char=i2[0];CO.run=false;startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,nextRift:1e9});RC.r=DU_R;
+  Object.assign(CO,{run:true,sw:false,mytp:-1,rt:null,ens:new Map(),hs:'play',sig:'',bsig:'',actT:0,gl:null,pn:m.hn||CO.pn});
+  P.x=RC.x+90;P.y=RC.y;CO.o=JSON.parse(JSON.stringify(P));Object.assign(CO.o,{x:RC.x-90,y:RC.y,tx:RC.x-90,ty:RC.y});CO.ochar=i1[0];CO.ost={};CO.opet={x:RC.x-90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};
+  DU.on=true;DU.view=null;$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
+// marcador de arriba: los dos socios que pelean, su vida y cuántos les quedan
+function duHud(){const h=$('#duhud');if(!h)return;if(!DU.on||!CO.run||MENUISH()){h.classList.add('hidden');return}h.classList.remove('hidden');
+  const dd=CO.role==='host'?(G.duel?[G.duel.dead[1],G.duel.dead[2]]:null):(DU.view&&DU.view.dd);
+  const side=(el,p,ci,name,dead)=>{el.querySelector('.n').textContent=name+' · '+(CHARS[ci]?CHARS[ci].name:'');el.querySelector('.bar i').style.width=clamp(p.hp/(p.maxHp||1)*100,0,100)+'%';
+    el.querySelector('.pips').innerHTML=(dead||[false,false,false]).map(x=>`<u class="${x?'x':''}"></u>`).join('')};
+  const me=CO.me,oth=3-me;side(h.querySelector('.me'),P,G.char,SAVE.name,dd&&dd[me-1]);side(h.querySelector('.op'),CO.o,CO.ochar,CO.pn,dd&&dd[oth-1])}
+
+/* ---------- red ---------- */
+function duMsg(m){switch(m.t){
+  case'dph':DU.oph=m.ph;if(m.ph!=='ready')DU.opp=null;coUi();break;
+  case'dteam':DU.opp={team:m.team,links:m.links};DU.oph='ready';coUi();if(CO.role==='host'&&DU.ready)duStartHost();break;
+  case'dstart':if(CO.role==='guest')duStartGuest(m);break;
+  case'dko':if(CO.role==='guest'){toast(m.m);sfx('die');G.shake=8}break;
+  case'dend':if(CO.role==='guest')duResult(m.w);break;
+  case'drem':duToLobby();break}}
+function duSetPh(ph){DU.ph=ph;coNet({t:'dph',ph});coUi()}
+function duReady(){DU.ready=true;SAVE.duel=SAVE.duel||{};for(const i of DU.team)SAVE.duel[CHARS[i].id]=DU.links[CHARS[i].id];persist();
+  DU.ph='ready';coNet({t:'dteam',team:DU.team.map(i=>CHARS[i].id),links:DU.team.map(i=>DU.links[CHARS[i].id])});coUi();if(CO.role==='host'&&DU.opp)duStartHost()}
+function duToLobby(){['#over','#hud','#duhud','#lvl','#pause'].forEach(s=>$(s).classList.add('hidden'));CO.run=false;DU.on=false;G.duel=null;G.inRift=false;RC.r=DU_R;
+  DU.ready=false;DU.opp=null;DU.oph='links';DU.ph=DU.team.length===3?'links':'pick';toMenu();openSub('duel')}
+
+/* ---------- enganches ---------- */
+{const _u=update;update=function(dt){
+  if(CO.run&&DU.on&&CO.role==='host'){duUpdate(dt);coHostNet(dt);duHud();coWaitUi();return}
+  if(CO.run&&DU.on&&CO.role==='guest'){coGuestUpdate(dt);duHud();coWaitUi();return}
+  return _u(dt)}}
+{const _s=coSnap;coSnap=function(){const s=_s();const D=G.duel;if(D){s.d={r:coR(RC.r),dd:[D.dead[1],D.dead[2]]};if(D.ko>0)s.g.st='ko';s.pl[0].ds=P.ds||0;s.pl[1].ds=CO.o.ds||0}return s}}
+{const _a=coApply;coApply=function(s){_a(s);if(s.d){RC.r=s.d.r;DU.view=s.d}}}
+{const _c=calcStats;calcStats=function(){const du=DU.on&&P.maxHp>0;if(du){P.maxHp/=DU_HP;P.hp/=DU_HP}_c();if(DU.on){ST.pdmg*=DU_K;ST.mdmg*=DU_K;ST.maxHp*=DU_HP;P.maxHp*=DU_HP;P.hp*=DU_HP}}}
+{const _pl=coPartnerLeft;coPartnerLeft=function(){const was=DU.on&&CO.run;if(was){CO.run=false;CO.pn=CO.pn||'Tu rival'}if(!was)return _pl();
+  const n=CO.pn;coClose();CO.ui='idle';duResult(CO.me);$('#ov-title').textContent='¡'+n.toUpperCase()+' SE HA IDO! GANAS TÚ';$('#ov-retry').classList.add('hidden');$('#ov-rec').textContent=''}}
+{const _e=endRun;endRun=function(v){if(DU.on&&CO.run){const me=CO.me;coLeave();CO.me=me;duResult(3-me);$('#ov-title').textContent='HAS ABANDONADO EL DUELO';$('#ov-rec').textContent='';return}return _e(v)}}
+
+/* ---------- menú Duelo ---------- */
+MENU.splice(2,0,{id:'duel',name:'Duelo 3 contra 3',sub:'Tu equipo contra el de un colega',icon:'skull'});
+{const _rs=renderSub;renderSub=function(){if(subId==='duel'){subDuel($('#sub-body'));return}_rs()}}
+{const _cs=closeSub;closeSub=function(){if(subId==='duel'&&G.state==='sub'&&!CO.run){coLeave();DU.ph='pick';DU.ready=false;DU.opp=null}_cs()}}
+function duAbName(id,c){return id==='orbs'&&c.orb?c.orb.name:ATK[id].name}
+function duAbDesc(id,c){return id==='orbs'&&c.orb?c.orb.desc:ATK[id].desc}
+function duAbIcon(id,c){return ICON[id==='orbs'&&c.orb?c.orb.icon:ATK[id].icon]}
+function subDuel(B){const q=s=>B.querySelector(s),msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
+  const ost={pick:'eligiendo socios…',links:'montando vínculos…',ready:'¡listo para pelear!'}[DU.oph]||'';
+  if(!CO.conn){
+    if(CO.ui==='hosting'&&CO.mode==='duel')h=`<p class="small">Pasa este código a tu rival. Entra en <b>Duelo 3 contra 3 → Unirse</b>.</p><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div>${msg}<p class="co-wait">Esperando a tu rival…</p><div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`;
+    else if(CO.ui==='joining'&&CO.mode==='duel')h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`;
+    else h=`<p class="small">Cada uno elige 3 socios del club y reparte sus 16 habilidades en 4 vínculos de 4. Peleáis uno contra uno: cuando cae un socio sale el siguiente, y gana quien deje al otro sin equipo. Todos van a nivel máximo y con 10 de cada mejora.</p>
+      <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tu rival entra con el código.</p><button id="du-host" class="btn gold">Crear sala</button></div>
+      <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de tu rival.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="du-join" class="btn">Unirse</button></div></div>${msg}`}
+  else if(DU.ph==='pick'){h=`<div class="du-top"><b>1 · Elige 3 socios</b><span class="small">El orden es el de salida. ${esc(CO.pn)}: ${ost}</span></div><div class="du-grid">`+
+      CHARS.map((c,i)=>{const k=DU.team.indexOf(i);return`<button class="du-ch${k>=0?' on':''}" data-i="${i}"><canvas class="px" width="32" height="39"></canvas><span>${c.name}</span>${k>=0?`<em>${k+1}</em>`:''}</button>`}).join('')+
+      `</div><div class="mbtns"><button id="du-next" class="btn gold"${DU.team.length===3?'':' disabled'}>Siguiente: vínculos ›</button><button id="co-x" class="btn">Salir</button></div>`}
+  else if(DU.ph==='links'){const ci=DU.team[DU.cur],c=CHARS[ci],L=DU.links[c.id];
+    h=`<div class="du-top"><b>2 · Monta los vínculos</b><span class="small">Toca dos habilidades para cambiarlas de sitio. ${esc(CO.pn)}: ${ost}</span></div>
+      <div class="du-tabs">${DU.team.map((i,k)=>`<button class="du-tab${k===DU.cur?' on':''}" data-k="${k}"><canvas class="px" width="32" height="39"></canvas>${k+1}. ${CHARS[i].name}</button>`).join('')}</div>
+      <div class="du-rows">${L.map((r,a)=>`<div class="du-row"><b>Vínculo ${a+1}</b>${r.map((id,b)=>`<button class="du-ab${DU.sel&&DU.sel[0]===a&&DU.sel[1]===b?' on':''}" data-a="${a}" data-b="${b}" title="${esc(duAbName(id,c))}"><img src="${duAbIcon(id,c)}" alt=""></button>`).join('')}</div>`).join('')}</div>
+      <p class="small du-info">${DU.sel?`<b>${esc(duAbName(L[DU.sel[0]][DU.sel[1]],c))}</b>: ${duAbDesc(L[DU.sel[0]][DU.sel[1]],c)}`:'Durante el combate cambias de vínculo con 1-4: el vínculo activo lanza sus 4 habilidades a la vez.'}</p>
+      <div class="mbtns"><button id="du-go" class="btn gold">¡Listo!</button><button id="du-auto" class="btn">Orden inicial</button><button id="du-back" class="btn">‹ Socios</button></div>`}
+  else h=`<div class="du-who">${DU.team.map(i=>`<canvas class="px" width="32" height="39" data-i="${i}"></canvas>`).join('')}</div><p class="co-wait">${DU.opp?'¡Empieza el duelo!':'Esperando a que '+esc(CO.pn)+' esté listo… ('+ost+')'}</p><div class="mbtns"><button id="du-unready" class="btn">‹ Cambiar vínculos</button></div>`;
+  B.innerHTML=`<div class="coop duel">${h}</div>`;
+  if(q('#du-host'))q('#du-host').onclick=()=>{sfx('pick');CO.mode='duel';coHost()};
+  if(q('#du-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='duel';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#du-join').onclick=()=>{sfx('pick');CO.mode='duel';coJoin(i.value)}}
+  if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();DU.ph='pick';DU.team=[];coUi()};
+  B.querySelectorAll('.du-ch').forEach(b=>{const i=+b.dataset.i;drawHeroTo(b.querySelector('canvas'),CHARS[i],false,0);b.onclick=()=>{sfx('pick');const k=DU.team.indexOf(i);if(k>=0)DU.team.splice(k,1);else if(DU.team.length<3)DU.team.push(i);coUi()}});
+  if(q('#du-next'))q('#du-next').onclick=()=>{if(DU.team.length!==3)return;for(const i of DU.team){const c=CHARS[i];if(!DU.links[c.id])DU.links[c.id]=duLinksFor(c)}DU.cur=0;DU.sel=null;sfx('level');duSetPh('links')};
+  B.querySelectorAll('.du-tab').forEach(b=>{drawHeroTo(b.querySelector('canvas'),CHARS[DU.team[+b.dataset.k]],false,0);b.onclick=()=>{DU.cur=+b.dataset.k;DU.sel=null;sfx('pick');coUi()}});
+  B.querySelectorAll('.du-ab').forEach(b=>b.onclick=()=>{const a=+b.dataset.a,k=+b.dataset.b,L=DU.links[CHARS[DU.team[DU.cur]].id];
+    if(!DU.sel)DU.sel=[a,k];else{const [a0,k0]=DU.sel;if(a0!==a||k0!==k){const t=L[a0][k0];L[a0][k0]=L[a][k];L[a][k]=t;DU.sel=null}else DU.sel=null}sfx('pick');coUi()});
+  if(q('#du-auto'))q('#du-auto').onclick=()=>{const c=CHARS[DU.team[DU.cur]],a=c.abil.slice();DU.links[c.id]=[a.slice(0,4),a.slice(4,8),a.slice(8,12),a.slice(12,16)];DU.sel=null;coUi()};
+  if(q('#du-back'))q('#du-back').onclick=()=>{DU.sel=null;duSetPh('pick')};
+  if(q('#du-go'))q('#du-go').onclick=()=>{sfx('level');duReady()};
+  if(q('#du-unready'))q('#du-unready').onclick=()=>{DU.ready=false;duSetPh('links')};
+  B.querySelectorAll('.du-who canvas').forEach(c=>drawHeroTo(c,CHARS[+c.dataset.i],false,0))}
+function duInit(){const d=document.createElement('div');d.id='duhud';d.className='hidden';
+  d.innerHTML='<div class="du-s me"><b class="n"></b><span class="pips"></span><div class="bar"><i></i></div></div><div class="vs">VS</div><div class="du-s op"><b class="n"></b><span class="pips"></span><div class="bar"><i></i></div></div>';document.body.appendChild(d);
+  const r=$('#ov-retry'),o=r.onclick;r.onclick=()=>{if(CO.mode==='duel'&&CO.conn){if(CO.role==='host'){coNet({t:'drem'});duToLobby()}return}o()};
+  const m=$('#ov-menu'),om=m.onclick;m.onclick=()=>{DU.ph='pick';DU.ready=false;DU.opp=null;DU.on=false;om()}}
+
 /* ---------------- Init ---------------- */
 function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
   $('#ic-coin').src=ICON.coin;$('#ic-skull').src=ICON.skull;$('#ic-coin2').src=ICON.coin;drawSword();
@@ -3419,7 +3581,7 @@ function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
   $('#btn-sound').onclick=toggleSnd;$('#p-snd').onclick=toggleSnd;$('#btn-fs').onclick=toggleFs;$('#p-fs').onclick=toggleFs;
   $('#btn-sound').textContent=muted?'🔇':'🔊';$('#p-snd').textContent='Sonido: '+(muted?'No':'Sí');
   {const i=CHARS.findIndex(c=>c.id===SAVE.charId);G.char=i>=0?i:(CHARS[SAVE.char]?SAVE.char:0)}if(!heroStars(CHARS[G.char]))G.char=0;newWorld(BIO.findIndex(b=>b.id===CHARS[G.char].reg));demoSpawn();refreshMenu();requestAnimationFrame(loop)}
-init();coInit();
+init();coInit();duInit();
 window.__dbg={G,P,offerRelic,enterRift,exitRift,elemMult,ATK,drawHeroTo,dropItem,doPull,CHARS,calcStats,get ST(){return ST},SAVE:()=>SAVE,goMain,openSub,closeSub,get enemies(){return enemies},get pickups(){return pickups},spawnEnemy,startRun,openLevelUp,update,chooseOpt,takeRelic,keys};
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
