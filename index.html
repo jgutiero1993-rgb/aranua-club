@@ -573,6 +573,7 @@ function heroFrame(sp,f){const G=new Pnt(32,32);const bob=f%2?-1:0,Y=y=>y+bob+(s
   if(sp.shirt){G.part('shirt').rect(14,Y(16),18,Y(24),sp.shirt);G.part('btn','flat').line(16,Y(17),16,Y(23),'w');G.part('coll','flat').set(14,Y(16),'w').set(18,Y(16),'w')}
   if(sp.coat){G.part('coatL').rect(11,Y(22),13,Y(26),b1);G.part('coatR').rect(19,Y(22),20,Y(26),b1)}
   if(sp.pack)G.part('strap','flat').line(12,Y(16),12,Y(23),'#3a2a22').set(12,Y(20),'O');
+  if(sp.tatBody){G.part('neckS','skin').rect(14,Y(16),17,Y(16),s1);G.part('tatB','flat');for(const [x,y,c] of [[12,17,'h'],[13,17,'h'],[19,17,'h'],[20,17,'h'],[12,18,'h'],[20,18,'h'],[14,18,'r'],[18,18,'r'],[12,23,'c'],[13,22,'c'],[14,22,'c'],[15,21,'c'],[16,21,'c'],[17,20,'c'],[18,20,'c'],[19,19,'c'],[20,19,'c'],[13,23,'c'],[14,23,'c'],[15,22,'c'],[16,22,'c'],[17,21,'c'],[18,21,'c'],[19,20,'c'],[21,19,'w'],[14,20,'f'],[15,19,'f'],[16,19,'f'],[20,21,'f'],[21,20,'f'],[19,22,'f'],[12,21,'f'],[17,23,'f']])G.set(x,Y(y),c)}
   if(sp.zip)G.part('zip','flat').line(16,Y(17),16,Y(23),'q');
   if(sp.logo)G.part('logo','flat').set(15,Y(19),'y').set(16,Y(19),'y').set(15,Y(20),'p').set(16,Y(20),'p');
   const ch=sp.chest;
@@ -594,6 +595,7 @@ function heroFrame(sp,f){const G=new Pnt(32,32);const bob=f%2?-1:0,Y=y=>y+bob+(s
   if(sp.elf)G.part('ear','skin').poly([[12,Y(10)],[7,Y(5)],[9,Y(9)],[11,Y(12)]],s1);
   // ---- tocados (delante)
   if(['hair','laurel','braids','crown','cap','bob','incacrown','mongol','turban'].includes(hd))hairCap();
+  if(sp.midPart)G.part('part','skin').set(15,Y(3.6),s1).set(16,Y(3.6),s1);
   if(sp.earring)G.part('earr','metal').set(11,Y(12),'i').set(11,Y(13),'q');
   if(hd==='smooth'){G.tone(13,Y(6),0);G.tone(14,Y(5),0);G.tone(15,Y(5),0)}
   if(sp.phones){const [pb,pc]=sp.phones;G.part('phB','metal');for(let a=3.45;a<=5.3;a+=.07)G.set(15.5+Math.cos(a)*5.6,Y(9)+Math.sin(a)*5.4,pb);
@@ -672,7 +674,7 @@ function heroFrame(sp,f){const G=new Pnt(32,32);const bob=f%2?-1:0,Y=y=>y+bob+(s
   if(sp.gloves){G.part('armF').rect(hx-1,Y(16),hx+1,Y(18),b2);G.part('gloveF').rect(hx,Y(13)-arm,hx+3,Y(17)-arm,sp.gloves);G.part('cuff','flat').rect(hx,Y(17)-arm,hx+3,Y(17)-arm,'w')}
   else{G.part('armF').rect(hx-1,Y(16),hx+1,hy,sp.armC||b2);if(sp.stripes&&!sp.armC)G.part('armS','flat').line(hx+1,Y(16),hx+1,hy,sp.stripes);if(sp.armC&&!sp.tank)G.part('sleeve').rect(hx-1,Y(16),hx+1,Y(17),b2);
     if(sp.tattoo){G.part('tat','flat');const T=sp.tattoo;G.set(hx-1,Y(18),T[0]).set(hx,Y(19),T[0]).set(hx+1,Y(18),T[1]).set(hx-1,Y(20),T[1]).set(hx,Y(21),T[2]).set(hx+1,Y(20),T[0]).set(hx,Y(18),T[2])}
-    G.part('handF','skin').rect(hx,hy+1,hx+3,hy+2,s1);if(sp.joint)G.part('jnt','flat').line(hx+3,hy,hx+5,hy-2,'w').set(hx+6,hy-3,'f')}
+    G.part('handF','skin').rect(hx,hy+1,hx+3,hy+2,s1);if(sp.tatBody){G.part('tatA','flat').set(hx-1,Y(17),'a').set(hx,Y(18),'f').set(hx+1,Y(19),'c').set(hx-1,Y(20),'r').set(hx,Y(21),'h')}if(sp.watch)G.part('watch','metal').rect(hx-1,hy,hx+1,hy,'q');if(sp.joint)G.part('jnt','flat').line(hx+3,hy,hx+5,hy-2,'w').set(hx+6,hy-3,'f')}
   // ---- escudo (por delante del cuerpo, en el brazo trasero)
   const sh=sp.shield;
   if(sh==='scutum'){G.part('shield').rect(4,Y(15),10,Y(27),'r');G.part('rim','metal').rect(4,Y(15),4,Y(27),'Y').rect(4,Y(15),10,Y(15),'Y').rect(4,Y(27),10,Y(27),'Y');G.part('boss','metal').ell(7,Y(21),1.5,1.5,'y');
@@ -1168,7 +1170,7 @@ const HSPEC={
  genghis:{skin:['u','U'],head:'mongol',mus:'x',body:['R','x'],chest:'lamellar',lam:['Y','R'],belt:'Y',skirt:['R','x'],legs:['N','x'],cape:'n',weapon:'bow'}};
 const HSPEC_CLUB={
  christian:{stub:1,head:'hair',hc:'#1e1a1a',beard:'#1e1a1a',body:['#2a2732','#1c1a22'],hoodDown:'#45404f',legs:['X','x'],boots:'w',gloves:'r'},
- giuliano:{stub:1,head:'hair',hc:'Q',beard:'Y',fat:1,body:['#2a2732','#1c1a22'],armC:'s',tattoo:['f','b','r'],legs:['B','#1e2a5a'],boots:'w'},
+ giuliano:{head:'hair',hc:'#a8804a',longHair:1,midPart:1,beard:'#8a4a1e',fat:1,tatBody:1,watch:1,body:['#3a3a46','#2c2c36'],legs:['#c8c4bc','#a8a49c'],boots:'w'},
  pablo:{tall:3,head:'smooth',phones:['#c8c8d4','#ff3ab0'],chain:1,zip:1,body:['#2a4ab0','#1e3480'],legs:['#2a4ab0','#1e3480'],stripes:'w',boots:'w'},
  ferrero:{tall:3,head:'hair',hc:'#4a3020',beard:'#4a3020',earring:1,body:['w','g'],armC:'s',tattoo:['s','s','O'],legs:['#2a2a36','#1a1a24'],boots:'w'},
  gianni:{tall:3,head:'hair',hc:'#6a5a4a',longHair:1,stub:1,beard:'#5a4a3a',body:['#4a4030','#38301f'],shirt:'#9ab8d8',coat:1,legs:['#1a1a22','#101016'],boots:'X',joint:1},
