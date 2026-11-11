@@ -331,6 +331,55 @@ a{color:#ffcf5a}
 #orbbuf{position:absolute;left:0;top:calc(100% + 58px);display:flex;gap:4px;pointer-events:none}
 #orbbuf span{display:flex;align-items:center;gap:3px;border:2px solid;border-radius:6px;background:rgba(10,6,16,.8);padding:1px 5px;font-size:.8em;font-weight:700;color:#fff;text-shadow:1px 1px 0 #000}
 #orbbuf u{width:9px;height:9px;border-radius:50%;display:inline-block;border:1px solid #000}
+#cowait{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:40;background:rgba(30,12,48,.92);border:2px solid #b07ae0;color:#f4e8ff;padding:8px 14px;border-radius:10px;font-size:15px;text-align:center;pointer-events:none;max-width:86vw;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+#cowait.hidden{display:none}
+.coop{display:flex;flex-direction:column;gap:10px}
+.coop .co-me{font-size:15px}.coop .co-me b{color:#ffd04a}
+.coop .co-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.coop .co-box{background:rgba(255,255,255,.05);border:1px solid rgba(200,160,255,.35);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.coop .co-box>b{color:#ffd04a;font-size:16px}
+.coop input{font:inherit;font-size:20px;letter-spacing:.3em;text-align:center;text-transform:uppercase;padding:6px;border-radius:8px;border:2px solid #b07ae0;background:#1a0c28;color:#fff;width:100%;box-sizing:border-box}
+.coop .co-code{display:flex;gap:8px;justify-content:center;margin:6px 0}
+.coop .co-code span{font-size:34px;font-weight:bold;color:#ffd04a;background:#1a0c28;border:2px solid #b07ae0;border-radius:8px;width:1.4em;text-align:center;padding:2px 0}
+.coop .co-wait{text-align:center;color:#d8b8ff;animation:copulse 1.4s ease-in-out infinite}
+@keyframes copulse{50%{opacity:.45}}
+.coop .co-msg{color:#ffb070;text-align:center}
+.coop .co-who{display:flex;gap:12px;align-items:center;justify-content:center;font-size:15px}.coop .co-who b{color:#ffd04a}
+.coop .co-who canvas{width:64px;height:78px;image-rendering:pixelated}
+.coop .co-note{opacity:.8}
+@media (max-width:560px){.coop .co-opts{grid-template-columns:1fr}}
+.coop .co-roomhead{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.coop .co-roomhead .co-code span{font-size:26px}
+.coop .co-pls{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.coop .co-pl{display:flex;align-items:center;gap:6px;border:2px solid #5a3a7a;border-radius:8px;padding:3px 6px;background:rgba(255,255,255,.04);min-height:46px}
+.coop .co-pl.empty{justify-content:center;border-style:dashed;opacity:.6}.coop .co-pl canvas{width:34px;height:42px;image-rendering:pixelated}
+.coop .co-pl>div{display:flex;flex-direction:column;min-width:0}.coop .co-pl .co-chg{flex-direction:row;margin-left:auto;gap:3px}.coop .co-pl .co-chg .btn{padding:2px 8px}
+.coop .fr-inv,.coop .co-box{display:flex;flex-direction:column;gap:5px}.coop .fr-inv>b{color:#ffd04a}
+.coop .fr-row{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(200,160,255,.15)}.coop .fr-n{font-weight:bold;min-width:80px}.coop .fr-c{opacity:.6;letter-spacing:.1em}
+.coop .fr-row .btn{margin-left:auto;padding:3px 10px}.coop .fr-row .fr-del{padding:2px 8px}
+.fr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#888;border:1px solid #000}.fr-dot.on{background:#4ae04a}.fr-dot.busy{background:#ffb030}.fr-dot.off{background:#704050}
+.coop .fr-add{display:flex;gap:6px}.coop .fr-add input{flex:1;min-width:0;font-size:17px;letter-spacing:.15em}
+#invm{z-index:60}
+#duhud{position:fixed;left:50%;top:52px;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:10px;pointer-events:none;width:min(92vw,620px)}
+#duhud.hidden{display:none}
+#duhud .du-s{flex:1;background:rgba(14,6,24,.85);border:2px solid #b07ae0;border-radius:8px;padding:4px 8px;min-width:0}
+#duhud .du-s.op{border-color:#ff7a7a;text-align:right}
+#duhud .n{display:block;font-size:.8em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#ffe9a8}
+#duhud .bar{height:7px;background:#2a0a10;border-radius:4px;overflow:hidden;margin-top:3px}#duhud .bar i{display:block;height:100%;background:linear-gradient(#7aff7a,#2aa02a);transition:width .1s}
+#duhud .op .bar i{margin-left:auto;background:linear-gradient(#ff8a7a,#c02a2a)}
+#duhud .pips u{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ffd04a;margin:0 2px;border:1px solid #000}#duhud .pips u.x{background:#3a2a3a}
+#duhud .vs{font-family:'Pirata One',serif;font-size:1.5em;color:#ffd04a;text-shadow:2px 2px 0 #000}
+.duel .du-top{display:flex;flex-direction:column;gap:2px}.duel .du-top b{color:#ffd04a;font-size:16px}
+.duel .du-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.duel .du-ch{position:relative;background:rgba(255,255,255,.05);border:2px solid rgba(200,160,255,.3);border-radius:8px;padding:4px;color:#fff;font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.duel .du-ch.on{border-color:#ffd04a;background:rgba(255,208,74,.12)}.duel .du-ch canvas{width:48px;height:58px;image-rendering:pixelated}
+.duel .du-ch em{position:absolute;top:2px;left:4px;font-style:normal;background:#ffd04a;color:#2a1040;border-radius:50%;width:18px;height:18px;line-height:18px;font-weight:bold}
+.duel .du-tabs{display:flex;gap:6px}.duel .du-tab{flex:1;display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.05);border:2px solid rgba(200,160,255,.3);border-radius:8px;color:#fff;font:inherit;font-size:12px;padding:2px 6px;cursor:pointer}
+.duel .du-tab.on{border-color:#ffd04a}.duel .du-tab canvas{width:26px;height:32px;image-rendering:pixelated}
+.duel .du-rows{display:flex;flex-direction:column;gap:5px}.duel .du-row{display:flex;align-items:center;gap:6px}.duel .du-row>b{width:74px;font-size:12px;color:#d8b8ff}
+.duel .du-ab{width:44px;height:44px;background:#1a0c28;border:2px solid #5a3a7a;border-radius:8px;padding:3px;cursor:pointer}.duel .du-ab img{width:100%;height:100%;image-rendering:pixelated}
+.duel .du-ab.on{border-color:#ffd04a;box-shadow:0 0 8px #ffd04a}
+.duel .du-info{min-height:2.4em}.duel .du-who{display:flex;justify-content:center;gap:10px}.duel .du-who canvas{width:56px;height:68px;image-rendering:pixelated}
+@media (max-width:560px){.duel .du-grid{grid-template-columns:repeat(4,1fr)}.duel .du-ab{width:38px;height:38px}}
 </style>
 </head>
 <body>
@@ -1575,7 +1624,7 @@ function bioCell(i,j){const k=i*100003+j;let c=WORLD.cells.get(k);if(c)return c;
   if(i===WORLD.si&&j===WORLD.sj)b=WORLD.start;else{b=bioRaw(i,j);const n=[bioCell2(i-1,j),bioCell2(i,j-1)];let s=0;while(n.includes(b)&&s++<BIO.length)b=(b+1)%BIO.length}
   const [x,y]=bioSeedPos(i,j);c={x,y,b,S:new Map(),sep(o){let v=this.S.get(o);if(v===undefined){v=Math.hypot(o.x-this.x,o.y-this.y);this.S.set(o,v)}return v}};WORLD.cells.set(k,c);return c}
 function bioCell2(i,j){return i===WORLD.si&&j===WORLD.sj?WORLD.start:bioRaw(i,j)}
-function newWorld(start){WORLD.seed=1+Math.floor(Math.random()*1e6);WORLD.start=Math.max(0,start);WORLD.cells.clear();
+function newWorld(start){WORLD.seed=(typeof CO!=='undefined'&&CO.seed)||1+Math.floor(Math.random()*1e6);WORLD.start=Math.max(0,start);WORLD.cells.clear();
   let bd=1e18;for(let i=-1;i<=0;i++)for(let j=-1;j<=0;j++){const [x,y]=bioSeedPos(i,j),d=x*x+y*y;if(d<bd){bd=d;WORLD.si=i;WORLD.sj=j}}}
 const warpX=(x,y)=>x+(vnoise(x/190,y/190,77)-.5)*170,warpY=(x,y)=>y+(vnoise(x/190,y/190,78)-.5)*170;
 // devuelve [bioma más cercano, otro bioma vecino, distancia al borde en px]
@@ -2142,7 +2191,7 @@ function updateEnemies(dt){
     // reciclar si está muy lejos
     if(!e.big&&!e.elite&&!t.special&&dist2(e.x,e.y,P.x,P.y)>far2){const [x,y]=ringPos();e.x=x;e.y=y}}
   // separación
-  for(const a of grid.values()){const n=a.length;if(n<2)continue;for(let i=0;i<n;i++){const A=a[i];for(let j=i+1;j<n;j++){const B=a[j];if(A.t.static||B.t.static)continue;let dx=B.x-A.x,dy=B.y-A.y;const rr=A.r+B.r;const d2=dx*dx+dy*dy;if(d2<rr*rr&&d2>0.0001){const d=Math.sqrt(d2),push=(rr-d)*.5/d;dx*=push;dy*=push;A.x-=dx;A.y-=dy;B.x+=dx;B.y+=dy}}}}
+  if(!CO.noSep)for(const a of grid.values()){const n=a.length;if(n<2)continue;for(let i=0;i<n;i++){const A=a[i];for(let j=i+1;j<n;j++){const B=a[j];if(A.t.static||B.t.static)continue;let dx=B.x-A.x,dy=B.y-A.y;const rr=A.r+B.r;const d2=dx*dx+dy*dy;if(d2<rr*rr&&d2>0.0001){const d=Math.sqrt(d2),push=(rr-d)*.5/d;dx*=push;dy*=push;A.x-=dx;A.y-=dy;B.x+=dx;B.y+=dy}}}}
 }
 function bossAI(e,dt,dx,dy,d){const T=e.t,ai=T.ai||{cd:3,acts:[['charge',1,170]]};let sp=e.spd*moveMul(e,.7,.5);e.act-=dt;
   if(T.split){const n=Math.floor((1-e.hp/e.maxHp)/.15);while((e.splitN||0)<n){e.splitN=(e.splitN||0)+1;for(let i=0;i<3;i++){const a=rand(6.28);spawnEnemy(T.split,e.x+Math.cos(a)*25,e.y+Math.sin(a)*25)}}}
@@ -2836,7 +2885,7 @@ function update(dt){frameN++;G.t+=dt;genBudget=1;
 
 let camX=0,camY=0;
 function render(){const W=VIEW.w,H=VIEW.h;
-  const sh=G.shake>0&&SAVE.opt.shake?G.shake:0;camX=Math.round(P.x-W/2+rand(-sh,sh));camY=Math.round(P.y-H/2+rand(-sh,sh));
+  const sh=G.shake>0&&SAVE.opt.shake?G.shake:0;const _cp=coCamPos();camX=Math.round(_cp[0]-W/2+rand(-sh,sh));camY=Math.round(_cp[1]-H/2+rand(-sh,sh));
   // suelo
   const c0x=Math.floor(camX/CH),c1x=Math.floor((camX+W)/CH),c0y=Math.floor(camY/CH),c1y=Math.floor((camY+H)/CH);
   if(G.inRift)drawRiftFloor(W,H);else for(let cy=c0y;cy<=c1y;cy++)for(let cx=c0x;cx<=c1x;cx++)ctx.drawImage(getChunk(cx,cy).cv,cx*CH-camX,cy*CH-camY);
@@ -2864,16 +2913,18 @@ function render(){const W=VIEW.w,H=VIEW.h;
   drawHazards(lights);
   // entidades
   for(const e of enemies){const sx=e.x-camX,sy=e.y-camY;if(sx<-60||sx>W+60||sy<-60||sy>H+60)continue;draw.push({y:e.y+e.set.H*e.sc*.5,e})}
-  if(!MENUISH())draw.push({y:P.y+11,p:1});
+  if(!MENUISH()){draw.push({y:P.y+11,p:1});if(CO.run)for(const i of CO.ids)if(i!==CO.me&&CO.ps[i])draw.push({y:CO.ps[i].o.y+11,q:i})}
   if(G.intro&&!MENUISH()){const I=G.intro,s=SPR.demonKing,a=Math.min(1,I.t/1,(7.5-I.t)/1.5),sx=Math.round(P.x-camX),sy=Math.round(P.y-camY-60+Math.sin(G.t*2)*3);ctx.globalAlpha=Math.max(0,a);ctx.drawImage(s.n[Math.floor(G.t*2)%s.n.length],sx-(s.W>>1),sy-s.H,s.W,s.H);ctx.globalAlpha=1;lights.push([sx,sy-20,90,L_RED])}
   draw.sort((a,b)=>a.y-b.y);
   for(const d of draw){try{
     if(d.o){const o=d.o,sx=Math.round(o.x-camX),sy=Math.round(o.y-camY);
       if(o.torch)drawTorch(sx,sy,o.ph);else{ctx.drawImage(SHADOW,0,0,16,6,sx-o.s.width*.45,sy-3,o.s.width*.9,6);ctx.drawImage(o.s,sx-(o.s.width>>1),sy-o.s.height)}}
-    else if(d.sh)drawShrineOrb(d);else if(d.e)drawEnemy(d.e,lights);else drawPlayer(lights)}catch(err){logErr(err)}}
+    else if(d.sh)drawShrineOrb(d);else if(d.e)drawEnemy(d.e,lights);else if(d.q)coWith(d.q,()=>drawPlayer(lights));else drawPlayer(lights)}catch(err){logErr(err)}}
   // proyectiles
+  coDual(()=>{
   if(!MENUISH())for(const id of (P.slots[P.active]||[])){const D=ATK[id];if(D.m!=='aura'||!P.atk[id])continue;const R=D.rad[P.atk[id].lvl-1];ctx.globalAlpha=.3+.12*Math.sin(G.t*5);ctx.strokeStyle=D.fam?ELC[D.el][1]:'#ffdc78';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(P.x-camX,P.y-camY+4,R,R*.8,0,0,6.283);ctx.stroke();ctx.globalAlpha=1;lights.push([P.x-camX,P.y-camY,R*1.1,D.fam?elLight(D.el):L_GOLD])}
   if(!MENUISH())drawWfxTop(lights);
+  });
   for(const p of projs){const sx=Math.round(p.x-camX),sy=Math.round(p.y-camY);
     if(p.wait>0)continue;
     if(p.glove){drawGlove(sx,sy,Math.atan2(p.vy,p.vx),1.2);lights.push([sx,sy,16,L_ORANGE])}
@@ -2896,12 +2947,14 @@ function render(){const W=VIEW.w,H=VIEW.h;
     else if(p.k==='soul'){ctx.fillStyle='#1e5a1e';ctx.fillRect(sx-2,sy-2,5,5);ctx.fillStyle='#9fff9f';ctx.fillRect(sx-1,sy-2,3,4);ctx.fillStyle='#0a200a';ctx.fillRect(sx-1,sy-1,1,1);ctx.fillRect(sx+1,sy-1,1,1);lights.push([sx,sy,22,L_GREEN])}
     else{const c=ELC[p.el||'neutral'];ctx.fillStyle=c[0];ctx.fillRect(sx-2,sy-2,4,4);ctx.fillStyle=c[1];ctx.fillRect(sx-1,sy-1,2,2);lights.push([sx,sy,22,elLight(p.el)])}}
   for(const p of eprojs){const sx=Math.round(p.x-camX),sy=Math.round(p.y-camY);const ec=ELC[p.el||'dark'];ctx.fillStyle=ec[0];ctx.fillRect(sx-2,sy-2,5,5);ctx.fillStyle=ec[1];ctx.fillRect(sx-1,sy-1,3,3);lights.push([sx,sy,20,elLight(p.el)])}
+  coDual(()=>{
   if(P.orbPts&&CHARS[G.char].orb&&ICV[ATK.orbs.icon]){for(const [ox,oy] of P.orbPts){drawIc(ATK.orbs.icon,ox-camX,oy-camY,G.t*3,.75);lights.push([Math.round(ox-camX),Math.round(oy-camY),20,GLW.white])}}
   else if(P.orbPts&&ATK.orbs.dt==='p')for(const [ox,oy,an] of P.orbPts){// Dagas Danzantes: hoja de acero apuntando hacia fuera
     const sx=ox-camX,sy=oy-camY;let ux=Math.cos(an),uy=Math.sin(an)*.8;const ul=Math.hypot(ux,uy)||1;ux/=ul;uy/=ul;const pt=(t,c)=>{ctx.fillStyle=c;ctx.fillRect(Math.round(sx+ux*t),Math.round(sy+uy*t),1,1)};
     pt(-3,'#4e2f1c');pt(-2,'#7a4b2a');ctx.fillStyle='#b8862a';ctx.fillRect(Math.round(sx-uy*1.5-ux),Math.round(sy+ux*1.5-uy),1,1);ctx.fillRect(Math.round(sx+uy*1.5-ux),Math.round(sy-ux*1.5-uy),1,1);pt(-1,'#f4c542');
     for(let t=0;t<5;t++){pt(t,t%2?'#a9b4c2':'#d4dde6');ctx.fillStyle='#6f7886';ctx.fillRect(Math.round(sx+ux*t-uy),Math.round(sy+uy*t+ux),1,1)}pt(5,'#ffffff');lights.push([Math.round(sx),Math.round(sy),18,GLW.white])}
   else if(P.orbPts)for(const [ox,oy] of P.orbPts){const sx=Math.round(ox-camX),sy=Math.round(oy-camY);ctx.fillStyle='#2a6ad8';ctx.fillRect(sx-3,sy-2,6,4);ctx.fillRect(sx-2,sy-3,4,6);ctx.fillStyle='#bfe6ff';ctx.fillRect(sx-1,sy-1,2,2);lights.push([sx,sy,28,L_BLUE])}
+  });
   for(const z of zones){const sx=Math.round(z.x-camX),sy=Math.round(z.y-camY);if(z.ic){ctx.drawImage(SHADOW,sx-7,sy-2,14,4);drawIc(z.ic,sx,sy-9+Math.round(Math.sin(G.t*3)),0,1.1);continue}ctx.fillStyle='#4e2f1c';ctx.fillRect(sx,sy-22,1,22);ctx.fillStyle='#f4f0e8';ctx.fillRect(sx+1,sy-22,7,6);ctx.fillStyle=z.el&&z.el!=='light'?ELC[z.el][0]:'#f4c542';ctx.fillRect(sx+3,sy-20,2,2)}
   for(const m of meteors){const k=m.t/m.T;if(m.st==='quake')continue;if(m.ic){const fall=m.st==='arrow'?120:110,dx=m.st?0:k*40,sx=m.x-camX+dx,sy=m.y-camY-k*fall;drawIc(m.ic,sx,sy,m.st?0:G.t*6,m.st==='arrow'?.6:.95);lights.push([sx,sy,26,elLight(m.el||'fire')]);continue}if(m.st==='sun'){const sx=Math.round(m.x-camX),sy=Math.round(m.y-camY),c=ELC[m.el||'light'];ctx.globalAlpha=.25+.55*(1-k);ctx.fillStyle=c[0];ctx.fillRect(sx-2,0,5,sy);ctx.globalAlpha=.6*(1-k);ctx.fillStyle=c[1];ctx.fillRect(sx-1,0,2,sy);ctx.globalAlpha=1;lights.push([sx,sy,30,elLight(m.el)]);continue}
     if(m.st==='arrow'){const sx=Math.round(m.x-camX),sy=Math.round(m.y-camY-m.t/m.T*120);ctx.fillStyle='#b8884e';ctx.fillRect(sx,sy-6,1,6);ctx.fillStyle=ELC[m.el||'neutral'][m.el==='wind'||!m.el?1:0];ctx.fillRect(sx,sy,1,2);continue}
@@ -3128,6 +3181,570 @@ openFuse=function(){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;
   fuseUI(P.slots,(i,j)=>{const keep=fuseMerge(P.slots,i,j);if(!P.slots[P.active].length)P.active=keep;G.runLinks++;buildSlots();exitRift()});
   $('#fusem').classList.remove('hidden');sfx('level')};
 
+/* ================= COOPERATIVO: hasta 4 jugadores en una sala =================
+   El anfitrión (jugador 1) simula toda la partida; los invitados (2-4) mandan su posición y sus
+   elecciones y reciben ~20 fotos por segundo de lo que tienen alrededor. Para simular a cada
+   invitado en el anfitrión se intercambia el contenido de P, ST, G.char y PET con el suyo. */
+const CO={run:false,role:null,me:1,cur:1,sw:false,ps:{},ids:[1],hc:null,peer:null,code:'',ui:'idle',msg:'',mode:'coop',room:[],
+  seed:0,noEnd:0,noSep:0,pendEnd:null,lv:{},gl:null,fz:new Set(),fzH:false,ens:new Map(),nid:0,snapT:0,posT:0,psq:0,snd:[],
+  actT:0,hs:'play',wn:'',spd:60,sig:'',bsig:'',remoteEnd:0,allPk:null,waitTxt:'',hpm:1.5,mytp:0,rt:null,fuseAt:0,pendRift:false};
+const CO_PRE='aranuaclub-',CO_COL=['','#ffd04a','#d8a8ff','#7ae0ff','#8aff8a'];
+function coMax(){return CO.mode==='duel'?2:4}
+function coOth(){for(const k in CO.ps){const i=+k;if(i!==CO.me)return i}return CO.me===1?2:1}
+function coSlot(i){return CO.ps[i]||(CO.ps[i]={o:{x:0,y:0,hp:1,maxHp:1,slots:[[],[],[],[]],atk:{},buffs:{}},st:{},ch:0,pet:{x:0,y:0,anim:0,face:1,t:0,lg:null,mv:false},name:'',c:0,pSent:0,moSent:0})}
+// atajos para el modo de 2 jugadores (Duelo): "el otro"
+Object.defineProperties(CO,{
+  o:{get(){const s=CO.ps[coOth()];return s?s.o:null},set(v){coSlot(coOth()).o=v}},
+  ost:{get(){const s=CO.ps[coOth()];return s?s.st:null},set(v){coSlot(coOth()).st=v}},
+  ochar:{get(){const s=CO.ps[coOth()];return s?s.ch:0},set(v){coSlot(coOth()).ch=v}},
+  opet:{get(){const s=CO.ps[coOth()];return s?s.pet:null},set(v){coSlot(coOth()).pet=v}},
+  pn:{get(){const s=CO.ps[coOth()];return s?s.name:''},set(v){coSlot(coOth()).name=v}},
+  pc:{get(){const s=CO.ps[coOth()];return s?s.c:0}},
+  conn:{get(){if(CO.role==='guest')return CO.hc;for(const k in CO.ps)if(CO.ps[k].conn)return CO.ps[k].conn;return null}}});
+function coName(i){return i===CO.me?SAVE.name:(CO.ps[i]&&CO.ps[i].name)||'Socio'}
+function coOthers(){return CO.ids.filter(i=>i!==CO.me&&CO.ps[i])}
+// intercambia al jugador de esta pantalla con el jugador i (y al revés)
+function coSwapI(i){const S=CO.ps[i];const a=Object.assign({},P);for(const k in P)delete P[k];Object.assign(P,S.o);S.o=a;
+  const s=ST;ST=S.st;S.st=s;const c=G.char;G.char=S.ch;S.ch=c;const pe=Object.assign({},PET);Object.assign(PET,S.pet);S.pet=pe;
+  CO.cur=CO.cur===CO.me?i:CO.me;CO.sw=CO.cur!==CO.me;setOrbsStyle()}
+function coSwap(){coSwapI(coOth())}
+// ejecuta fn con el jugador i como P
+function coWith(i,fn){if(i===CO.cur){fn();return}const back=CO.cur;if(back!==CO.me)coSwapI(back);if(i!==CO.me)coSwapI(i);
+  try{fn()}finally{if(i!==CO.me)coSwapI(i);if(back!==CO.me)coSwapI(back)}}
+const COAR={get projs(){return projs},set projs(v){projs=v},get zones(){return zones},set zones(v){zones=v},get meteors(){return meteors},set meteors(v){meteors=v},get wfx(){return wfx},set wfx(v){wfx=v}};
+const COK=['projs','zones','meteors','wfx'];
+// igual, pero fn solo ve los proyectiles/zonas/efectos de ese jugador (y los nuevos quedan marcados como suyos)
+function coRun(o,fn){coWith(o,()=>{const keep={};
+  for(const k of COK){const m=[],r=[];for(const x of COAR[k])((x.ow||1)===o?m:r).push(x);keep[k]=r;COAR[k]=m}
+  try{fn()}finally{for(const k of COK){const m=COAR[k];for(const x of m)x.ow=o;COAR[k]=keep[k].concat(m)}}})}
+function coPl(i){return i===CO.me?P:CO.ps[i].o}
+function coAlive(){return CO.ids.filter(i=>!coPl(i).down)}
+function coNear(x,y){let b=CO.me,bd=1e18;for(const i of CO.ids){const p=coPl(i);if(p.down)continue;const d=dist2(x,y,p.x,p.y);if(d<bd){bd=d;b=i}}return b}
+
+/* ---------- simulación en el anfitrión ---------- */
+function coInput(){let mx=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),my=(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0);
+  if(G.padMove){mx=G.padMove[0];my=G.padMove[1]}
+  if(joy.on&&(Math.abs(joy.dx)>.08||Math.abs(joy.dy)>.08)){mx=joy.dx;my=joy.dy}
+  const ml=Math.hypot(mx,my);if(ml>1){mx/=ml;my/=ml}return [mx,my,ml]}
+function coMove(dt,spd){const [mx,my,ml]=coInput();P.moving=ml>.05;if(P.moving){const mm=Math.hypot(mx,my)||1;P.dirx=mx/mm;P.diry=my/mm;P.x+=mx*spd*dt;P.y+=my*spd*dt;P.anim+=dt*8;if(Math.abs(mx)>.1)P.face=mx>0?1:-1;if(frameN%6===0)parts.push(mkPart(P.x+rand(-3,3),P.y+10,rand(-8,8),-5,.35,'#6b5a40',1))}}
+function coRegen(dt){if(P.inv>0)P.inv-=dt;if(!P.down&&ST.reg>0&&P.hp<P.maxHp){P.regenAcc+=ST.reg*dt;if(P.regenAcc>=1){P.hp=Math.min(P.maxHp,P.hp+Math.floor(P.regenAcc));P.regenAcc%=1}}}
+function coEnemies(dt){const all=enemies,grp={};for(const e of all){const o=coNear(e.x,e.y);(grp[o]||(grp[o]=[])).push(e)}let first=true;const add=[];
+  for(const i of CO.ids){const g=grp[i];if(!g)continue;const n=g.length;CO.noSep=first?0:1;first=false;
+    try{coWith(i,()=>{enemies=g;try{updateEnemies(dt)}finally{enemies=all}})}finally{CO.noSep=0}for(const e of g.slice(n))add.push(e)}
+  for(const e of add)all.push(e)}
+function coHaz(dt){for(const i of coOthers())coWith(i,()=>{if(P.down)return;for(const h of hazards){if(dist2(h.x,h.y,P.x,P.y)>=h.r*h.r)continue;
+  if(h.delay>0){if(h.delay-dt<=0)hurtPlayer(h.dmg,h.el,'m')}else{const k='t'+i;h[k]=(h[k]||0)-dt;if(h[k]<=0){h[k]=.5;hurtPlayer(h.dmg,h.el,'p')}}}});updateHazards(dt)}
+function coPickups(dt){const all=pickups,grp={};CO.allPk=all;
+  for(const p of all){if(p.got)continue;const o=p.mag&&p.mo&&CO.ps[p.mo]!==undefined&&!coPl(p.mo).down||p.mag&&p.mo===CO.me&&!P.down?p.mo:coNear(p.x,p.y);(grp[o]||(grp[o]=[])).push(p)}
+  let out=[];try{for(const i of CO.ids){const g=grp[i];if(!g)continue;coWith(i,()=>{pickups=g;updatePickups(dt);for(const p of pickups)if(p.mag&&!p.mo)p.mo=i;out=out.concat(pickups)})}}
+  finally{pickups=out;CO.allPk=null}}
+function coRevive(dt){for(const di of CO.ids){const d=coPl(di);if(!d.down)continue;
+  const near=CO.ids.some(hi=>hi!==di&&!coPl(hi).down&&dist2(d.x,d.y,coPl(hi).x,coPl(hi).y)<28*28);
+  if(near){d.rv=(d.rv||0)+dt;if(frameN%5===0)parts.push(mkPart(d.x+rand(-7,7),d.y-2,0,-22,.6,'#9fff9f',1))}else d.rv=Math.max(0,(d.rv||0)-dt*.5);
+  if(d.rv>=3){d.down=false;d.rv=0;d.hp=Math.round(d.maxHp*.4);d.inv=2;sfx('level');toast('¡'+coName(di).toUpperCase()+' VUELVE A LA FIESTA!',1);
+    for(let k=0;k<16;k++){const a=k/16*6.283;parts.push(mkPart(d.x,d.y-4,Math.cos(a)*40,Math.sin(a)*40-20,.6,'#9fff9f',2))}}}}
+function coUpdate(dt){frameN++;G.t+=dt;genBudget=1;
+  if(G.state!=='play')return;
+  G.time+=dt;
+  if(!P.down)coMove(dt,ST.spd);else P.moving=false;
+  for(const i of CO.ids)coWith(i,()=>coRegen(dt));
+  if(frameN%20===0){const [b,,e]=bioInfo(P.x,P.y);if(b!==G.bio&&e>40){if(G.bio!==null)toast(BIO[b].name.toUpperCase(),1);G.bio=b}}
+  const al=coAlive(),dc=al.length?pick(al):CO.me;
+  if(!G.inRift){coWith(dc,()=>director(dt));coWith(dc,()=>riftDirector(dt));for(const i of CO.ids)coWith(i,spawnBarrels);
+    if(G.portal&&(CO.pendRift||al.some(i=>{const p=coPl(i);return dist2(G.portal.x,G.portal.y,p.x,p.y)<14*14})))coEnterRift()}
+  else for(const i of CO.ids)coWith(i,clampRift);
+  buildGrid();coEnemies(dt);
+  for(const i of CO.ids){if(!coPl(i).down)coRun(i,()=>updateAttacks(dt));else coPl(i).orbPts=null}
+  for(const i of CO.ids)coRun(i,()=>updateBuffs(dt));
+  coRun(CO.me,()=>updateProjs(dt));
+  for(const i of coOthers())coRun(i,()=>{if(!P.down)for(const p of eprojs)if(p.life>0&&dist2(p.x,p.y,P.x,P.y-6)<49){hurtPlayer(p.dmg,p.el,p.dt);p.life=0}const ep=eprojs;eprojs=[];try{updateProjs(dt)}finally{eprojs=ep}});
+  for(const i of CO.ids)coRun(i,()=>updateWfx(dt));
+  coHaz(dt);updateIntro(dt);
+  prune(enemies,e=>!e.dead);coPickups(dt);updateParts(dt);
+  if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25);
+  for(const i of CO.ids){const p=coPl(i);if(p.pendingLv>6)p.pendingLv=6}
+  coRevive(dt);
+  if(CO.pendEnd!==null){const v=CO.pendEnd;CO.pendEnd=null;endRun(v);return}
+  if(CO.ids.every(i=>coPl(i).down)){endRun(false);return}
+  if(CO.fuseAt&&G.t>=CO.fuseAt&&G.state==='play'&&G.inRift){CO.fuseAt=0;openFuse();return}
+  if(G.state==='play'&&P.pendingLv>0)openLevelUp();else if(G.state==='play'&&G.pendingRelic){G.pendingRelic=0;offerRelic()}}
+// mejoras de los invitados: se eligen en su pantalla y se aplican aquí
+function coGuestLvl(){if(!CO.run||CO.role!=='host')return;if(G.state!=='play'&&G.state!=='levelup')return;
+  for(const i of coOthers()){if(CO.lv[i])continue;if(coPl(i).pendingLv>0){coSendOpts(i);if(G.state==='play')G.state='levelup'}}}
+function coSendOpts(i){let inf=[];coWith(i,()=>{const opts=buildOptions();CO.lv[i]=opts;inf=opts.map(o=>{const f=optInfo(o);return{icon:f.icon,name:f.name,tag:f.tag,cls:f.cls||'',desc:f.desc}})});coSendTo(i,{t:'lvl',o:inf,rr:G.rerolls})}
+function coApplyPick(i,k){const opts=CO.lv[i];if(!opts)return;const o=opts[k];if(!o)return;delete CO.lv[i];
+  coWith(i,()=>{if(o.t==='new'){P.atk[o.id]={lvl:1,cd:0};const fs=freeSlot();if(fs>=0){P.slots[fs]=[o.id];P.active=fs}}else if(o.t==='up')P.atk[o.id].lvl++;else if(o.t==='pas')P.pas[o.id]=(P.pas[o.id]||0)+1;else if(o.t==='heal')heal(P.maxHp*.5);else G.gold+=40;
+    calcStats();P.pendingLv--;P.inv=Math.max(P.inv,.6)});
+  if(coPl(i).pendingLv>0){coSendOpts(i);return}coMaybeResume()}
+function coMaybeResume(){if(Object.keys(CO.lv).length)return;if(G.state==='levelup'&&$('#lvl').classList.contains('hidden')){G.state='play';P.inv=Math.max(P.inv,.6)}}
+
+/* ---------- fotos de la partida (anfitrión → invitados) ---------- */
+const coR=v=>Math.round(v*100)/100;
+function coPlain(o){const r={};for(const k in o){const v=o[k],t=typeof v;if(t==='number')r[k]=coR(v);else if(t==='string'||t==='boolean')r[k]=v;else if(k==='pts'&&Array.isArray(v))r[k]=v.map(q=>[Math.round(q[0]),Math.round(q[1])])}return r}
+function coNearList(arr,x,y,R,max){const R2=R*R,out=[];for(const o of arr){if(o.x===undefined||dist2(o.x,o.y,x,y)<R2){out.push(coPlain(o));if(out.length>=max)break}}return out}
+function coPData(p,st,ci,pet){return {x:coR(p.x),y:coR(p.y),hp:Math.ceil(p.hp),maxHp:p.maxHp,lvl:p.lvl,xp:coR(p.xp),xpNext:p.xpNext,inv:coR(p.inv),face:p.face,moving:!!p.moving,anim:coR(p.anim||0),pendingLv:p.pendingLv,
+  slots:p.slots,active:p.active,atk:Object.fromEntries(Object.entries(p.atk).map(([k,a])=>[k,{lvl:a.lvl,cd:coR(a.cd||0),cdMax:coR(a.cdMax||0)}])),buffs:p.buffs,pas:p.pas,relic:p.relic,
+  orbPts:p.orbPts?p.orbPts.map(q=>[Math.round(q[0]),Math.round(q[1]),coR(q[2])]):null,shield:p.shield?coPlain(p.shield):null,dash:p.dash?coPlain(p.dash):null,
+  down:!!p.down,rv:coR(p.rv||0),tp:p.tp||0,ob:p.ob||{},shr:p.shr||null,dirx:p.dirx,diry:p.diry,c:CHARS[ci].id,spd:st.spd||60,lg:pet.lg?{x:Math.round(pet.lg.x),y:Math.round(pet.lg.y),t:coR(pet.lg.t)}:null}}
+function coWaitNames(){const n=[];if(G.state==='levelup'){if(!$('#lvl').classList.contains('hidden'))n.push(SAVE.name);for(const k in CO.lv)n.push(coName(+k))}
+  else if(G.state==='fuse'){if(!CO.fzH)n.push(SAVE.name);for(const k of CO.fz)n.push(coName(k))}else if(G.state==='paused'||G.state==='relic')n.push(SAVE.name);return n.join(', ')}
+function coSnap(gi){const S=CO.ps[gi],gx=S.o.x,gy=S.o.y,R=440,R2=340;
+  const ens=[];for(const e of enemies){if(e.dead)continue;if(e!==G.boss&&(ens.length>=260||dist2(e.x,e.y,gx,gy)>R*R))continue;
+    ens.push([e.nid,e.type,Math.round(e.x),Math.round(e.y),(e.face<0?1:0)|(e.flash>0?2:0)|(e.slowT>0?4:0)|(e.elite?8:0)|(e.big?16:0)|(e.pet?32:0),Math.round(clamp(e.hp/e.maxHp,0,1)*1000)])}
+  const np=[];for(const p of parts)if(p.sq>S.pSent&&np.length<160&&dist2(p.x,p.y,gx,gy)<R2*R2)np.push([Math.round(p.x),Math.round(p.y),Math.round(p.vx),Math.round(p.vy),coR(p.life),coR(p.max),p.col,p.s]);S.pSent=CO.psq;
+  let mo=[];if(G.mapObjs&&G.mapObjs.size>S.moSent){mo=[...G.mapObjs].slice(S.moSent);S.moSent=G.mapObjs.size}
+  const pl={};for(const i of CO.ids){if(i===CO.me)pl[i]=coPData(P,ST,G.char,PET);else{const T=CO.ps[i];pl[i]=coPData(T.o,T.st,T.ch,T.pet)}}
+  return{t:'s',g:{st:G.state,wn:coWaitNames(),time:coR(G.time),kills:G.kills,gold:G.gold,bossDmg:Math.round(G.bossDmg),act2At:G.act2At,runKing:G.runKing,runDemon:G.runDemon,shake:coR(G.shake),intro:G.intro?{t:coR(G.intro.t)}:null,ir:!!G.inRift,po:G.portal?{x:Math.round(G.portal.x),y:Math.round(G.portal.y)}:null,rt:G.inRift?CO.rt:null},
+    e:ens,bs:G.boss&&!G.boss.dead?G.boss.nid:0,pr:coNearList(projs,gx,gy,R2,260),ep:coNearList(eprojs,gx,gy,R2,160),fx:coNearList(fx,gx,gy,R2,120),me:coNearList(meteors,gx,gy,R2,60),
+    zo:coNearList(zones,gx,gy,R2,40),wf:coNearList(wfx,gx,gy,R2,60),pk:coNearList(pickups,gx,gy,R2,260),hz:coNearList(hazards,gx,gy,R2,80),tx:coNearList(texts,gx,gy,R2,80),
+    pl,sh:typeof SHR!=='undefined'?SHR.map(q=>({id:q.id,x:Math.round(q.x),y:Math.round(q.y),cd:coR(q.cd),ph:coR(q.ph)})):[],np,mo,snd:CO.snd}}
+function coHostNet(dt){CO.snapT-=dt;if(CO.snapT<=0&&CO.run){CO.snapT=G.state==='play'?.05:.2;for(const i of coOthers())coSendTo(i,coSnap(i));CO.snd=[]}}
+
+/* ---------- invitado ---------- */
+function coApply(s){const g=s.g;CO.hs=g.st;CO.wn=g.wn||'';Object.assign(G,{time:g.time,kills:g.kills,gold:g.gold,bossDmg:g.bossDmg,act2At:g.act2At,runKing:g.runKing,runDemon:g.runDemon,intro:g.intro,inRift:g.ir,portal:g.po});if(g.rt)CO.rt=g.rt;G.shake=Math.max(G.shake,g.shake);
+  const M=CO.ens,seen=new Set(),arr=[];
+  for(const q of s.e){let e=M.get(q[0]);const t=q[1]==='hboss'?coRiftT():ET[q[1]];if(!t)continue;
+    if(!e){const el=!!(q[4]&8);e={nid:q[0],type:q[1],t,x:q[2],y:q[3],elite:el,big:!!(q[4]&16),sc:(t.sc||1)*(el?1.3:1),seed:(q[0]*37.7)%100,r:t.r*(el?1.3:1),maxHp:1000,hp:1000,dead:false,face:1,flash:0,slowT:0};e.set=SPR[t.spr+(el?'E':'')]||SPR[t.spr];if(q[4]&32)e.pet={x:q[2]-20,y:q[3]+8,face:1,anim:0,mv:false,lg:null,bit:false};M.set(q[0],e)}
+    e.tx=q[2];e.ty=q[3];e.face=q[4]&1?-1:1;e.flash=q[4]&2?.06:0;e.slowT=q[4]&4?.1:0;e.hp=q[5];seen.add(q[0]);arr.push(e)}
+  for(const k of [...M.keys()])if(!seen.has(k))M.delete(k);enemies=arr;G.boss=s.bs?M.get(s.bs)||null:null;
+  if(s.sh&&typeof SHR!=='undefined')SHR=s.sh;projs=s.pr;eprojs=s.ep;fx=s.fx;meteors=s.me;zones=s.zo;wfx=s.wf;pickups=s.pk;hazards=s.hz;texts=s.tx;
+  for(const q of s.np)parts.push({x:q[0],y:q[1],vx:q[2],vy:q[3],life:q[4],max:q[5],col:q[6],s:q[7]});
+  if(G.mapObjs)for(const k of s.mo)G.mapObjs.add(k);
+  for(const n of s.snd)if(n!=='hurt'&&n!=='die')sfx(n);
+  CO.ids=Object.keys(s.pl).map(Number).sort();
+  for(const k in s.pl){const i=+k;if(i===CO.me)continue;const ot=s.pl[k],S=coSlot(i),o=S.o,px=o.x,py=o.y;Object.assign(o,ot);o.tx=ot.x;o.ty=ot.y;if(px!==undefined&&Math.hypot(px-ot.x,py-ot.y)<150){o.x=px;o.y=py}
+    const ci=CHARS.findIndex(c=>c.id===ot.c);if(ci>=0)S.ch=ci;if(ot.lg&&ot.lg.t>.25&&!S.pet.lg)S.pet.lg=ot.lg}
+  for(const k in CO.ps)if(!s.pl[k])delete CO.ps[k];
+  const me=s.pl[CO.me];if(!me)return;const k={x:P.x,y:P.y,face:P.face,moving:P.moving,anim:P.anim,dirx:P.dirx,diry:P.diry,active:P.active},wasDown=!!P.down,hp0=P.hp;
+  const lg=me.lg;delete me.lg;Object.assign(P,me);if(lg&&lg.t>.25&&!PET.lg)PET.lg=lg;
+  const tpd=(me.tp||0)!==(CO.mytp||0);CO.mytp=me.tp||0;
+  if(!(me.dash||me.down||wasDown||tpd))Object.assign(P,{x:k.x,y:k.y,face:k.face,moving:k.moving,anim:k.anim,dirx:k.dirx,diry:k.diry});
+  if(G.t<CO.actT)P.active=k.active;CO.spd=me.spd;{const ci=CHARS.findIndex(c=>c.id===me.c);if(ci>=0&&ci!==G.char){G.char=ci;setOrbsStyle();drawPortrait($('#portrait'));CO.sig=''}}
+  if(P.hp<hp0&&!me.down){VIGN.classList.add('hit');clearTimeout(coApply.t);coApply.t=setTimeout(()=>VIGN.classList.remove('hit'),180);sfx('hurt')}
+  if(me.down&&!wasDown){sfx('die');toast('¡TE HAS QUEDADO FRITO! TUS COLEGAS PUEDEN REANIMARTE',1)}
+  const sig=JSON.stringify([P.slots,P.active,Object.keys(P.atk).map(id=>id+P.atk[id].lvl)]);if(sig!==CO.sig){CO.sig=sig;buildSlots()}
+  const bs=Object.keys(P.buffs).join();if(bs!==CO.bsig){CO.bsig=bs;buildBuffHud()}}
+function coGuestUpdate(dt){frameN++;G.t+=dt;genBudget=1;
+  const can=G.state==='play'&&CO.hs==='play'&&!P.down&&!P.dash&&P.ds!==2;
+  if(can)coMove(dt,CO.spd*(P.ds===1?.6:1));else P.moving=false;
+  if(G.inRift){const dx=P.x-RC.x,dy=P.y-RC.y,d=Math.hypot(dx,dy);if(d>RC.r-10){P.x=RC.x+dx/d*(RC.r-10);P.y=RC.y+dy/d*(RC.r-10)}}
+  if(P.inv>0)P.inv-=dt;
+  CO.posT-=dt;if(CO.posT<=0&&G.state!=='over'){CO.posT=1/30;coNet({t:'p',tp:CO.mytp||0,x:coR(P.x),y:coR(P.y),f:P.face,m:!!P.moving,a:coR(P.anim||0),dx:coR(P.dirx||1),dy:coR(P.diry||0)})}
+  if(CO.hs==='play'){const k=Math.min(1,dt*12);
+    for(const e of enemies){if(e.tx===undefined)continue;if(Math.abs(e.tx-e.x)>80||Math.abs(e.ty-e.y)>80){e.x=e.tx;e.y=e.ty}else{e.x+=(e.tx-e.x)*k;e.y+=(e.ty-e.y)*k}}
+    for(const p of projs)if(!(p.wait>0)&&p.vx!==undefined){p.x+=p.vx*dt;p.y+=p.vy*dt}for(const p of eprojs){p.x+=p.vx*dt;p.y+=p.vy*dt}for(const m of meteors)m.t=Math.max(.001,m.t-dt);
+    for(const i of coOthers()){const o=CO.ps[i].o;if(o.tx===undefined)continue;if(Math.hypot(o.tx-o.x,o.ty-o.y)>150){o.x=o.tx;o.y=o.ty}else{o.x+=(o.tx-o.x)*k;o.y+=(o.ty-o.y)*k}}
+    updateParts(dt)}
+  if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25)}
+function coGuestShowLvl(m){CO.gl=m.o;G.state='levelup';const box=$('#lvl-opts');box.innerHTML='';
+  m.o.forEach((inf,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<span class="k">[${i+1}]</span><img src="${inf.icon}" alt=""><b>${inf.name}</b><em class="${inf.cls||''}">${inf.tag}</em><p>${inf.desc}</p>`;b.onclick=()=>chooseOpt(i);box.appendChild(b)});
+  const r=$('#reroll');r.textContent=`↻ Volver a tirar (${m.rr}) [R]`;r.disabled=m.rr<=0;$('#pause').classList.add('hidden');$('#lvl').classList.remove('hidden');sfx('level');joy.on=false;joy.dx=joy.dy=0}
+
+/* ---------- conexión (PeerJS) ---------- */
+function coNet(m){if(CO.role==='guest'){if(CO.hc)CO.hc.send(m)}else for(const k in CO.ps){const c=CO.ps[k].conn;if(c)c.send(m)}}
+function coSendTo(i,m){const S=CO.ps[i];if(S&&S.conn)S.conn.send(m)}
+function coOpts(){const h=new URLSearchParams(location.search).get('peer');if(!h)return{debug:0};const [host,port]=h.split(':');return{host,port:+port||9000,path:'/',secure:false,debug:0}}
+function coLoadPeer(){if(window.Peer)return Promise.resolve();if(coLoadPeer.p)return coLoadPeer.p;return coLoadPeer.p=new Promise((ok,ko)=>{const s=document.createElement('script');s.src='https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';s.onload=ok;s.onerror=()=>{coLoadPeer.p=null;ko(new Error('net'))};document.head.appendChild(s)})}
+function coMkCode(n){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<(n||4);i++)s+=A[Math.floor(Math.random()*A.length)];return s}
+function coWrap(c){return{send:o=>{try{if(c.open&&!(c.dataChannel&&c.dataChannel.bufferedAmount>1e6))c.send(o)}catch(e){}},close:()=>{try{c.close()}catch(e){}},raw:c}}
+function coClose(){const p=CO.peer;if(CO.hc)CO.hc.close();for(const k in CO.ps)if(CO.ps[k].conn)CO.ps[k].conn.close();CO.hc=null;CO.peer=null;CO.ps={};CO.room=[];if(p)try{p.destroy()}catch(e){}clearTimeout(CO.jt)}
+function coRoster(){return[{i:1,n:SAVE.name,c:CHARS[G.char].id}].concat(Object.keys(CO.ps).map(Number).sort().map(i=>({i,n:CO.ps[i].name,c:CHARS[CO.ps[i].c]?CHARS[CO.ps[i].c].id:CHARS[0].id})))}
+function coBroadcastRoom(){if(CO.role!=='host')return;CO.room=coRoster();coNet({t:'room',pl:CO.room,code:CO.code,mode:CO.mode});coUi()}
+function coHost(){coClose();Object.assign(CO,{role:'host',me:1,cur:1,ids:[1],ui:'hosting',code:coMkCode(),msg:'Creando sala…'});CO.room=coRoster();coUi();
+  coLoadPeer().then(()=>{if(CO.ui!=='hosting')return;const p=new Peer(CO_PRE+CO.code.toLowerCase(),coOpts());CO.peer=p;
+    p.on('open',()=>{CO.msg='';coUi()});
+    p.on('connection',c=>{c.on('open',()=>{const w=coWrap(c);let idx=0;
+      c.on('data',m=>{try{if(!idx){if(m.t!=='hello')return;if(CO.run||Object.keys(CO.ps).length>=coMax()-1){w.send({t:'full'});setTimeout(()=>w.close(),300);return}
+          if((m.mode||'coop')!==CO.mode){w.send({t:'badmode',mode:CO.mode});setTimeout(()=>w.close(),300);return}
+          for(let k=2;k<=coMax();k++)if(!CO.ps[k]){idx=k;break}const S=coSlot(idx);S.conn=w;S.name=String(m.n||'Socio').slice(0,12);S.c=Math.max(0,CHARS.findIndex(x=>x.id===m.c));S.uid=m.uid;
+          w.send({t:'welcome',i:idx});sfx('coin');toast(S.name.toUpperCase()+' ENTRA EN LA SALA',1);coBroadcastRoom();return}
+        coOnHost(idx,m)}catch(e){logErr(e)}});
+      const gone=()=>{if(idx&&CO.ps[idx]&&CO.ps[idx].conn===w){const i=idx;idx=0;coPartnerLeft(i)}};c.on('close',gone);c.on('error',gone)})});
+    p.on('error',e=>{if(e.type==='unavailable-id'){coHost();return}if(Object.keys(CO.ps).length)return;CO.msg='Error de conexión ('+e.type+'). Vuelve a intentarlo.';coUi()});
+    p.on('disconnected',()=>{try{if(!p.destroyed)p.reconnect()}catch(e){}})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo crear la sala. ¿Tienes internet?';coUi()})}
+function coJoin(code){code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length!==4){CO.msg='El código tiene 4 letras o números.';coUi();return}
+  coClose();Object.assign(CO,{role:'guest',me:2,cur:2,code,ui:'joining',msg:'Conectando…'});coUi();
+  CO.jt=setTimeout(()=>{if(CO.ui==='joining'){coClose();CO.ui='idle';CO.msg='No se ha podido conectar. Comprobad el código y que tengáis internet.';coUi()}},15000);
+  coLoadPeer().then(()=>{const p=new Peer(coOpts());CO.peer=p;
+    p.on('open',()=>{const c=p.connect(CO_PRE+code.toLowerCase(),{reliable:true});
+      c.on('open',()=>{const w=coWrap(c);CO.hc=w;c.on('data',m=>{try{coOnGuest(m)}catch(e){logErr(e)}});const gone=()=>{if(CO.hc===w)coPartnerLeft(1)};c.on('close',gone);c.on('error',gone);
+        w.send({t:'hello',n:SAVE.name,c:CHARS[G.char].id,mode:CO.mode,uid:SAVE.uid})})});
+    p.on('error',e=>{if(CO.hc)return;coClose();CO.ui='idle';CO.msg=e.type==='peer-unavailable'?'No hay ninguna sala con ese código.':'Error de conexión ('+e.type+').';coUi()})}).catch(()=>{CO.ui='idle';CO.msg='No se pudo conectar. ¿Tienes internet?';coUi()})}
+function coLeave(){if(CO.role)coNet({t:'bye'});coClose();CO.run=false;CO.ui='idle';CO.role=null;CO.msg='';CO.ids=[CO.me];CO.lv={};CO.fz=new Set();const w=$('#cowait');if(w)w.classList.add('hidden')}
+// alguien se ha ido: en el anfitrión, el jugador i; en un invitado, el anfitrión (se cierra la sala)
+function coPartnerLeft(i){if(CO.role==='host')coPlayerLeft(i);else coHostLeft()}
+function coPlayerLeft(i){const S=CO.ps[i];if(!S)return;const nm=(S.name||'un colega').toUpperCase();if(S.conn)S.conn.close();
+  const swapped=CO.cur===i;if(swapped)coSwapI(i);delete CO.ps[i];CO.ids=CO.ids.filter(k=>k!==i);delete CO.lv[i];CO.fz.delete(i);
+  toast(nm+' SE HA IDO',1);coBroadcastRoom();
+  if(!CO.run)return;
+  if(CO.ids.length<2){CO.run=false;$('#cowait').classList.add('hidden');if(G.inRift&&G.state==='fuse'&&CO.fzH){CO.fzH=false;_coExitRift()}if(G.state==='levelup'&&$('#lvl').classList.contains('hidden'))G.state='play';if(P.down){P.down=false;P.hp=0;endRun(false)}return}
+  coMaybeResume();coTryExit();if(CO.ids.every(k=>coPl(k).down))endRun(false)}
+function coHostLeft(){if(!CO.hc)return;const was=CO.run,nm=(coName(1)||'El anfitrión').toUpperCase();coClose();CO.ui='idle';CO.role=null;CO.msg=nm+' ha cerrado la sala.';$('#cowait').classList.add('hidden');
+  if(!was){coUi();return}toast(nm+' HA CERRADO LA SALA',1);CO.run=false;CO.remoteEnd=1;try{endRun(false)}finally{CO.remoteEnd=0}}
+function coOnHost(i,m){const S=CO.ps[i];if(!S)return;const o=S.o;switch(m.t){
+  case'p':if(!CO.run||CO.cur!==CO.me)return;if(!o.dash&&!o.down&&(m.tp||0)===(o.tp||0)){o.x=m.x;o.y=m.y}o.face=m.f;o.moving=!!m.m&&!o.down;o.anim=m.a;o.dirx=m.dx;o.diry=m.dy;break;
+  case'slot':if(CO.run&&o.slots&&o.slots[m.i]&&o.slots[m.i].length)o.active=m.i;break;
+  case'pick':if(CO.run)coApplyPick(i,m.i);break;
+  case'rr':if(CO.run&&CO.lv[i]&&G.rerolls>0){G.rerolls--;coSendOpts(i)}break;
+  case'fz':if(CO.run)coFuseGot(i,m);break;
+  case'char':S.c=Math.max(0,CHARS.findIndex(x=>x.id===m.c));coBroadcastRoom();break;
+  case'bye':coPartnerLeft(i);break;
+  default:if(typeof duMsg==='function')duMsg(m)}}
+function coOnGuest(m){switch(m.t){
+  case'welcome':CO.me=m.i;CO.cur=m.i;CO.ui='joined';CO.msg='';clearTimeout(CO.jt);coUi();break;
+  case'room':CO.room=m.pl;for(const r of m.pl){if(r.i===CO.me)continue;const S=coSlot(r.i);S.name=r.n;S.c=Math.max(0,CHARS.findIndex(x=>x.id===r.c))}
+    for(const k in CO.ps)if(!m.pl.some(r=>r.i===+k))delete CO.ps[k];coUi();break;
+  case'full':CO.msg='La sala está llena o la partida ya ha empezado.';coLeave();CO.msg='La sala está llena o la partida ya ha empezado.';coUi();break;
+  case'badmode':coLeave();CO.msg=m.mode==='duel'?'Esa sala es de Duelo 3 contra 3.':'Esa sala es de Cooperativo.';coUi();break;
+  case'start':coStartGuest(m);break;
+  case's':if(CO.run)coApply(m);break;
+  case'lvl':if(CO.run)coGuestShowLvl(m);break;
+  case'fuse':if(CO.run)coGuestFuse();break;
+  case'over':if(!CO.run)return;Object.assign(G,m.g);CO.remoteEnd=1;try{endRun(m.v)}finally{CO.remoteEnd=0}break;
+  case'bye':coPartnerLeft(1);break;
+  default:if(typeof duMsg==='function')duMsg(m)}}
+function coStartHost(){if(CO.role!=='host')return;CO.seed=0;CO.run=false;
+  const gs=Object.keys(CO.ps).map(Number).sort();if(!gs.length)return;
+  startRun();
+  CO.ids=[1].concat(gs);CO.hpm=1+.25*CO.ids.length;
+  Object.assign(CO,{run:true,sw:false,cur:1,pendEnd:null,pendRift:false,fuseAt:0,fzH:false,fz:new Set(),rt:null,lv:{},snapT:0,snd:[]});
+  P.down=false;P.rv=0;P.tp=0;const base=JSON.stringify(P),off=[[0,0],[26,0],[-26,0],[0,24]];
+  for(const i of gs){const S=CO.ps[i];S.o=JSON.parse(base);S.o.x=off[i-1][0];S.o.y=off[i-1][1];S.st=Object.assign({},ST);S.pet={x:S.o.x,y:S.o.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};S.pSent=CO.psq;S.moSent=0;S.ch=S.c;
+    coWith(i,()=>{G.char=S.c;const gc=CHARS[G.char];Object.assign(P,{slots:[[gc.start],[],[],[]],active:0,atk:{[gc.start]:{lvl:1,cd:0}},pas:{},relic:null,buffs:{},orbPts:null,down:false,rv:0,dash:null,shield:null,ob:{},shr:null});P.maxHp=0;calcStats();P.hp=P.maxHp})}
+  const pl=CO.ids.map(i=>({i,n:coName(i),c:CHARS[i===1?G.char:CO.ps[i].ch].id}));
+  coNet({t:'start',seed:WORLD.seed,st:WORLD.start,pl});
+  $('#ov-retry').classList.remove('hidden');toast('¡SOBREVIVID JUNTOS!')}
+function coStartGuest(m){const mine=m.pl.find(r=>r.i===CO.me);const gi=mine?CHARS.findIndex(c=>c.id===mine.c):-1;if(gi>=0)G.char=gi;
+  CO.run=false;startRun();CO.seed=m.seed;newWorld(m.st);CO.seed=0;chunks.clear();
+  Object.assign(CO,{run:true,sw:false,cur:CO.me,mytp:0,rt:null,ens:new Map(),hs:'play',wn:'',sig:'',bsig:'',actT:0,gl:null});
+  const off=[[0,0],[26,0],[-26,0],[0,24]];CO.ids=m.pl.map(r=>r.i);
+  P.down=false;P.rv=0;P.x=off[CO.me-1][0];P.y=off[CO.me-1][1];
+  for(const r of m.pl){if(r.i===CO.me)continue;const S=coSlot(r.i);S.name=r.n;S.ch=Math.max(0,CHARS.findIndex(c=>c.id===r.c));S.o=JSON.parse(JSON.stringify(P));Object.assign(S.o,{x:off[r.i-1][0],y:off[r.i-1][1],tx:off[r.i-1][0],ty:off[r.i-1][1]});S.st={};S.pet={x:S.o.x,y:S.o.y+6,anim:0,face:1,t:G.t,lg:null,mv:false}}
+  $('#over').classList.add('hidden');toast('¡SOBREVIVID JUNTOS!')}
+
+/* ---------- enganches en el juego ---------- */
+{const _u=update;update=function(dt){if(CO.run&&CO.role==='host'){coUpdate(dt);if(G.state==='play'&&CO.run)coExtras(dt);coGuestLvl();coHostNet(dt);coHuds()}else if(CO.run&&CO.role==='guest'){coGuestUpdate(dt);coHuds()}else _u(dt);coWaitUi()}}
+// pilares y esferas de colores en cooperativo: cada jugador lleva las suyas
+function coExtras(dt){if(typeof updateShrines==='function'){updateShrines(dt);for(const i of coOthers())coWith(i,()=>shrTouch(dt))}if(typeof updateOrbs==='function')for(const i of CO.ids)coWith(i,()=>updateOrbs(dt))}
+function coHuds(){if(typeof orbZoom==='function'){orbZoom();orbHud()}if(typeof shrHud==='function')shrHud()}
+{const _h=hurtPlayer;hurtPlayer=function(dmg,el,dt){if(!CO.run)return _h(dmg,el,dt);if(P.down)return false;
+  const had=VIGN.classList.contains('hit');CO.noEnd=1;let r;try{r=_h(dmg,el,dt)}finally{CO.noEnd=0}if(CO.sw&&!had)VIGN.classList.remove('hit');return r}}
+{const _e=endRun;endRun=function(v){
+  if(CO.run&&CO.noEnd){P.hp=0;if(!P.down){Object.assign(P,{down:true,rv:0,orbPts:null,dash:null,shield:null,moving:false});toast(coName(CO.cur).toUpperCase()+' SE HA QUEDADO FRITO',1)}return}
+  if(CO.run&&CO.role==='host'){if(CO.sw){CO.pendEnd=v;return}CO.run=false;$('#cowait').classList.add('hidden');
+    coNet({t:'over',v:!!v,g:{time:G.time,kills:G.kills,gold:G.gold,bossDmg:G.bossDmg,runKing:G.runKing,runDemon:G.runDemon}})}
+  else if(CO.run&&CO.role==='guest'){CO.run=false;$('#cowait').classList.add('hidden');$('#lvl').classList.add('hidden');$('#fusem').classList.add('hidden');if(!CO.remoteEnd)coLeave()}
+  P.down=false;const r=_e(v);
+  const g=CO.role==='guest'&&!!CO.hc,h=CO.role==='host'&&Object.keys(CO.ps).length>0;$('#ov-retry').classList.toggle('hidden',g);$('#ov-retry').textContent=h?'Otra partida juntos':'Reintentar';
+  if(g)$('#ov-rec').textContent=(($('#ov-rec').textContent||'')+' Esperando a que '+coName(1)+' empiece otra partida…').trim();return r}}
+{const _o=offerRelic;offerRelic=function(){if(CO.sw){G.pendingRelic=1;return}return _o()}}
+{const _b=buildBuffHud;buildBuffHud=function(){if(CO.sw)return;return _b()}}
+{const _g=gainXp;gainXp=function(v){_g(v);if(CO.run&&CO.role==='host'){const cur=CO.cur;for(const i of CO.ids)if(i!==cur)coWith(i,()=>_g(v))}}}
+{const _s=spawnEnemy;spawnEnemy=function(t,x,y,o){const e=_s(t,x,y,o);e.nid=++CO.nid;if(CO.run&&!e.t.static){e.hp*=CO.hpm;e.maxHp=e.hp}return e}}
+{const _m=mkPart;mkPart=function(a,b,c,d,e,f,g){const p=_m(a,b,c,d,e,f,g);p.sq=++CO.psq;return p}}
+{const _s=sfx;sfx=function(n){if(CO.run&&CO.role==='host'&&CO.snd.length<10&&!CO.snd.includes(n))CO.snd.push(n);return _s(n)}}
+{const _u=useSphere;useSphere=function(id){_u(id);if(id==='magnet'&&CO.allPk)for(const p of CO.allPk)if(p.k==='gem'||p.k==='coin'||p.k==='item'||p.k==='sphere')p.mag=true}}
+{const _c=chooseOpt;chooseOpt=function(i){
+  if(CO.run&&CO.role==='guest'){if(G.state!=='levelup'||!CO.gl||!CO.gl[i])return;CO.gl=null;coNet({t:'pick',i});$('#lvl').classList.add('hidden');G.state='play';return}
+  if(CO.run&&CO.role==='host'&&$('#lvl').classList.contains('hidden'))return;
+  _c(i);if(CO.run&&CO.role==='host'&&G.state==='play'&&Object.keys(CO.lv).length)G.state='levelup'}}
+{const _r=reroll;reroll=function(){if(CO.run&&CO.role==='guest'){if(CO.gl)coNet({t:'rr'});return}if(CO.run&&$('#lvl').classList.contains('hidden'))return;_r()}}
+{const _s=selectSlot;selectSlot=function(i){_s(i);if(CO.run&&CO.role==='guest'&&P.slots[i]&&P.slots[i].length){CO.actT=G.t+.5;coNet({t:'slot',i})}}}
+{const _p=pauseGame;pauseGame=function(){_p();if(CO.run&&CO.role==='guest'){const q=$('#pause-info');if(q)q.insertAdjacentHTML('afterbegin','<span>Cooperativo</span><b class="small">La partida sigue para los demás</b>')}}}
+{const _sc=setChar;setChar=function(d){_sc(d);coCharChanged()}}
+function coCharChanged(){if(!CO.role||CO.run)return;if(CO.role==='host')coBroadcastRoom();else{coNet({t:'char',c:CHARS[G.char].id});coUi()}}
+// dibujo: los compañeros, sus nombres, KO y reanimación
+function coCamPos(){if(CO.run&&P.down){for(const i of coOthers()){const o=CO.ps[i].o;if(!o.down)return [o.x,o.y]}}return [P.x,P.y]}
+function coDual(fn){if(!CO.run){fn();return}const all=wfx,grp={};for(const w of all){const o=w.ow||1;(grp[o]||(grp[o]=[])).push(w)}
+  try{wfx=grp[CO.me]||[];if(!P.down)fn();for(const i of coOthers())coWith(i,()=>{wfx=grp[i]||[];if(!P.down)fn()})}finally{wfx=all}}
+{const _d=drawPlayer;drawPlayer=function(l){if(!CO.run)return _d(l);
+  const sx=Math.round(P.x-camX),sy=Math.round(P.y-camY),set=SPR[CHARS[G.char].spr],top=sy+11-set.H;
+  if(P.down){ctx.globalAlpha=.45;_d(l);ctx.globalAlpha=1;ctx.font='bold 8px monospace';ctx.textAlign='center';ctx.fillStyle='#000';ctx.fillText('KO',sx+1,top-3);ctx.fillStyle='#ff6a6a';ctx.fillText('KO',sx,top-4);
+    ctx.strokeStyle='rgba(0,0,0,.5)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(sx,sy,15,0,6.283);ctx.stroke();
+    if(P.rv>0){ctx.strokeStyle='#9fff9f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(sx,sy,15,-1.5708,-1.5708+6.283*Math.min(1,P.rv/3));ctx.stroke()}ctx.textAlign='left';return}
+  _d(l);const nm=coName(CO.cur);ctx.font='7px monospace';ctx.textAlign='center';ctx.fillStyle='rgba(0,0,0,.75)';ctx.fillText(nm,sx+1,top-4);ctx.fillStyle=CO_COL[CO.cur]||'#fff';ctx.fillText(nm,sx,top-5);ctx.textAlign='left'}}
+{const _rn=render;render=function(){_rn();if(!CO.run||MENUISH())return;
+  for(const i of coOthers()){const o=CO.ps[i].o;edgeMark(o,VIEW.w,VIEW.h,(ex,ey)=>{ctx.fillStyle='#000';ctx.fillRect(ex-4,ey-4,9,9);ctx.fillStyle=o.down?'#ff6a6a':CO_COL[i];ctx.fillRect(ex-3,ey-3,7,7);ctx.fillStyle='#fff';ctx.fillRect(ex-1,ey-1,3,3)})}}}
+{const _uh=updateHUD;updateHUD=function(dt){_uh(dt);if(!CO.run||MENUISH()||hudT!==.1)return;const S=90,R=320;
+  for(const i of coOthers()){const o=CO.ps[i].o,x=clamp((o.x-P.x)/R*S/2+S/2,2,S-2),y=clamp((o.y-P.y)/R*S/2+S/2,2,S-2);mm.fillStyle=o.down?'#ff6a6a':CO_COL[i];mm.fillRect(x-2,y-2,5,5)}}}
+// cartel de espera (pausa, mejoras y vínculos de los demás)
+function coWaitUi(){const w=$('#cowait');if(!w)return;let t='';
+  if(CO.run&&CO.role==='host'&&G.state==='levelup'&&Object.keys(CO.lv).length&&$('#lvl').classList.contains('hidden'))t='Esperando a que '+Object.keys(CO.lv).map(k=>coName(+k)).join(', ')+' elija mejora…';
+  else if(CO.run&&CO.role==='host'&&G.state==='fuse'&&$('#fusem').classList.contains('hidden'))t='Esperando a que '+[...CO.fz].map(coName).join(', ')+' elija vínculo…';
+  else if(CO.run&&CO.role==='guest'&&G.state==='play'&&CO.hs!=='play'){const n=CO.wn||'el resto';t=CO.hs==='levelup'?'Esperando a que '+n+' elija mejora…':CO.hs==='fuse'?'Esperando a que '+n+' elija vínculo…':CO.hs==='relic'?n+' ha encontrado un objeto…':CO.hs==='paused'?n+' ha pausado la partida':''}
+  else if(CO.run&&P.down)t=coOthers().some(i=>!CO.ps[i].o.down)?'Estás frito: un colega puede reanimarte quedándose a tu lado':'';
+  if(t!==CO.waitTxt){CO.waitTxt=t;w.textContent=t;w.classList.toggle('hidden',!t)}}
+
+/* ---------- menú Cooperativo: crear sala, entrar e invitar ---------- */
+MENU.splice(1,0,{id:'coop',name:'Cooperativo',sub:'Hasta 4 socios en la misma partida',icon:'swords'});
+{const _rs=renderSub;renderSub=function(){if(subId==='coop'){subCoop($('#sub-body'));return}_rs()}}
+{const _cs=closeSub;closeSub=function(){if(subId==='coop'&&G.state==='sub'&&!CO.run)coLeave();_cs()}}
+function coUi(){if(G.state==='sub'&&(subId==='coop'||subId==='duel'||subId==='friends'))renderSub()}
+function coShare(){const url=location.origin+location.pathname,txt='Únete a mi sala del Aranua Club ('+(CO.mode==='duel'?'Duelo':'Cooperativo')+'). Código: '+CO.code+' · '+url;
+  if(navigator.share)navigator.share({text:txt}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>toast('CÓDIGO COPIADO',1)).catch(()=>{})}
+function coRoomHtml(){const n=coMax(),rows=[];for(let i=1;i<=n;i++){const r=CO.room.find(x=>x.i===i);if(!r){rows.push(`<div class="co-pl empty"><span class="small">Hueco libre</span></div>`);continue}
+    const c=CHARS.find(x=>x.id===r.c)||CHARS[0],me=r.i===CO.me;
+    rows.push(`<div class="co-pl${me?' me':''}" style="border-color:${CO_COL[i]}"><canvas class="px" width="32" height="39" data-c="${c.id}"></canvas><div><b style="color:${CO_COL[i]}">${esc(r.n)}${i===1?' 👑':''}</b><span class="small">${me?'Tú · ':''}${c.name}</span></div>${me&&!CO.run?'<div class="co-chg"><button class="btn co-cp">‹</button><button class="btn co-cn">›</button></div>':''}</div>`)}
+  return`<div class="co-roomhead"><span>Sala</span><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="co-share" class="btn">📤 Compartir código</button></div><div class="co-pls">${rows.join('')}</div>`}
+function coBindRoom(B){const q=s=>B.querySelector(s);if(q('#co-share'))q('#co-share').onclick=coShare;
+  B.querySelectorAll('.co-pl canvas').forEach(c=>drawHeroTo(c,CHARS.find(x=>x.id===c.dataset.c)||CHARS[0],false,0));
+  if(q('.co-cp'))q('.co-cp').onclick=()=>{setChar(-1);sfx('pick')};if(q('.co-cn'))q('.co-cn').onclick=()=>{setChar(1);sfx('pick')};frBindInv(B)}
+function subCoop(B){const msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
+  if(CO.mode==='duel'&&CO.ui!=='idle'&&CO.role){h=`<p class="small">Ahora mismo estás en una sala de Duelo.</p><div class="mbtns"><button id="co-x" class="btn">Salir de esa sala</button></div>`}
+  else if(CO.ui==='hosting'){const n=Object.keys(CO.ps).length;h=coRoomHtml()+msg+frInvHtml()+
+      `<div class="mbtns"><button id="co-go" class="btn gold"${n?'':' disabled'}>▶ Empezar partida</button><button id="co-x" class="btn">Cerrar sala</button></div>${n?'':'<p class="small co-note">Invita a tus amigos o pásales el código. Podéis ser hasta 4.</p>'}`}
+  else if(CO.ui==='joining'){h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`}
+  else if(CO.ui==='joined'){h=coRoomHtml()+`<p class="co-wait">Esperando a que ${esc(coName(1))} empiece la partida…</p>${msg}${frInvHtml()}<div class="mbtns"><button id="co-x" class="btn">Salir de la sala</button></div>`}
+  else{h=`<p class="small">Crea una sala e invita a tus amigos desde dentro, o entra en la de un colega con su código. Podéis ser hasta 4 socios.</p>
+      <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tú empiezas la partida cuando estéis todos.</p><button id="co-host" class="btn gold">Crear sala</button></div>
+      <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de la sala.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="co-join" class="btn">Unirse</button></div></div>${msg}
+      <p class="small co-note">Las mejoras salen a la vez para todos, la experiencia se comparte y, si uno se queda frito, los demás pueden reanimarlo quedándose a su lado unos segundos. Los enemigos aguantan más cuantos más seáis.</p>`}
+  B.innerHTML=`<div class="coop">${h}</div>`;
+  const q=s=>B.querySelector(s);
+  if(q('#co-host'))q('#co-host').onclick=()=>{sfx('pick');CO.mode='coop';coHost()};
+  if(q('#co-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='coop';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#co-join').onclick=()=>{sfx('pick');CO.mode='coop';coJoin(i.value)}}
+  if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();coUi()};
+  if(q('#co-go'))q('#co-go').onclick=()=>{sfx('level');$('#sub').classList.add('hidden');subId=null;coStartHost()};
+  if(CO.ui==='hosting'||CO.ui==='joined')coBindRoom(B)}
+
+/* ---------- amigos: código propio, lista y avisos de invitación ---------- */
+if(!SAVE.uid){SAVE.uid=coMkCode(6);persist()}if(!SAVE.friends)SAVE.friends=[];
+const FR={peer:null,st:{},t:0,inv:null};
+function frId(u){return CO_PRE+'u-'+String(u).toLowerCase()}
+function frStart(){if(FR.peer&&!FR.peer.destroyed)return;coLoadPeer().then(()=>{if(FR.peer&&!FR.peer.destroyed)return;const p=new Peer(frId(SAVE.uid),coOpts());FR.peer=p;
+  p.on('connection',c=>c.on('data',m=>{try{frIn(c,m)}catch(e){logErr(e)}}));
+  p.on('error',e=>{if(e.type==='unavailable-id'||e.type==='network'||e.type==='server-error'){try{p.destroy()}catch(_){}FR.peer=null;setTimeout(frStart,20000)}});
+  p.on('disconnected',()=>{try{if(!p.destroyed)p.reconnect()}catch(e){}})}).catch(()=>setTimeout(frStart,30000))}
+function frBusy(){return CO.run||['play','levelup','fuse','relic','paused'].includes(G.state)}
+function frIn(c,m){if(m.t==='ping')c.send({t:'pong',n:SAVE.name,busy:frBusy()});
+  else if(m.t==='add'){frAdd(m.id,m.n);c.send({t:'pong',n:SAVE.name});toast(String(m.n||'Alguien').toUpperCase()+' TE HA AÑADIDO COMO AMIGO',1)}
+  else if(m.t==='inv'){if(frBusy()){c.send({t:'busy'});return}c.send({t:'ok'});frInvited(m)}}
+function frAsk(id,msg,ms){return new Promise(res=>{const p=FR.peer;if(!p||p.destroyed||!p.open){res(null);return}let done=false;let c;
+  const fin=v=>{if(done)return;done=true;clearTimeout(t);try{c&&c.close()}catch(e){}res(v)},t=setTimeout(()=>fin(null),ms||4500);
+  try{c=p.connect(frId(id),{serialization:'json',reliable:true})}catch(e){fin(null);return}c.on('open',()=>c.send(msg));c.on('data',d=>fin(d));c.on('error',()=>fin(null))})}
+function frAdd(id,n){id=String(id||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6||id===SAVE.uid)return false;const f=SAVE.friends.find(x=>x.id===id);
+  if(f){if(n)f.n=String(n).slice(0,12)}else SAVE.friends.push({id,n:String(n||('Socio '+id)).slice(0,12)});persist();coUi();return true}
+function frRefresh(force){if(!force&&Date.now()-FR.t<8000)return;FR.t=Date.now();if(!FR.peer){frStart();setTimeout(()=>frRefresh(true),2500);return}
+  for(const f of SAVE.friends){if(!FR.st[f.id])FR.st[f.id]='…';frAsk(f.id,{t:'ping',id:SAVE.uid,n:SAVE.name}).then(d=>{FR.st[f.id]=d?(d.busy?'busy':'on'):'off';if(d&&d.n&&d.n!==f.n){f.n=String(d.n).slice(0,12);persist()}coUi()})}}
+function frDot(id){const s=FR.st[id]||'…';return`<i class="fr-dot ${s==='on'?'on':s==='busy'?'busy':s==='off'?'off':''}"></i><span class="small">${s==='on'?'Conectado':s==='busy'?'Jugando':s==='off'?'Desconectado':'Comprobando…'}</span>`}
+// lista de amigos para invitar desde una sala
+function frInvHtml(){if(!CO.role)return'';const L=SAVE.friends;setTimeout(()=>frRefresh(false),0);const msg=FR.msg?`<p class="co-msg">${esc(FR.msg)}</p>`:'';
+  return`<div class="fr-inv co-box"><b>👥 Invitar amigos</b>${L.length?L.map(f=>{const s=FR.st[f.id],inRoom=CO.room.some(r=>r.n===f.n);
+    return`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span>${frDot(f.id)}<button class="btn gold fr-go" data-id="${f.id}"${s==='on'&&!inRoom?'':' disabled'}>${inRoom?'En la sala':'Invitar'}</button></div>`}).join(''):'<p class="small">Aún no tienes amigos añadidos. Escribe el código de amigo de un colega para añadirlo (lo ve en el menú <b>Amigos</b>):</p>'}
+    <div class="fr-add"><input id="fr-icode" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="fr-iadd" class="btn">+ Añadir</button></div>${msg}
+    <p class="small co-note">Tu código de amigo: <b style="color:#ffd04a;letter-spacing:.15em">${SAVE.uid}</b></p></div>`}
+function frAddCode(raw){const id=String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6){FR.msg='El código de amigo tiene 6 letras o números.';coUi();return}if(id===SAVE.uid){FR.msg='Ese es tu propio código.';coUi();return}
+  FR.msg='Buscando…';coUi();frAsk(id,{t:'add',id:SAVE.uid,n:SAVE.name}).then(d=>{frAdd(id,d&&d.n);FR.st[id]=d?(d.busy?'busy':'on'):'off';FR.msg=d?'¡'+d.n+' añadido!':'Añadido. Saldrá su nombre la próxima vez que esté conectado.';sfx('level');coUi()})}
+function frBindInv(B){B.querySelectorAll('.fr-go').forEach(b=>b.onclick=()=>{const id=b.dataset.id;b.disabled=true;b.textContent='Enviando…';
+  frAsk(id,{t:'inv',code:CO.code,mode:CO.mode,n:SAVE.name}).then(d=>{b.textContent=d&&d.t==='ok'?'¡Invitado!':d&&d.t==='busy'?'Está jugando':'No responde';setTimeout(()=>{b.disabled=false;b.textContent='Invitar'},4000)})});
+  const i=B.querySelector('#fr-icode');if(i){i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')frAddCode(i.value)};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};B.querySelector('#fr-iadd').onclick=()=>frAddCode(i.value)}}
+function frInvited(m){FR.inv=m;let el=document.getElementById('invm');if(!el){el=document.createElement('div');el.id='invm';el.className='modal';document.body.appendChild(el)}
+  el.innerHTML=`<div class="mbox panel"><h2>¡TE INVITAN!</h2><p><b style="color:#ffd04a">${esc(String(m.n||'Un socio'))}</b> te invita a su sala de <b>${m.mode==='duel'?'Duelo 3 contra 3':'Cooperativo'}</b>.</p><div class="mbtns"><button id="inv-ok" class="btn gold">Entrar</button><button id="inv-no" class="btn">Ahora no</button></div></div>`;
+  el.classList.remove('hidden');sfx('level');
+  el.querySelector('#inv-no').onclick=()=>{el.classList.add('hidden');FR.inv=null};
+  el.querySelector('#inv-ok').onclick=()=>{el.classList.add('hidden');if(frBusy())return;if(CO.role)coLeave();CO.mode=m.mode==='duel'?'duel':'coop';
+    if(G.state==='title')goMain();if(G.state==='sub')closeSub();if(CO.mode==='duel'&&typeof DU!=='undefined'){DU.ph='pick';DU.ready=false;DU.opp=null}openSub(CO.mode==='duel'?'duel':'coop');coJoin(m.code)}}
+MENU.splice(3,0,{id:'friends',name:'Amigos',sub:'Tu código y tu lista de amigos',icon:'heart'});
+{const _rs=renderSub;renderSub=function(){if(subId==='friends'){subFriends($('#sub-body'));return}_rs()}}
+function subFriends(B){frRefresh(false);const L=SAVE.friends,msg=FR.msg?`<p class="co-msg">${esc(FR.msg)}</p>`:'';
+  B.innerHTML=`<div class="coop fr"><div class="co-box"><b>Tu código de amigo</b><div class="co-code">${SAVE.uid.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="fr-share" class="btn">📤 Compartir mi código</button></div>
+    <div class="co-box"><b>Añadir amigo</b><p class="small">Escribe su código de amigo (6 letras o números).</p><div class="fr-add"><input id="fr-code" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="fr-addb" class="btn gold">Añadir</button></div>${msg}</div>
+    <div class="co-box"><b>Tus amigos (${L.length})</b>${L.length?L.map(f=>`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span><span class="small fr-c">${f.id}</span>${frDot(f.id)}<button class="btn fr-del" data-id="${f.id}" title="Quitar">✕</button></div>`).join(''):'<p class="small">Todavía no tienes amigos añadidos.</p>'}
+    <div class="mbtns"><button id="fr-ref" class="btn">↻ Actualizar</button></div><p class="small co-note">Para invitar a un amigo tiene que tener el juego abierto. Si no, pásale el código de la sala por WhatsApp.</p></div></div>`;
+  const q=s=>B.querySelector(s),i=q('#fr-code');
+  q('#fr-share').onclick=()=>{const t='Mi código de amigo en el Aranua Club: '+SAVE.uid;if(navigator.share)navigator.share({text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast('CÓDIGO COPIADO',1)).catch(()=>{})};
+  i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')add()};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};
+  const add=()=>frAddCode(i.value);
+  q('#fr-addb').onclick=add;q('#fr-ref').onclick=()=>{sfx('pick');frRefresh(true);coUi()};
+  B.querySelectorAll('.fr-del').forEach(b=>b.onclick=()=>{SAVE.friends=SAVE.friends.filter(f=>f.id!==b.dataset.id);persist();sfx('pick');coUi()})}
+{const _cs=closeSub;closeSub=function(){FR.msg='';_cs()}}
+
+function coInit(){const d=document.createElement('div');d.id='cowait';d.className='hidden';document.body.appendChild(d);
+  $('#ov-retry').onclick=()=>{if(CO.role==='host'&&Object.keys(CO.ps).length){$('#over').classList.add('hidden');coStartHost()}else if(!CO.role)startRun()};
+  $('#ov-menu').onclick=()=>{coLeave();toMenu()};$('#fuse-skip').onclick=()=>exitRift();
+  setTimeout(frStart,1500);addEventListener('online',()=>setTimeout(frStart,1000))}
+
+/* ---------- grietas en cooperativo: entran todos, cada uno elige su vínculo ---------- */
+const _coEnterRift=enterRift,_coExitRift=exitRift;
+function coRiftT(){const r=CO.rt||{};return{spr:r.spr||'hero',name:r.name||'',el:r.el||'neutral',sc:r.sc||1.7,r:r.r||9,heroBoss:1,mini:1}}
+function coEnterRift(){CO.pendRift=false;if(!G.portal||G.inRift)return;_coEnterRift();const off=[[22,90],[-22,90],[0,112]];let k=0;
+  for(const i of coOthers()){const o=CO.ps[i].o,[dx,dy]=off[k++%3];Object.assign(o,{x:RC.x+dx,y:RC.y+dy,inv:1.5,dash:null,tp:(o.tp||0)+1});CO.ps[i].pet.x=o.x;CO.ps[i].pet.y=o.y+6}
+  const b=G.boss;if(b){b.hp*=1+.8*(CO.ids.length-1);b.maxHp=b.hp;b.nid=++CO.nid;CO.rt={spr:b.t.spr,name:b.t.name,el:b.t.el,sc:b.t.sc,r:b.t.r}}}
+function coExitRift(){_coExitRift();let k=0;const off=[[22,0],[-22,0],[0,22]];
+  for(const i of coOthers()){const o=CO.ps[i].o,[dx,dy]=off[k++%3];Object.assign(o,{x:P.x+dx,y:P.y+dy,inv:2,dash:null,tp:(o.tp||0)+1});CO.ps[i].pet.x=o.x;CO.ps[i].pet.y=o.y+6}CO.rt=null;
+  for(const i of CO.ids){const p=coPl(i);if(p.down){p.down=false;p.rv=0;p.hp=Math.round(p.maxHp*.3);p.inv=2;toast('¡'+coName(i).toUpperCase()+' VUELVE A LA FIESTA!',1)}}}
+enterRift=function(){if(CO.run&&CO.role==='host'){if(CO.sw){CO.pendRift=true;return}coEnterRift();return}return _coEnterRift()};
+exitRift=function(){
+  if(CO.run&&CO.role==='guest'){if(G.state==='fuse'){coNet({t:'fz',skip:1});$('#fusem').classList.add('hidden');G.state='play'}return}
+  if(CO.run&&CO.role==='host'&&G.inRift){CO.fzH=true;$('#fusem').classList.add('hidden');coTryExit();return}
+  return _coExitRift()};
+function coTryExit(){if(CO.run&&CO.fzH&&!CO.fz.size&&G.inRift){CO.fzH=false;coExitRift()}}
+{const _rr=riftReward;riftReward=function(e){if(!CO.run)return _rr(e);const gg=randi(60,120);G.gold+=gg;toast('+'+gg+' ORO',1);G.boss=null;CO.fuseAt=G.t+.9}}
+{const _of=openFuse;openFuse=function(){_of();if(CO.run&&CO.role==='host'){CO.fzH=false;CO.fz=new Set();
+  for(const i of coOthers()){let ok=false;coWith(i,()=>{const s=P.slots;for(let a=0;a<4&&!ok;a++)for(let b=a+1;b<4;b++)if(s[a].length&&s[b].length&&canLink(s[a],s[b])){ok=true;break}});if(ok){CO.fz.add(i);coSendTo(i,{t:'fuse'})}}}}}
+function coFuseGot(i,m){if(!CO.fz.has(i))return;if(!m.skip){const o=coPl(i),a=o.slots[m.i],b=o.slots[m.j];if(a&&b&&a.length&&b.length&&m.i!==m.j&&canLink(a,b)){const keep=fuseMerge(o.slots,m.i,m.j);if(!o.slots[o.active]||!o.slots[o.active].length)o.active=keep;G.runLinks++}}
+  CO.fz.delete(i);coTryExit()}
+function coGuestFuse(){G.state='fuse';joy.on=false;joy.dx=joy.dy=0;const slots=P.slots.map(s=>s.slice());
+  fuseUI(slots,(i,j)=>{coNet({t:'fz',i,j});$('#fusem').classList.add('hidden');G.state='play'});
+  $('#pause').classList.add('hidden');$('#lvl').classList.add('hidden');$('#fusem').classList.remove('hidden');sfx('level')}
+
+/* ================= DUELO 3 CONTRA 3 =================
+   Cada jugador elige 3 socios y reparte sus 16 habilidades en 4 vínculos de 4.
+   Combate uno contra uno en la arena de la grieta; el que cae deja paso al siguiente de su equipo.
+   El anfitrión simula; el rival de cada jugador es un "fantasma" (enemigo invisible) que recibe los golpes. */
+const DU={on:false,ph:'pick',team:[],links:{},cur:0,sel:null,ready:false,opp:null,oph:'pick',view:null};
+const DU_K=.06,DU_HP=3,DU_R=175;
+function duLinksFor(c){const sv=SAVE.duel&&SAVE.duel[c.id],set=new Set(c.abil);
+  if(sv&&sv.length===4&&sv.every(r=>r.length===4)&&new Set(sv.flat()).size===16&&sv.flat().every(id=>set.has(id)&&ATK[id]))return sv.map(r=>r.slice());
+  const a=c.abil.slice();return [a.slice(0,4),a.slice(4,8),a.slice(8,12),a.slice(12,16)]}
+function duFighter(ci,links){const C=CHARS[ci],atk={};for(const id of C.abil)atk[id]={lvl:5,cd:Math.random()*.6};const pas={};for(const id in PAS)pas[id]=10;
+  return{x:0,y:0,hp:0,maxHp:0,lvl:30,xp:0,xpNext:1e9,inv:1,face:1,moving:false,anim:0,pendingLv:0,pas,relic:null,slots:links.map(r=>r.slice()),active:0,atk,buffs:{},regenAcc:0,orbAng:0,orbPts:null,dirx:1,diry:0,dash:null,shield:null,down:false,rv:0,ds:0}}
+function duProxy(){return{type:'duel',duel:1,t:{el:'neutral',def:100,sdf:100,name:'',spr:'hero'},x:0,y:0,r:8,hp:1e9,maxHp:1e9,flash:0,slowT:0,kx:0,ky:0,seed:0,face:1,dead:false,big:false,elite:false,orbCD:0,sc:1,set:null,spd:0}}
+// coloca en el lado s el siguiente socio de su equipo
+function duSpawn(s){const D=G.duel,ci=D.teams[s][D.idx[s]],links=D.links[s][D.idx[s]];
+  coWith(s,()=>{const tp=(P.tp||0)+1;G.char=ci;const f=duFighter(ci,links);for(const k in P)delete P[k];Object.assign(P,f);P.x=RC.x+(s===1?-90:90);P.y=RC.y;P.face=s===1?1:-1;P.tp=tp;P.maxHp=0;calcStats();P.hp=P.maxHp;setOrbsStyle()});
+  const px=D.px[3-s];px.t.el=CHARS[ci].abEl||'neutral';px.set=SPR[CHARS[ci].spr];
+  if(s===CO.me){buildSlots();buildBuffHud();drawPortrait($('#portrait'))}}
+function duResetPos(){const D=G.duel;for(const s of [1,2])coWith(s,()=>{if(P.hp>0){P.x=RC.x+(s===1?-90:90);P.y=RC.y;P.tp=(P.tp||0)+1;P.dash=null;P.inv=1}});D.t=0;RC.r=DU_R}
+function duPass(s,dt){const D=G.duel,o=3-s,px=D.px[o],tg=coPl(o);if(coPl(s).hp<=0||tg.hp<=0)return;
+  const st=o===CO.me?ST:CO.ost;px.x=tg.x;px.y=tg.y;px.t.def=st.def||100;px.t.sdf=st.sdf||100;px.hp=1e9;px.dead=false;px.kx=px.ky=0;
+  enemies=[px];buildGrid();
+  try{coRun(s,()=>{enemyStatus(px,dt);if(px.slowT>0)px.slowT-=dt;updateAttacks(dt);updateBuffs(dt);updateProjs(dt);updateWfx(dt)})}finally{enemies=[]}
+  let d=1e9-px.hp;const T=coPl(o);if(d>0&&T.dsh){T.dsh=false;d=0;fx.push({k:'ring',el:'water',x:T.x,y:T.y,r:22,t:0,dur:.35});sfx('pick')}
+  if(d>0){T.hp-=d;T.inv=Math.max(T.inv||0,.08);}
+  T.ds=px.rootT>0?2:(px.slowT>0||px.chillT>0)?1:0}
+function duUpdate(dt){frameN++;G.t+=dt;genBudget=1;if(G.state!=='play')return;const D=G.duel;if(!D)return;
+  if(D.ko>0){D.ko-=dt;updateParts(dt);if(D.ko<=0)duNext();return}
+  G.time+=dt;D.t+=dt;RC.r=D.t<50?DU_R:Math.max(70,DU_R-(D.t-50)*2);
+  if(P.ds!==2)coMove(dt,ST.spd*(P.ds===1?.6:1));else P.moving=false;
+  coRegen(dt);coWith(2,()=>coRegen(dt));clampRift();coWith(2,clampRift);
+  duPass(1,dt);duPass(2,dt);duChest(dt);if(typeof updateOrbs==='function'){updateOrbs(dt);coWith(2,()=>updateOrbs(dt))}
+  updateParts(dt);if(G.shake>0)G.shake=Math.max(0,G.shake-dt*25);
+  const k1=P.hp<=0,k2=CO.o.hp<=0;if(!k1&&!k2)return;
+  if(k1){P.hp=0;D.dead[1][D.idx[1]]=true}if(k2){CO.o.hp=0;D.dead[2][D.idx[2]]=true}
+  D.ko=2.4;D.kn=[k1,k2];D.chest=null;D.chT=15;pickups=[];projs=[];wfx=[];zones=[];meteors=[];P.orbPts=null;CO.o.orbPts=null;sfx('die');G.shake=8;fx.push({k:'flash',t:0,dur:.4});
+  const nm=s=>s===1?SAVE.name:CO.pn,ko=k1&&k2?'¡DOBLE K.O.!':'¡K.O.! '+CHARS[k1?G.char:CO.ochar].name.toUpperCase()+' ('+nm(k1?1:2).toUpperCase()+') CAE';
+  toast(ko);coNet({t:'dko',m:ko})}
+function duNext(){const D=G.duel;let lost=[false,false];
+  for(const s of [1,2])if(D.kn[s-1]){D.idx[s]++;if(D.idx[s]>=3)lost[s-1]=true}
+  if(lost[0]||lost[1]){duFinish(lost[0]&&lost[1]?0:lost[0]?2:1);return}
+  for(const s of [1,2])if(D.kn[s-1])duSpawn(s);duResetPos();
+  const nx=[];for(const s of [1,2])if(D.kn[s-1])nx.push(CHARS[D.teams[s][D.idx[s]]].name);toast('¡SALE '+nx.join(' Y ').toUpperCase()+'!');sfx('boss')}
+function duFinish(w){coNet({t:'dend',w});duResult(w)}
+function duResult(w){CO.run=false;DU.on=false;G.duel=null;DU.view=null;G.inRift=false;RC.r=DU_R;G.state='over';joy.on=false;$('#duhud').classList.add('hidden');$('#cowait').classList.add('hidden');
+  const win=w===CO.me;$('#ov-title').textContent=w===0?'¡EMPATE!':win?'¡HAS GANADO EL DUELO!':'HAS PERDIDO EL DUELO';
+  const mine=DU.team.map(i=>CHARS[i].name).join(', '),theirs=(DU.opp&&DU.opp.team||[]).map(id=>(CHARS.find(c=>c.id===id)||{}).name).join(', ');
+  $('#ov-grid').innerHTML=`<span>Tu equipo</span><b class="small">${mine}</b><span>Equipo de ${esc(CO.pn)}</span><b class="small">${theirs}</b><span>Duración</span><b>${fmtTime(G.time)}</b>`;
+  $('#ov-loot').innerHTML='';const host=CO.role==='host';$('#ov-rec').textContent=host?'':'Esperando a que '+CO.pn+' pida la revancha…';
+  $('#ov-retry').textContent='Revancha';$('#ov-retry').classList.toggle('hidden',!host||!CO.conn);sfx(win?'level':'die');setTimeout(()=>$('#over').classList.remove('hidden'),600)}
+function duStartHost(){if(!CO.conn||CO.role!=='host'||!DU.opp)return;const t1=DU.team.slice(),t2=DU.opp.team.map(id=>CHARS.findIndex(c=>c.id===id));
+  CO.run=false;G.char=t1[0];startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,thief:null,nextRift:1e9});RC.r=DU_R;
+  G.duel={t:0,ko:0,kn:[false,false],teams:[null,t1,t2],links:[null,t1.map(i=>DU.links[CHARS[i].id]),DU.opp.links],chT:12,chest:null,idx:[0,0,0],dead:[null,[false,false,false],[false,false,false]],px:[null,duProxy(),duProxy()]};
+  Object.assign(CO,{run:true,sw:false,cur:1,ids:[1,2],lv:{},pendEnd:null,snapT:0,snd:[]});
+  CO.o={tp:0};CO.ochar=t2[0];CO.ost={};CO.opet={x:RC.x+90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};P.tp=0;
+  DU.on=true;duSpawn(1);duSpawn(2);
+  coNet({t:'dstart',t1:t1.map(i=>CHARS[i].id),t2:DU.opp.team,hn:SAVE.name});$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
+function duStartGuest(m){const i1=m.t1.map(id=>CHARS.findIndex(c=>c.id===id)),i2=m.t2.map(id=>CHARS.findIndex(c=>c.id===id));DU.opp={team:m.t1};DU.team=i2;
+  G.char=i2[0];CO.run=false;startRun();clearWorld();Object.assign(G,{inRift:true,portal:null,boss:null,nextRift:1e9});RC.r=DU_R;
+  Object.assign(CO,{run:true,sw:false,cur:CO.me,ids:[1,2],mytp:-1,rt:null,ens:new Map(),hs:'play',sig:'',bsig:'',actT:0,gl:null,pn:m.hn||CO.pn});
+  P.x=RC.x+90;P.y=RC.y;CO.o=JSON.parse(JSON.stringify(P));Object.assign(CO.o,{x:RC.x-90,y:RC.y,tx:RC.x-90,ty:RC.y});CO.ochar=i1[0];CO.ost={};CO.opet={x:RC.x-90,y:RC.y+6,anim:0,face:1,t:G.t,lg:null,mv:false};
+  DU.on=true;DU.view=null;$('#over').classList.add('hidden');$('#sub').classList.add('hidden');subId=null;toast('¡A PELEAR!')}
+// marcador de arriba: los dos socios que pelean, su vida y cuántos les quedan
+function duHud(){const h=$('#duhud');if(!h)return;if(!DU.on||!CO.run||MENUISH()){h.classList.add('hidden');return}h.classList.remove('hidden');
+  const dd=CO.role==='host'?(G.duel?[G.duel.dead[1],G.duel.dead[2]]:null):(DU.view&&DU.view.dd);
+  const side=(el,p,ci,name,dead)=>{el.querySelector('.n').textContent=name+' · '+(CHARS[ci]?CHARS[ci].name:'');el.querySelector('.bar i').style.width=clamp(p.hp/(p.maxHp||1)*100,0,100)+'%';
+    el.querySelector('.pips').innerHTML=(dead||[false,false,false]).map(x=>`<u class="${x?'x':''}"></u>`).join('')};
+  const me=CO.me,oth=3-me;side(h.querySelector('.me'),P,G.char,SAVE.name,dd&&dd[me-1]);side(h.querySelector('.op'),CO.o,CO.ochar,CO.pn,dd&&dd[oth-1])}
+
+/* ---------- red ---------- */
+function duMsg(m){switch(m.t){
+  case'dph':DU.oph=m.ph;if(m.ph!=='ready')DU.opp=null;coUi();break;
+  case'dteam':DU.opp={team:m.team,links:m.links};DU.oph='ready';coUi();if(CO.role==='host'&&DU.ready)duStartHost();break;
+  case'dstart':if(CO.role==='guest')duStartGuest(m);break;
+  case'dko':if(CO.role==='guest'){toast(m.m);sfx('die');G.shake=8}break;
+  case'dmsg':toast(m.m,1);sfx('level');break;
+  case'dend':if(CO.role==='guest')duResult(m.w);break;
+  case'drem':duToLobby();break}}
+function duSetPh(ph){DU.ph=ph;coNet({t:'dph',ph});coUi()}
+function duReady(){DU.ready=true;SAVE.duel=SAVE.duel||{};for(const i of DU.team)SAVE.duel[CHARS[i].id]=DU.links[CHARS[i].id];persist();
+  DU.ph='ready';coNet({t:'dteam',team:DU.team.map(i=>CHARS[i].id),links:DU.team.map(i=>DU.links[CHARS[i].id])});coUi();if(CO.role==='host'&&DU.opp)duStartHost()}
+function duToLobby(){['#over','#hud','#duhud','#lvl','#pause'].forEach(s=>$(s).classList.add('hidden'));CO.run=false;DU.on=false;G.duel=null;G.inRift=false;RC.r=DU_R;
+  DU.ready=false;DU.opp=null;DU.oph='links';DU.ph=DU.team.length===3?'links':'pick';toMenu();openSub('duel')}
+
+/* ---------- enganches ---------- */
+{const _u=update;update=function(dt){
+  if(CO.run&&DU.on&&CO.role==='host'){duUpdate(dt);coHostNet(dt);duHud();coHuds();coWaitUi();return}
+  if(CO.run&&DU.on&&CO.role==='guest'){coGuestUpdate(dt);duHud();coHuds();coWaitUi();return}
+  return _u(dt)}}
+{const _s=coSnap;coSnap=function(gi){const s=_s(gi);const D=G.duel;if(D){s.d={r:coR(RC.r),dd:[D.dead[1],D.dead[2]]};if(D.ko>0)s.g.st='ko';s.pl[1].ds=P.ds||0;s.pl[2].ds=CO.o.ds||0;s.pl[1].dsh=!!P.dsh;s.pl[2].dsh=!!CO.o.dsh}return s}}
+{const _a=coApply;coApply=function(s){_a(s);if(s.d){RC.r=s.d.r;DU.view=s.d}}}
+{const _c=calcStats;calcStats=function(){const du=DU.on&&P.maxHp>0;if(du){P.maxHp/=DU_HP;P.hp/=DU_HP}_c();if(DU.on){ST.pdmg*=DU_K;ST.mdmg*=DU_K;ST.maxHp*=DU_HP;P.maxHp*=DU_HP;P.hp*=DU_HP}}}
+{const _pl=coPartnerLeft;coPartnerLeft=function(...a){const was=DU.on&&CO.run;if(!was)return _pl(...a);CO.run=false;
+  const n=CO.pn||'Tu rival';coClose();CO.ui='idle';duResult(CO.me);$('#ov-title').textContent='¡'+n.toUpperCase()+' SE HA IDO! GANAS TÚ';$('#ov-retry').classList.add('hidden');$('#ov-rec').textContent=''}}
+{const _e=endRun;endRun=function(v){if(DU.on&&CO.run){const me=CO.me;coLeave();CO.me=me;duResult(3-me);$('#ov-title').textContent='HAS ABANDONADO EL DUELO';$('#ov-rec').textContent='';return}return _e(v)}}
+
+/* ---------- menú Duelo ---------- */
+MENU.splice(2,0,{id:'duel',name:'Duelo 3 contra 3',sub:'Tu equipo contra el de un colega',icon:'skull'});
+{const _rs=renderSub;renderSub=function(){if(subId==='duel'){subDuel($('#sub-body'));return}_rs()}}
+{const _cs=closeSub;closeSub=function(){if(subId==='duel'&&G.state==='sub'&&!CO.run){coLeave();DU.ph='pick';DU.ready=false;DU.opp=null}_cs()}}
+function duAbName(id,c){return id==='orbs'&&c.orb?c.orb.name:ATK[id].name}
+function duAbDesc(id,c){return id==='orbs'&&c.orb?c.orb.desc:ATK[id].desc}
+function duAbIcon(id,c){return ICON[id==='orbs'&&c.orb?c.orb.icon:ATK[id].icon]}
+function subDuel(B){const q=s=>B.querySelector(s),msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';let h='';
+  const ost={pick:'eligiendo socios…',links:'montando vínculos…',ready:'¡listo para pelear!'}[DU.oph]||'';
+  if(!CO.conn){
+    if(CO.ui==='hosting'&&CO.mode==='duel')h=`<p class="small">Invita a un amigo o pasa el código a tu rival (entra en <b>Duelo 3 contra 3 → Unirse</b>).</p><div class="co-roomhead"><div class="co-code">${CO.code.split('').map(c=>`<span>${c}</span>`).join('')}</div><button id="co-share" class="btn">📤 Compartir código</button></div>${msg}${frInvHtml()}<p class="co-wait">Esperando a tu rival…</p><div class="mbtns"><button id="co-x" class="btn">Cerrar sala</button></div>`;
+    else if(CO.ui==='joining'&&CO.mode==='duel')h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`;
+    else h=`<p class="small">Cada uno elige 3 socios del club y reparte sus 16 habilidades en 4 vínculos de 4. Peleáis uno contra uno: cuando cae un socio sale el siguiente, y gana quien deje al otro sin equipo. Todos van a nivel máximo y con 10 de cada mejora.</p>
+      <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tu rival entra con el código.</p><button id="du-host" class="btn gold">Crear sala</button></div>
+      <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de tu rival.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="du-join" class="btn">Unirse</button></div></div>${msg}`}
+  else if(DU.ph==='pick'){h=`<div class="du-top"><b>1 · Elige 3 socios</b><span class="small">El orden es el de salida. ${esc(CO.pn)}: ${ost}</span></div><div class="du-grid">`+
+      CHARS.map((c,i)=>{const k=DU.team.indexOf(i);return`<button class="du-ch${k>=0?' on':''}" data-i="${i}"><canvas class="px" width="32" height="39"></canvas><span>${c.name}</span>${k>=0?`<em>${k+1}</em>`:''}</button>`}).join('')+
+      `</div><div class="mbtns"><button id="du-next" class="btn gold"${DU.team.length===3?'':' disabled'}>Siguiente: vínculos ›</button><button id="co-x" class="btn">Salir</button></div>`}
+  else if(DU.ph==='links'){const ci=DU.team[DU.cur],c=CHARS[ci],L=DU.links[c.id];
+    h=`<div class="du-top"><b>2 · Monta los vínculos</b><span class="small">Toca dos habilidades para cambiarlas de sitio. ${esc(CO.pn)}: ${ost}</span></div>
+      <div class="du-tabs">${DU.team.map((i,k)=>`<button class="du-tab${k===DU.cur?' on':''}" data-k="${k}"><canvas class="px" width="32" height="39"></canvas>${k+1}. ${CHARS[i].name}</button>`).join('')}</div>
+      <div class="du-rows">${L.map((r,a)=>`<div class="du-row"><b>Vínculo ${a+1}</b>${r.map((id,b)=>`<button class="du-ab${DU.sel&&DU.sel[0]===a&&DU.sel[1]===b?' on':''}" data-a="${a}" data-b="${b}" title="${esc(duAbName(id,c))}"><img src="${duAbIcon(id,c)}" alt=""></button>`).join('')}</div>`).join('')}</div>
+      <p class="small du-info">${DU.sel?`<b>${esc(duAbName(L[DU.sel[0]][DU.sel[1]],c))}</b>: ${duAbDesc(L[DU.sel[0]][DU.sel[1]],c)}`:'Durante el combate cambias de vínculo con 1-4: el vínculo activo lanza sus 4 habilidades a la vez.'}</p>
+      <div class="mbtns"><button id="du-go" class="btn gold">¡Listo!</button><button id="du-auto" class="btn">Orden inicial</button><button id="du-back" class="btn">‹ Socios</button></div>`}
+  else h=`<div class="du-who">${DU.team.map(i=>`<canvas class="px" width="32" height="39" data-i="${i}"></canvas>`).join('')}</div><p class="co-wait">${DU.opp?'¡Empieza el duelo!':'Esperando a que '+esc(CO.pn)+' esté listo… ('+ost+')'}</p><div class="mbtns"><button id="du-unready" class="btn">‹ Cambiar vínculos</button></div>`;
+  B.innerHTML=`<div class="coop duel">${h}</div>`;
+  if(q('#du-host'))q('#du-host').onclick=()=>{sfx('pick');CO.mode='duel';coHost()};
+  if(q('#du-join')){const i=q('#co-code');i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){CO.mode='duel';coJoin(i.value)}};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};q('#du-join').onclick=()=>{sfx('pick');CO.mode='duel';coJoin(i.value)}}
+  if(q('#co-x'))q('#co-x').onclick=()=>{sfx('pick');coLeave();DU.ph='pick';DU.team=[];coUi()};
+  if(q('#co-share'))q('#co-share').onclick=coShare;frBindInv(B);
+  B.querySelectorAll('.du-ch').forEach(b=>{const i=+b.dataset.i;drawHeroTo(b.querySelector('canvas'),CHARS[i],false,0);b.onclick=()=>{sfx('pick');const k=DU.team.indexOf(i);if(k>=0)DU.team.splice(k,1);else if(DU.team.length<3)DU.team.push(i);coUi()}});
+  if(q('#du-next'))q('#du-next').onclick=()=>{if(DU.team.length!==3)return;for(const i of DU.team){const c=CHARS[i];if(!DU.links[c.id])DU.links[c.id]=duLinksFor(c)}DU.cur=0;DU.sel=null;sfx('level');duSetPh('links')};
+  B.querySelectorAll('.du-tab').forEach(b=>{drawHeroTo(b.querySelector('canvas'),CHARS[DU.team[+b.dataset.k]],false,0);b.onclick=()=>{DU.cur=+b.dataset.k;DU.sel=null;sfx('pick');coUi()}});
+  B.querySelectorAll('.du-ab').forEach(b=>b.onclick=()=>{const a=+b.dataset.a,k=+b.dataset.b,L=DU.links[CHARS[DU.team[DU.cur]].id];
+    if(!DU.sel)DU.sel=[a,k];else{const [a0,k0]=DU.sel;if(a0!==a||k0!==k){const t=L[a0][k0];L[a0][k0]=L[a][k];L[a][k]=t;DU.sel=null}else DU.sel=null}sfx('pick');coUi()});
+  if(q('#du-auto'))q('#du-auto').onclick=()=>{const c=CHARS[DU.team[DU.cur]],a=c.abil.slice();DU.links[c.id]=[a.slice(0,4),a.slice(4,8),a.slice(8,12),a.slice(12,16)];DU.sel=null;coUi()};
+  if(q('#du-back'))q('#du-back').onclick=()=>{DU.sel=null;duSetPh('pick')};
+  if(q('#du-go'))q('#du-go').onclick=()=>{sfx('level');duReady()};
+  if(q('#du-unready'))q('#du-unready').onclick=()=>{DU.ready=false;duSetPh('links')};
+  B.querySelectorAll('.du-who canvas').forEach(c=>drawHeroTo(c,CHARS[+c.dataset.i],false,0))}
+function duInit(){const d=document.createElement('div');d.id='duhud';d.className='hidden';
+  d.innerHTML='<div class="du-s me"><b class="n"></b><span class="pips"></span><div class="bar"><i></i></div></div><div class="vs">VS</div><div class="du-s op"><b class="n"></b><span class="pips"></span><div class="bar"><i></i></div></div>';document.body.appendChild(d);
+  const r=$('#ov-retry'),o=r.onclick;r.onclick=()=>{if(CO.mode==='duel'&&CO.conn){if(CO.role==='host'){coNet({t:'drem'});duToLobby()}return}o()};
+  const m=$('#ov-menu'),om=m.onclick;m.onclick=()=>{DU.ph='pick';DU.ready=false;DU.opp=null;DU.on=false;om()}}
+
+/* ---------- cofres del duelo: uno cada ~15 s; se abre quedándose encima 1,5 s; si los dos están encima no avanza ---------- */
+const DU_LOOT=[['heal','HOJITA: +25% DE VIDA'],['yellow','ESFERA AMARILLA: VISTA AMPLIADA'],['blue','ESFERA AZUL: RIVAL RALENTIZADO'],['purple','ESFERA MORADA: RIVAL PARALIZADO'],['red','ESFERA ROJA: MÁS CRÍTICO'],['orange','ESFERA NARANJA: MÁS VELOCIDAD'],['shield','ESCUDO: BLOQUEA EL SIGUIENTE GOLPE']];
+function duChest(dt){const D=G.duel;
+  if(!D.chest){D.chT-=dt;if(D.chT<=0){const a=rand(6.283),r=rand(0,RC.r*.55);D.chest={x:RC.x+Math.cos(a)*r,y:RC.y+Math.sin(a)*r*.8,prog:0,who:0};pickups=[{k:'bigchest',x:D.chest.x,y:D.chest.y,prog:0}];toast('¡UN COFRE EN LA ARENA!',1);coNet({t:'dmsg',m:'¡UN COFRE EN LA ARENA!'});sfx('coin')}return}
+  const C=D.chest,in1=P.hp>0&&dist2(C.x,C.y,P.x,P.y)<16*16,in2=CO.o.hp>0&&dist2(C.x,C.y,CO.o.x,CO.o.y)<16*16,who=in1&&!in2?1:in2&&!in1?2:0;
+  if(who!==C.who){C.who=who;C.prog=0}if(who){C.prog+=dt;if(frameN%10===0)sfx('gem')}
+  if(pickups[0])pickups[0].prog=C.prog*2;
+  if(C.prog>=1.5){D.chest=null;D.chT=15;pickups=[];duLoot(who)}}
+function duLoot(s){const [k,txt]=pick(DU_LOOT),o=3-s,px=G.duel.px[o],nm=s===1?SAVE.name:CO.pn;
+  coWith(s,()=>{if(k==='heal')P.hp=Math.min(P.maxHp,P.hp+P.maxHp*.25);else if(k==='shield')P.dsh=true;
+    else if(k!=='blue'&&k!=='purple'){const ob=P.ob||(P.ob={});if(k==='yellow')ob.zoom=ORB_T;else if(k==='red')ob.crit=ORB_T;else ob.spd=ORB_T;calcStats()}
+    for(let i=0;i<20;i++){const a=i/20*6.283;parts.push(mkPart(P.x,P.y-6,Math.cos(a)*50,Math.sin(a)*40-20,.6,k==='heal'?'#7aff7a':k==='shield'?'#9fd8ff':ORBD[k].c1,2))}});
+  if(k==='blue'||k==='purple'){const a=coPl(s),b=coPl(o),R=ORB_AREA();if(dist2(a.x,a.y,b.x,b.y)<R*R){if(k==='blue')px.slowT=Math.max(px.slowT||0,3);else px.rootT=Math.max(px.rootT||0,1.5)}
+    fx.push({k:'ring',el:k==='purple'?'dark':'water',x:a.x,y:a.y,r:R,t:0,dur:.6})}
+  const m=nm.toUpperCase()+' ABRE EL COFRE · '+txt;toast(m,1);sfx('level');coNet({t:'dmsg',m})}
+{const _d=drawPlayer;drawPlayer=function(l){_d(l);if(DU.on&&P.dsh&&P.hp>0){const sx=Math.round(P.x-camX),sy=Math.round(P.y-camY);ctx.strokeStyle=`rgba(150,215,255,${.6+.3*Math.sin(G.t*6)})`;ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(sx,sy,12,15,0,0,6.283);ctx.stroke();l.push([sx,sy,26,L_BLUE])}}}
+
 /* ---------------- Init ---------------- */
 function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
   $('#ic-coin').src=ICON.coin;$('#ic-skull').src=ICON.skull;$('#ic-coin2').src=ICON.coin;drawSword();
@@ -3144,7 +3761,7 @@ function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
   $('#btn-sound').onclick=toggleSnd;$('#p-snd').onclick=toggleSnd;$('#btn-fs').onclick=toggleFs;$('#p-fs').onclick=toggleFs;
   $('#btn-sound').textContent=muted?'🔇':'🔊';$('#p-snd').textContent='Sonido: '+(muted?'No':'Sí');
   {const i=CHARS.findIndex(c=>c.id===SAVE.charId);G.char=i>=0?i:(CHARS[SAVE.char]?SAVE.char:0)}if(!heroStars(CHARS[G.char]))G.char=0;newWorld(BIO.findIndex(b=>b.id===CHARS[G.char].reg));demoSpawn();refreshMenu();requestAnimationFrame(loop)}
-init();
+init();coInit();duInit();
 window.__dbg={G,P,offerRelic,enterRift,exitRift,elemMult,ATK,drawHeroTo,dropItem,doPull,CHARS,calcStats,get ST(){return ST},SAVE:()=>SAVE,goMain,openSub,closeSub,get enemies(){return enemies},get pickups(){return pickups},spawnEnemy,startRun,openLevelUp,update,chooseOpt,takeRelic,keys};
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
