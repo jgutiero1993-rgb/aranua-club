@@ -1660,7 +1660,7 @@ const canvas=$('#game'),ctx=canvas.getContext('2d',{alpha:false}),VIGN=$('#vigne
 const lightC=cnv(10,10),lctx=lightC.getContext('2d'),glowC=cnv(10,10),gctx=glowC.getContext('2d');
 const VIEW={w:480,h:270,scale:4};
 function fitTop(){const tb=document.querySelector('#main .topbar');if(tb&&tb.offsetHeight)$('#main').style.setProperty('--top',(tb.offsetTop+tb.offsetHeight+8)+'px')}
-function resize(){setTimeout(fitTop,0);const W=innerWidth,H=innerHeight;const base=(Math.min(W,H)<540?290:380)*(typeof ZOOMK!=='undefined'?ZOOMK:1);const sc=Math.min(W,H)/base;
+function resize(){setTimeout(fitTop,0);const W=innerWidth,H=innerHeight;const base=(Math.min(W,H)<540?335:440)*(typeof ZOOMK!=='undefined'?ZOOMK:1);const sc=Math.min(W,H)/base;
   VIEW.scale=sc;VIEW.w=Math.ceil(W/sc);VIEW.h=Math.ceil(H/sc);canvas.width=VIEW.w;canvas.height=VIEW.h;canvas.style.width=W+'px';canvas.style.height=H+'px';
   lightC.width=glowC.width=Math.ceil(VIEW.w/2);lightC.height=glowC.height=Math.ceil(VIEW.h/2);ctx.imageSmoothingEnabled=false;
   $('#rotate').classList.toggle('hidden',!(isTouch&&H>W&&G.state==='play'))}
