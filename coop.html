@@ -357,7 +357,7 @@ a{color:#ffcf5a}
 .coop .fr-row{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(200,160,255,.15)}.coop .fr-n{font-weight:bold;min-width:80px}.coop .fr-c{opacity:.6;letter-spacing:.1em}
 .coop .fr-row .btn{margin-left:auto;padding:3px 10px}.coop .fr-row .fr-del{padding:2px 8px}
 .fr-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#888;border:1px solid #000}.fr-dot.on{background:#4ae04a}.fr-dot.busy{background:#ffb030}.fr-dot.off{background:#704050}
-.coop .fr-add{display:flex;gap:6px}.coop .fr-add input{flex:1}
+.coop .fr-add{display:flex;gap:6px}.coop .fr-add input{flex:1;min-width:0;font-size:17px;letter-spacing:.15em}
 #invm{z-index:60}
 #duhud{position:fixed;left:50%;top:52px;transform:translateX(-50%);z-index:15;display:flex;align-items:center;gap:10px;pointer-events:none;width:min(92vw,620px)}
 #duhud.hidden{display:none}
@@ -3494,7 +3494,7 @@ function subCoop(B){const msg=CO.msg?`<p class="co-msg">${esc(CO.msg)}</p>`:'';l
   else if(CO.ui==='hosting'){const n=Object.keys(CO.ps).length;h=coRoomHtml()+msg+frInvHtml()+
       `<div class="mbtns"><button id="co-go" class="btn gold"${n?'':' disabled'}>▶ Empezar partida</button><button id="co-x" class="btn">Cerrar sala</button></div>${n?'':'<p class="small co-note">Invita a tus amigos o pásales el código. Podéis ser hasta 4.</p>'}`}
   else if(CO.ui==='joining'){h=`<p class="co-wait">Entrando en la sala ${esc(CO.code)}…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Cancelar</button></div>`}
-  else if(CO.ui==='joined'){h=coRoomHtml()+`<p class="co-wait">Esperando a que ${esc(coName(1))} empiece la partida…</p>${msg}<div class="mbtns"><button id="co-x" class="btn">Salir de la sala</button></div>`}
+  else if(CO.ui==='joined'){h=coRoomHtml()+`<p class="co-wait">Esperando a que ${esc(coName(1))} empiece la partida…</p>${msg}${frInvHtml()}<div class="mbtns"><button id="co-x" class="btn">Salir de la sala</button></div>`}
   else{h=`<p class="small">Crea una sala e invita a tus amigos desde dentro, o entra en la de un colega con su código. Podéis ser hasta 4 socios.</p>
       <div class="co-opts"><div class="co-box"><b>Crear sala</b><p class="small">Tú empiezas la partida cuando estéis todos.</p><button id="co-host" class="btn gold">Crear sala</button></div>
       <div class="co-box"><b>Unirse</b><p class="small">Escribe el código de la sala.</p><input id="co-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="co-join" class="btn">Unirse</button></div></div>${msg}
@@ -3528,12 +3528,16 @@ function frRefresh(force){if(!force&&Date.now()-FR.t<8000)return;FR.t=Date.now()
   for(const f of SAVE.friends){if(!FR.st[f.id])FR.st[f.id]='…';frAsk(f.id,{t:'ping',id:SAVE.uid,n:SAVE.name}).then(d=>{FR.st[f.id]=d?(d.busy?'busy':'on'):'off';if(d&&d.n&&d.n!==f.n){f.n=String(d.n).slice(0,12);persist()}coUi()})}}
 function frDot(id){const s=FR.st[id]||'…';return`<i class="fr-dot ${s==='on'?'on':s==='busy'?'busy':s==='off'?'off':''}"></i><span class="small">${s==='on'?'Conectado':s==='busy'?'Jugando':s==='off'?'Desconectado':'Comprobando…'}</span>`}
 // lista de amigos para invitar desde una sala
-function frInvHtml(){if(CO.role!=='host')return'';const L=SAVE.friends;if(!L.length)return`<p class="small co-note">Añade amigos en el menú <b>Amigos</b> para invitarlos con un toque.</p>`;
-  setTimeout(()=>frRefresh(false),0);
-  return`<div class="fr-inv"><b>Invitar amigos</b>${L.map(f=>{const s=FR.st[f.id],inRoom=CO.room.some(r=>r.n===f.n);
-    return`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span>${frDot(f.id)}<button class="btn fr-go" data-id="${f.id}"${s==='on'&&!inRoom?'':' disabled'}>${inRoom?'En la sala':'Invitar'}</button></div>`}).join('')}</div>`}
+function frInvHtml(){if(!CO.role)return'';const L=SAVE.friends;setTimeout(()=>frRefresh(false),0);const msg=FR.msg?`<p class="co-msg">${esc(FR.msg)}</p>`:'';
+  return`<div class="fr-inv co-box"><b>👥 Invitar amigos</b>${L.length?L.map(f=>{const s=FR.st[f.id],inRoom=CO.room.some(r=>r.n===f.n);
+    return`<div class="fr-row"><span class="fr-n">${esc(f.n)}</span>${frDot(f.id)}<button class="btn gold fr-go" data-id="${f.id}"${s==='on'&&!inRoom?'':' disabled'}>${inRoom?'En la sala':'Invitar'}</button></div>`}).join(''):'<p class="small">Aún no tienes amigos añadidos. Escribe el código de amigo de un colega para añadirlo (lo ve en el menú <b>Amigos</b>):</p>'}
+    <div class="fr-add"><input id="fr-icode" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CÓDIGO"><button id="fr-iadd" class="btn">+ Añadir</button></div>${msg}
+    <p class="small co-note">Tu código de amigo: <b style="color:#ffd04a;letter-spacing:.15em">${SAVE.uid}</b></p></div>`}
+function frAddCode(raw){const id=String(raw||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6){FR.msg='El código de amigo tiene 6 letras o números.';coUi();return}if(id===SAVE.uid){FR.msg='Ese es tu propio código.';coUi();return}
+  FR.msg='Buscando…';coUi();frAsk(id,{t:'add',id:SAVE.uid,n:SAVE.name}).then(d=>{frAdd(id,d&&d.n);FR.st[id]=d?(d.busy?'busy':'on'):'off';FR.msg=d?'¡'+d.n+' añadido!':'Añadido. Saldrá su nombre la próxima vez que esté conectado.';sfx('level');coUi()})}
 function frBindInv(B){B.querySelectorAll('.fr-go').forEach(b=>b.onclick=()=>{const id=b.dataset.id;b.disabled=true;b.textContent='Enviando…';
-  frAsk(id,{t:'inv',code:CO.code,mode:CO.mode,n:SAVE.name}).then(d=>{b.textContent=d&&d.t==='ok'?'¡Invitado!':d&&d.t==='busy'?'Está jugando':'No responde';setTimeout(()=>{b.disabled=false;b.textContent='Invitar'},4000)})})}
+  frAsk(id,{t:'inv',code:CO.code,mode:CO.mode,n:SAVE.name}).then(d=>{b.textContent=d&&d.t==='ok'?'¡Invitado!':d&&d.t==='busy'?'Está jugando':'No responde';setTimeout(()=>{b.disabled=false;b.textContent='Invitar'},4000)})});
+  const i=B.querySelector('#fr-icode');if(i){i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')frAddCode(i.value)};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};B.querySelector('#fr-iadd').onclick=()=>frAddCode(i.value)}}
 function frInvited(m){FR.inv=m;let el=document.getElementById('invm');if(!el){el=document.createElement('div');el.id='invm';el.className='modal';document.body.appendChild(el)}
   el.innerHTML=`<div class="mbox panel"><h2>¡TE INVITAN!</h2><p><b style="color:#ffd04a">${esc(String(m.n||'Un socio'))}</b> te invita a su sala de <b>${m.mode==='duel'?'Duelo 3 contra 3':'Cooperativo'}</b>.</p><div class="mbtns"><button id="inv-ok" class="btn gold">Entrar</button><button id="inv-no" class="btn">Ahora no</button></div></div>`;
   el.classList.remove('hidden');sfx('level');
@@ -3550,11 +3554,10 @@ function subFriends(B){frRefresh(false);const L=SAVE.friends,msg=FR.msg?`<p clas
   const q=s=>B.querySelector(s),i=q('#fr-code');
   q('#fr-share').onclick=()=>{const t='Mi código de amigo en el Aranua Club: '+SAVE.uid;if(navigator.share)navigator.share({text:t}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast('CÓDIGO COPIADO',1)).catch(()=>{})};
   i.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')add()};i.onkeyup=e=>e.stopPropagation();i.oninput=()=>{i.value=i.value.toUpperCase()};
-  const add=()=>{const id=i.value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(id.length!==6){FR.msg='El código de amigo tiene 6 letras o números.';coUi();return}if(id===SAVE.uid){FR.msg='Ese es tu propio código.';coUi();return}
-    FR.msg='Buscando…';coUi();frAsk(id,{t:'add',id:SAVE.uid,n:SAVE.name}).then(d=>{frAdd(id,d&&d.n);FR.st[id]=d?(d.busy?'busy':'on'):'off';FR.msg=d?'¡'+d.n+' añadido!':'Añadido. Saldrá su nombre la próxima vez que esté conectado.';sfx('level');coUi()})};
+  const add=()=>frAddCode(i.value);
   q('#fr-addb').onclick=add;q('#fr-ref').onclick=()=>{sfx('pick');frRefresh(true);coUi()};
   B.querySelectorAll('.fr-del').forEach(b=>b.onclick=()=>{SAVE.friends=SAVE.friends.filter(f=>f.id!==b.dataset.id);persist();sfx('pick');coUi()})}
-{const _cs=closeSub;closeSub=function(){if(subId==='friends')FR.msg='';_cs()}}
+{const _cs=closeSub;closeSub=function(){FR.msg='';_cs()}}
 
 function coInit(){const d=document.createElement('div');d.id='cowait';d.className='hidden';document.body.appendChild(d);
   $('#ov-retry').onclick=()=>{if(CO.role==='host'&&Object.keys(CO.ps).length){$('#over').classList.add('hidden');coStartHost()}else if(!CO.role)startRun()};
