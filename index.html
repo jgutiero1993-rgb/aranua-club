@@ -949,6 +949,9 @@ function humanP(f,o){const k=o.k||1,G=new SPnt(32,32,k),bob=f%2?-1:0,Y=y=>y+bob,
   if(o.badge)G.part('badge','metal').R(13,Y(18),14,Y(19),'y');
   if(o.belt)G.part('belt','metal').R(11-fat,Y(23),20+fat,Y(24),o.belt);
   if(o.collar)G.part('collar','flat').R(13,Y(16),18,Y(16),o.collar);
+  if(o.tie)G.part('tie','flat').L(15,Y(16),15,Y(21),o.tie).S(16,Y(17),o.tie);
+  if(o.stripe)G.part('strp','flat').L(11,Y(19),20,Y(19),o.stripe);
+  if(o.vl){G.part('vl','flat');for(const x of [12,13,15,17,18])G.S(x,Y(18),o.vl);for(const x of [12,14,16,18])G.S(x,Y(19),o.vl)}
   if(o.hat==='hood')G.part('hoodD').E(12,Y(15.5),3.5,1.8,D);
   G.part('neck','skin').R(14,Y(14),17,Y(15),S,2);
   G.part('head','skin').E(15.5,Y(9.5),5,5,S).R(11,Y(7),20,Y(12),S);
@@ -962,6 +965,10 @@ function humanP(f,o){const k=o.k||1,G=new SPnt(32,32,k),bob=f%2?-1:0,Y=y=>y+bob,
   if(ht==='cap'){G.part('pcap').E(15.5,Y(4.5),5.5,2.5,o.hc||'B').R(10,Y(5),21,Y(6),o.hc||'B');G.part('visor','flat').R(18,Y(6),23,Y(6),'x');if(o.chk)for(let x=10;x<=17;x++)G.S(x,Y(6),(x%2)?'y':'B');G.part('pb','metal').S(15,Y(4),'y')}
   if(ht==='peak'){G.part('pcap').E(15.5,Y(3.5),6,2.5,o.hc||'B').R(9,Y(4),22,Y(6),o.hc||'B');G.part('band','metal').R(10,Y(5),21,Y(5),'y');G.part('visor','flat').R(18,Y(6),24,Y(6),'x');G.part('pb','metal').R(15,Y(3),16,Y(4),'y')}
   if(ht==='helmet'){G.part('helm','metal').E(15.5,Y(6.5),6.5,5.5,o.hc||'O').R(9,Y(7),12,Y(13),o.hc||'O');G.part('visorH','metal').R(15,Y(7),22,Y(12),'c');G.L(16,Y(8),20,Y(8),'w',0)}
+  if(ht==='tricorn'){G.part('tric','metal').E(15.5,Y(4.5),6,3,'x').R(9,Y(5),22,Y(7),'x').R(10,Y(1),13,Y(4),'x');G.L(9,Y(7),22,Y(7),'X')}
+  if(ht==='beret'){cap();G.part('beret').E(14.5,Y(4.5),6.5,2.5,o.hc||'r').R(9,Y(5),20,Y(6),o.hc||'r').S(15,Y(1),o.hc||'r')}
+  if(ht==='fedora'){G.part('fed').E(15.5,Y(3.5),5,3,o.hc||'X').R(10,Y(4),21,Y(5),o.hc||'X');G.part('brim').R(7,Y(6),24,Y(6),o.hc||'X');G.part('fband','flat').R(10,Y(5),21,Y(5),'#7a1a24')}
+  if(ht==='balaclava'){G.part('bala').E(15.5,Y(9),5.5,5.5,o.hc||'x').R(10,Y(5),21,Y(14),o.hc||'x');G.part('slit','skin').R(14,Y(9),20,Y(10),S)}
   // cara (mirando a la derecha)
   if(ht!=='helmet'){G.tone(12,Y(10),2);G.tone(12,Y(11),2);
     if(o.mus)G.part('mus').R(16,Y(12),20,Y(12),o.mus);
@@ -983,6 +990,12 @@ function humanP(f,o){const k=o.k||1,G=new SPnt(32,32,k),bob=f%2?-1:0,Y=y=>y+bob,
   if(it==='slipper'){G.part('slipW').R(21,Y(11),25,Y(14),'p').R(22,Y(15),24,Y(20),'p')}
   if(it==='mega'){G.part('mega','metal').P([[21,Y(16)],[26,Y(13)],[27,Y(13)],[27,Y(21)],[26,Y(21)],[21,Y(18)]],'w');G.part('megr','flat').L(27,Y(13),27,Y(21),'r')}
   if(it==='sign'){G.part('stick').L(23,Y(9),23,Y(23),'n');G.part('sign','flat').R(19,Y(0),28,Y(8),'w').L(20,Y(2),27,Y(2),'r').L(20,Y(4),26,Y(4),'x').L(20,Y(6),27,Y(6),'x')}
+  if(it==='folder'){G.part('fold','flat').R(20,Y(15),26,Y(21),'#3a8aff').L(21,Y(17),25,Y(17),'w')}
+  if(it==='brief'){G.part('brief').R(20,Y(20),27,Y(25),'#6a3a1a');G.part('bh','metal').R(22,Y(19),25,Y(19),'x').S(23,Y(22),'y')}
+  if(it==='stamp'){G.part('stamp').R(22,Y(14),24,Y(17),'#6a3a1a').R(21,Y(18),25,Y(20),'#c8323c')}
+  if(it==='radio'){G.part('radio','metal').R(21,Y(15),23,Y(20),'X').L(22,Y(11),22,Y(14),'x').S(22,Y(16),'#5aff5a')}
+  if(it==='disc'){G.part('disc','flat').E(24,Y(16),3.5,3.5,'x').E(24,Y(16),1,1,'#ff5af0')}
+  if(it==='cuffs'){G.part('cuffs','metal').E(22,Y(17),1.6,1.6,'q').E(25,Y(19),1.6,1.6,'q').L(23,Y(18),24,Y(18),'q')}
   if(zb){G.part('armF').R(17,Y(16),26,Y(17),C);G.part('handF','skin').R(27,Y(16),28,Y(17),S)}
   else{G.part('armF').R(hx-1,Y(16),hx+1,hy,D);G.part('handF','skin').R(hx,hy+1,hx+2,hy+2,S)}
   if(o.shield){G.part('shield','metal').R(22,Y(9),28,Y(27),'#9fc4e0');G.part('shr','flat').L(22,Y(9),22,Y(27),'O').L(28,Y(9),28,Y(27),'O').L(22,Y(9),28,Y(9),'O').L(22,Y(27),28,Y(27),'O');G.part('pol','flat').R(23,Y(13),27,Y(14),'w');G.T(24,Y(11),0)}
@@ -2971,7 +2984,7 @@ function render(){const W=VIEW.w,H=VIEW.h;
     else if(f.k==='zap'){if(f.col){ctx.globalAlpha=1-k;ctx.strokeStyle=f.col}else ctx.strokeStyle=`rgba(255,240,120,${1-k})`;ctx.lineWidth=1;ctx.beginPath();for(let i=0;i<f.pts.length-1;i++){const [ax,ay]=f.pts[i],[bx,by]=f.pts[i+1];ctx.moveTo(ax-camX,ay-camY);const mx=(ax+bx)/2+rand(-6,6),my=(ay+by)/2+rand(-6,6);ctx.lineTo(mx-camX,my-camY);ctx.lineTo(bx-camX,by-camY);lights.push([bx-camX,by-camY,26,f.col?elLight(f.el):L_GOLD])}ctx.stroke();ctx.globalAlpha=1}
     else if(f.k==='whip'){ctx.globalAlpha=1-k;const ext=Math.min(1,k*4),c=ELC[f.el||'neutral'];for(const sd of [-1,1]){ctx.strokeStyle=c[0];ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(f.x-camX,f.y-camY);for(let i=1;i<=12;i++){const u=i/12;ctx.lineTo(f.x-camX+sd*f.len*ext*u,f.y-camY+Math.sin(u*9+k*20)*4*(1-u*.5))}ctx.stroke();ctx.fillStyle=c[1];ctx.fillRect(Math.round(f.x-camX+sd*f.len*ext)-1,Math.round(f.y-camY)-1,3,3);lights.push([f.x-camX+sd*f.len*ext,f.y-camY,22,elLight(f.el)])}ctx.globalAlpha=1}}
   // iluminación
-  const amb=.52,LW=lightC.width,LH=lightC.height;lctx.globalCompositeOperation='source-over';lctx.clearRect(0,0,LW,LH);lctx.fillStyle=G.act2At&&!MENUISH()?`hsla(${(G.t*25)%360|0},75%,20%,${amb+.04})`:`rgba(10,8,34,${amb})`;lctx.fillRect(0,0,LW,LH);lctx.globalCompositeOperation='destination-out';
+  const amb=.52,LW=lightC.width,LH=lightC.height;lctx.globalCompositeOperation='source-over';lctx.clearRect(0,0,LW,LH);lctx.fillStyle=actAmb(amb);lctx.fillRect(0,0,LW,LH);lctx.globalCompositeOperation='destination-out';
   const pr=(MENUISH()?W*.55:170)/2;lctx.globalAlpha=.9;lctx.drawImage(L_WHITE,W/4-pr,H/4-pr,pr*2,pr*2);lctx.globalAlpha=1;
   gctx.clearRect(0,0,LW,LH);
   for(const l of lights){const x=l[0]/2,y=l[1]/2;lightDot(lctx,L_WHITE,x,y,l[2]/2);lightDot(gctx,l[3],x,y,l[2]*.3)}
@@ -3294,14 +3307,14 @@ function coSnap(gi){const S=CO.ps[gi],gx=S.o.x,gy=S.o.y,R=440,R2=340;
   const np=[];for(const p of parts)if(p.sq>S.pSent&&np.length<160&&dist2(p.x,p.y,gx,gy)<R2*R2)np.push([Math.round(p.x),Math.round(p.y),Math.round(p.vx),Math.round(p.vy),coR(p.life),coR(p.max),p.col,p.s]);S.pSent=CO.psq;
   let mo=[];if(G.mapObjs&&G.mapObjs.size>S.moSent){mo=[...G.mapObjs].slice(S.moSent);S.moSent=G.mapObjs.size}
   const pl={};for(const i of CO.ids){if(i===CO.me)pl[i]=coPData(P,ST,G.char,PET);else{const T=CO.ps[i];pl[i]=coPData(T.o,T.st,T.ch,T.pet)}}
-  return{t:'s',g:{st:G.state,wn:coWaitNames(),time:coR(G.time),kills:G.kills,gold:G.gold,bossDmg:Math.round(G.bossDmg),act2At:G.act2At,runKing:G.runKing,runDemon:G.runDemon,shake:coR(G.shake),intro:G.intro?{t:coR(G.intro.t)}:null,ir:!!G.inRift,po:G.portal?{x:Math.round(G.portal.x),y:Math.round(G.portal.y)}:null,rt:G.inRift?CO.rt:null},
+  return{t:'s',g:{st:G.state,wn:coWaitNames(),time:coR(G.time),kills:G.kills,gold:G.gold,bossDmg:Math.round(G.bossDmg),act2At:G.act2At,actN:G.actN||1,actAt:G.actAt||0,runKing:G.runKing,runDemon:G.runDemon,shake:coR(G.shake),intro:G.intro?{t:coR(G.intro.t)}:null,ir:!!G.inRift,po:G.portal?{x:Math.round(G.portal.x),y:Math.round(G.portal.y)}:null,rt:G.inRift?CO.rt:null},
     e:ens,bs:G.boss&&!G.boss.dead?G.boss.nid:0,pr:coNearList(projs,gx,gy,R2,260),ep:coNearList(eprojs,gx,gy,R2,160),fx:coNearList(fx,gx,gy,R2,120),me:coNearList(meteors,gx,gy,R2,60),
     zo:coNearList(zones,gx,gy,R2,40),wf:coNearList(wfx,gx,gy,R2,60),pk:coNearList(pickups,gx,gy,R2,260),hz:coNearList(hazards,gx,gy,R2,80),tx:coNearList(texts,gx,gy,R2,80),
     pl,sh:typeof SHR!=='undefined'?SHR.map(q=>({id:q.id,x:Math.round(q.x),y:Math.round(q.y),cd:coR(q.cd),ph:coR(q.ph)})):[],np,mo,snd:CO.snd}}
 function coHostNet(dt){CO.snapT-=dt;if(CO.snapT<=0&&CO.run){CO.snapT=G.state==='play'?.05:.2;for(const i of coOthers())coSendTo(i,coSnap(i));CO.snd=[]}}
 
 /* ---------- invitado ---------- */
-function coApply(s){const g=s.g;CO.hs=g.st;CO.wn=g.wn||'';Object.assign(G,{time:g.time,kills:g.kills,gold:g.gold,bossDmg:g.bossDmg,act2At:g.act2At,runKing:g.runKing,runDemon:g.runDemon,intro:g.intro,inRift:g.ir,portal:g.po});if(g.rt)CO.rt=g.rt;G.shake=Math.max(G.shake,g.shake);
+function coApply(s){const g=s.g;CO.hs=g.st;CO.wn=g.wn||'';Object.assign(G,{time:g.time,kills:g.kills,gold:g.gold,bossDmg:g.bossDmg,act2At:g.act2At,actN:g.actN||1,actAt:g.actAt||0,runKing:g.runKing,runDemon:g.runDemon,intro:g.intro,inRift:g.ir,portal:g.po});if(g.rt)CO.rt=g.rt;G.shake=Math.max(G.shake,g.shake);
   const M=CO.ens,seen=new Set(),arr=[];
   for(const q of s.e){let e=M.get(q[0]);const t=q[1]==='hboss'?coRiftT():ET[q[1]];if(!t)continue;
     if(!e){const el=!!(q[4]&8);e={nid:q[0],type:q[1],t,x:q[2],y:q[3],elite:el,big:!!(q[4]&16),sc:(t.sc||1)*(el?1.3:1),seed:(q[0]*37.7)%100,r:t.r*(el?1.3:1),maxHp:1000,hp:1000,dead:false,face:1,flash:0,slowT:0};e.set=SPR[t.spr+(el?'E':'')]||SPR[t.spr];if(q[4]&32)e.pet={x:q[2]-20,y:q[3]+8,face:1,anim:0,mv:false,lg:null,bit:false};M.set(q[0],e)}
@@ -3744,6 +3757,234 @@ function duLoot(s){const [k,txt]=pick(DU_LOOT),o=3-s,px=G.duel.px[o],nm=s===1?SA
     fx.push({k:'ring',el:k==='purple'?'dark':'water',x:a.x,y:a.y,r:R,t:0,dur:.6})}
   const m=nm.toUpperCase()+' ABRE EL COFRE · '+txt;toast(m,1);sfx('level');coNet({t:'dmsg',m})}
 {const _d=drawPlayer;drawPlayer=function(l){_d(l);if(DU.on&&P.dsh&&P.hp>0){const sx=Math.round(P.x-camX),sy=Math.round(P.y-camY);ctx.strokeStyle=`rgba(150,215,255,${.6+.3*Math.sin(G.t*6)})`;ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(sx,sy,12,15,0,0,6.283);ctx.stroke();l.push([sx,sy,26,L_BLUE])}}}
+
+/* ================= ACTOS DE 15 MINUTOS (I–XII y luego en bucle) =================
+   Cada acto: 5 fases de 3 min (jefe al final de las 4 primeras) y un jefe final a los 15 min.
+   Al vencer al jefe final empieza el siguiente acto. Del III en adelante, cada enemigo es una
+   copia de uno del Acto I (misma forma de moverse y atacar) con dibujo y nombre nuevos. */
+
+// ---------- dibujos nuevos ----------
+// comida con patas (El Bajón) y objetos (conos, botes, maletas…)
+function foodP(f,o){const k=o.k||1,G=new SPnt(32,32,k),bob=f%2?-1:0,Y=y=>y+bob,lf=WALK[f],lb=WALKB[f],kd=o.kind,C=o.C;
+  const legs=(y0)=>{G.part('legB').R(12+lb,Y(y0),13+lb,29,'x').R(11+lb,30,14+lb,31,o.Sh||'r');G.part('legF').R(18+lf,Y(y0),19+lf,29,'x').R(18+lf,30,21+lf,31,o.Sh||'r')};
+  const face=(y,dx)=>{dx=dx||0;G.part('eyes','flat').R(13+dx,Y(y),14+dx,Y(y+1),'w').R(18+dx,Y(y),19+dx,Y(y+1),'w').S(14+dx,Y(y+1),'x').S(19+dx,Y(y+1),'x');
+    if(o.angry)G.L(12+dx,Y(y-1),14+dx,Y(y),'x').L(20+dx,Y(y-1),18+dx,Y(y),'x');G.part('mouth','flat').L(15+dx,Y(y+3),17+dx,Y(y+3),'x').S(14+dx,Y(y+2),'x').S(18+dx,Y(y+2),'x')};
+  const arms=(y)=>{G.part('armB').L(9,Y(y),6,Y(y+4),'x');G.part('armF').L(23,Y(y),26,Y(y+4),'x')};
+  if(kd==='burger'){legs(25);arms(17);G.part('bunB').R(8,Y(21),23,Y(24),'#d8903a');G.part('patty').R(7,Y(18),24,Y(20),'#5a2a14');G.part('chz','flat').P([[7,Y(17)],[25,Y(17)],[22,Y(19)],[17,Y(18)],[12,Y(20)],[8,Y(18)]],'#ffd040');
+    G.part('let','flat').L(7,Y(16),24,Y(16),'#6ad040');G.part('bunT').E(15.5,Y(11),9,5.5,'#e8a040').R(7,Y(11),24,Y(15),'#e8a040');G.part('seed','flat');for(const [x,y] of [[11,8],[15,7],[19,8],[13,10],[18,10]])G.S(x,Y(y),'w');face(11)}
+  else if(kd==='donut'){legs(25);arms(16);G.part('dough').E(15.5,Y(16),10,8.5,'#d89048');G.part('ice').E(15.5,Y(15),9,7,C||'#ff7ac8');G.part('hole').E(15.5,Y(16),2.5,2,'#2a1408');
+    G.part('spr','flat');for(const [x,y,c] of [[9,12,'y'],[12,10,'c'],[19,10,'w'],[22,13,'a'],[10,18,'c'],[21,18,'y'],[15,9,'a']])G.L(x,Y(y),x+1,Y(y),c);face(12)}
+  else if(kd==='pizza'){legs(25);arms(13);G.part('slice').P([[6,Y(6)],[26,Y(6)],[16,Y(26)]],'#ffd860');G.part('crust').R(5,Y(4),26,Y(7),'#d0883a');
+    G.part('pep','flat');for(const [x,y] of [[10,10],[20,10],[15,15],[14,9]])G.E(x,Y(y),1.4,1.4,'#c8323c');face(11,0)}
+  else if(kd==='chips'){G.part('bag').R(8,Y(5),24,Y(24),C||'#ffd040');G.part('crimp','flat');for(let x=8;x<=24;x+=2){G.S(x,Y(4),C||'#ffd040');G.S(x,Y(25),C||'#ffd040')}
+    G.part('lab').E(16,Y(16),5,4,o.D||'#e0402a');G.part('chip','flat').E(16,Y(16),2.5,1.8,'#ffe890');G.part('wing','flat').P([[8,Y(10)],[1,Y(6)+[0,-2,0,2][f]],[3,Y(13)]],'w').P([[24,Y(10)],[31,Y(6)+[0,-2,0,2][f]],[29,Y(13)]],'w');face(8)}
+  else if(kd==='hotdog'){legs(24);arms(16);G.part('bun').E(15.5,Y(18),11,4.5,'#e0a050');G.part('saus').E(15.5,Y(15),12,3,'#c0502a');G.part('must','flat');for(let x=6;x<=25;x+=2)G.S(x,Y(14)+(x%4?0:1),'#ffd020');face(10)}
+  else if(kd==='can'){legs(26);arms(14);G.part('can').R(9,Y(4),22,Y(25),C||'#d82a2a');G.part('rim','metal').R(9,Y(3),22,Y(4),'q').R(9,Y(25),22,Y(26),'q');G.part('tab','metal').R(14,Y(1),17,Y(2),'q');
+    G.part('lab','flat').R(9,Y(16),22,Y(19),o.D||'w');face(8,0)}
+  else if(kd==='kebab'){legs(26);arms(14);G.part('stick','metal').R(15,Y(0),16,Y(27),'q');G.part('meat').P([[10,Y(3)],[21,Y(3)],[24,Y(24)],[7,Y(24)]],'#9a5a2a');
+    G.part('lines','flat');for(let y=6;y<=22;y+=4)G.L(9,Y(y),22,Y(y),'#6a3a1a');face(9)}
+  else if(kd==='cake'){legs(27);arms(17);G.part('l1').R(5,Y(19),26,Y(26),'#f0d8b0');G.part('l2').R(8,Y(12),23,Y(18),'#ff9ac8');G.part('l3').R(11,Y(6),20,Y(11),'#f0d8b0');
+    G.part('cr','flat').L(5,Y(19),26,Y(19),'w').L(8,Y(12),23,Y(12),'w').L(11,Y(6),20,Y(6),'w');G.part('cand').R(15,Y(1),16,Y(5),'#7ac8ff');G.part('flm','flat').S(15,Y(0),'f').S(16,Y(-1),'y');face(14)}
+  else if(kd==='fridge'){legs(28);arms(15);G.part('box').R(7,Y(1),24,Y(27),'#e8eef4');G.part('line','flat').L(7,Y(10),24,Y(10),'#8a98a8');G.part('hd','metal').R(21,Y(3),22,Y(8),'q').R(21,Y(13),22,Y(20),'q');
+    G.part('mag','flat').R(9,Y(4),11,Y(6),'#ff5a8a').R(12,Y(22),14,Y(24),'#5ad07a');face(14,-1)}
+  else if(kd==='vending'){legs(28);arms(15);G.part('box').R(6,Y(1),25,Y(27),C||'#c8323c');G.part('glass').R(8,Y(3),20,Y(21),'#2a3a5a');G.part('items','flat');for(let y=5;y<=19;y+=4)for(let x=9;x<=19;x+=3)G.R(x,Y(y),x+1,Y(y+1),['y','a','c','p'][(x+y)%4]);
+    G.part('slot','flat').R(22,Y(6),23,Y(12),'x').R(8,Y(23),20,Y(25),'x');G.part('eyesV','flat').R(9,Y(9),10,Y(10),'w').R(17,Y(9),18,Y(10),'w')}
+  else if(kd==='cone'){legs(27);arms(16);G.part('cone').P([[16,Y(2)],[24,Y(25)],[8,Y(25)]],'#ff7a1a');G.part('base').R(5,Y(25),27,Y(27),'#ff7a1a');G.part('str','flat').L(12,Y(12),20,Y(12),'w').L(10,Y(19),22,Y(19),'w');face(14,0)}
+  else if(kd==='bag'){legs(26);arms(14);G.part('bag').R(8,Y(5),24,Y(25),'#d8e8f0');G.part('zip','flat').L(8,Y(6),24,Y(6),'#ff3a3a');G.part('lab','flat').R(11,Y(18),21,Y(23),'w').L(12,Y(20),20,Y(20),'x');
+    G.part('weed','flat').S(14,Y(12),'a').S(16,Y(11),'A').S(18,Y(13),'a').S(15,Y(14),'a');face(8)}
+  else if(kd==='case'){legs(26);arms(14);G.part('case').R(6,Y(8),25,Y(25),C||'#6a3a1a');G.part('hdl','metal').R(13,Y(5),18,Y(6),'x').R(13,Y(6),13,Y(8),'x').R(18,Y(6),18,Y(8),'x');
+    G.part('lock','metal').R(9,Y(10),10,Y(11),'y').R(21,Y(10),22,Y(11),'y');G.part('stk','flat').R(16,Y(19),22,Y(23),'#e8d8a0');face(12,-3)}
+  if(o.crown){G.part('crown','metal').R(11,Y(-3),20,Y(-1),'y').S(11,Y(-4),'y').S(15,Y(-5),'y').S(16,Y(-5),'y').S(20,Y(-4),'y')}
+  return G.render()}
+// marcianos
+function alienP(f,o){const k=o.k||1,G=new SPnt(32,32,k),bob=f%2?-1:0,Y=y=>y+bob,lf=WALK[f],lb=WALKB[f],C=o.C||'#6ad06a',D=o.D||'#3a8a3a';
+  G.part('legB').R(13+lb,Y(25),14+lb,30,D).R(12+lb,31,15+lb,31,D);G.part('legF').R(18+lf,Y(25),19+lf,30,D).R(18+lf,31,21+lf,31,D);
+  G.part('armB').L(11,Y(19),8,Y(24),D);G.part('body').E(15.5,Y(21),4.5+(o.fat?3:0),5,o.suit||C);
+  if(o.belt)G.part('belt','metal').R(11-(o.fat?3:0),Y(23),20+(o.fat?3:0),Y(24),'q');
+  G.part('head').E(15.5,Y(10),8,7.5,C).E(15.5,Y(15),5,3,C);
+  G.part('ant').L(12,Y(3),10,Y(-1),D).L(19,Y(3),21,Y(-1),D);G.part('tip','flat').S(10,Y(-2),o.T||'#ff5af0').S(21,Y(-2),o.T||'#ff5af0');
+  G.part('eyes','flat').E(12,Y(10),2.5,3,'x').E(19,Y(10),2.5,3,'x').S(12,Y(9),'w').S(19,Y(9),'w');if(o.eyes3)G.E(15.5,Y(5),1.5,1.5,'x').S(15,Y(5),'w');
+  if(o.glasses)G.part('gl','flat').L(9,Y(9),22,Y(9),'#ff5af0');G.part('mouth','flat').L(14,Y(15),17,Y(15),'x');
+  if(o.ray){G.part('ray','metal').R(21,Y(18),27,Y(20),'q').S(28,Y(19),'#5affff')}
+  if(o.crown){G.part('crown','metal').R(11,Y(0),20,Y(2),'y').S(11,Y(-1),'y').S(15,Y(-2),'y').S(20,Y(-1),'y')}
+  G.part('armF').L(20,Y(19),23,Y(24),D);return G.render()}
+// platillos volantes
+function ufoP(f,o){const k=o.k||1,G=new SPnt(32,20,k),wy=[0,-1,0,1][f],Y=y=>y+wy;
+  G.part('beam','flat');if(o.beam)G.P([[12,Y(14)],[20,Y(14)],[25,19],[7,19]],'#c8ffe0');
+  G.part('dome').E(16,Y(7),5.5,4.5,o.D||'#7affe0');G.part('shine','flat').S(14,Y(5),'w').S(15,Y(4),'w');
+  G.part('disc','metal').E(16,Y(11),14,3.5,o.C||'#a9b4c2');G.part('rim','flat').L(3,Y(11),29,Y(11),'#6f7886');
+  G.part('lights','flat');for(let x=5;x<=27;x+=4)G.S(x,Y(12),(x/4+f)%2?'#ffd040':'#ff5af0');
+  if(o.eyes)G.part('ey','flat').S(14,Y(7),'x').S(18,Y(7),'x');return G.render()}
+// drones y helicópteros
+function droneP(f,o){const k=o.k||1,G=new SPnt(32,22,k),wy=[0,-1,0,1][f],Y=y=>y+wy,C=o.C||'#2a2a34';
+  if(o.heli){G.part('tail').R(1,Y(11),12,Y(12),C).R(0,Y(7),2,Y(12),C);G.part('body').E(18,Y(12),9,5,C);G.part('win','flat').E(22,Y(11),4,3,'#7fc4ff');G.part('skid','metal').L(10,Y(19),27,Y(19),'x').L(13,Y(17),13,Y(19),'x').L(23,Y(17),23,Y(19),'x');
+    G.part('rot','flat');const r=[16,10,16,6][f];G.L(18-r,Y(5),18+r,Y(5),'x');G.R(17,Y(5),19,Y(7),'x');if(o.stripe)G.part('st','flat').L(10,Y(13),26,Y(13),o.stripe)}
+  else{G.part('arms').L(6,Y(8),26,Y(14),C).L(6,Y(14),26,Y(8),C);G.part('body').R(11,Y(8),21,Y(14),C);G.part('cam','flat').E(16,Y(15),2,1.5,'x').S(16,Y(15),'#ff3030');
+    G.part('rot','flat');for(const [x,y] of [[5,7],[27,7],[5,15],[27,15]]){const w=[4,2,4,1][(f+x)%4];G.L(x-w,Y(y),x+w,Y(y),'#c8c8d0')}
+    if(o.light)G.part('lt','flat').S(13,Y(9),f%2?'#3a6aff':'#ff3a3a').S(19,Y(9),f%2?'#ff3a3a':'#3a6aff');if(o.stripe)G.part('st','flat').L(11,Y(11),21,Y(11),o.stripe)}
+  return G.render()}
+// cartas certificadas con alas
+function letterP(f,o){const k=o.k||1,G=new SPnt(32,22,k),wy=[0,-3,0,3][f],C=o.C||'#f4f0e8';
+  G.part('wingB','flat').P([[9,9],[2,3+wy],[1,8+wy],[8,12]],'w');G.part('env').R(8,6,24,17,C);G.part('flap','flat').L(8,6,16,12,'#8a8a9a').L(24,6,16,12,'#8a8a9a');
+  G.part('seal','flat').E(16,12,1.5,1.5,o.D||'#c8323c');G.part('stamp','flat').R(20,8,22,10,'#3a8aff');G.part('wingF','flat').P([[23,9],[30,3+wy],[31,8+wy],[24,12]],'w');
+  G.part('eyes','flat').S(12,9,'x').S(13,9,'x');return G.render()}
+
+// ---------- los actos ----------
+const ACT_T2=900,ROM=['','I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+const BASE7=['skel','bat','slime','gob','wolf','cult','orc'],BASEB=['slimeKing','gobKing','batLord','wolfBoss','boneColossus','orcBoss','highPriest','king'];
+const ALL7b=[['skel',2],['bat',1],['slime',1],['gob',2],['wolf',2],['cult',2],['orc',2]];
+const PHT=[{mix:[['skel',5],['bat',3],['slime',3]],h:'skel',boss:['slimeKing']},
+  {mix:[['gob',5],['skel',3],['bat',2]],h:'gob',boss:['gobKing','batLord']},
+  {mix:[['wolf',5],['cult',3],['slime',2]],h:'wolf',boss:['wolfBoss','boneColossus']},
+  {mix:[['orc',4],['cult',3],['gob',2]],h:'orc',boss:['orcBoss','highPriest']},
+  {mix:ALL7b,h:'skel',boss:[],eliteCd:18}];
+// uniformes y ropa (dibujo de personas)
+const U={
+  pn:(x)=>Object.assign({C:'#1a2a5a',D:'#101a3a',Pn:'#1a2a5a',H:'N',belt:'x'},x),
+  gc:(x)=>Object.assign({C:'#3a5a2a',D:'#24381a',Pn:'#3a5a2a',H:'N',belt:'x'},x),
+  dea:(x)=>Object.assign({C:'#1a2240',D:'#0e1428',Pn:'#3a4a6a',H:'N',vl:'#ffd040'},x),
+  geo:(x)=>Object.assign({C:'#1a1a20',D:'#0a0a10',Pn:'#1a1a20',H:'x',belt:'x',hat:'balaclava',hc:'#141418'},x),
+  suit:(x)=>Object.assign({C:'#2a2a34',D:'#16161e',Pn:'#2a2a34',collar:'w',tie:'#c8323c',H:'N'},x),
+  mos:(x)=>Object.assign({C:'#1a2240',D:'#0e1428',Pn:'#1a2240',H:'N',stripe:'#c8323c'},x),
+  ertz:(x)=>Object.assign({C:'#c8323c',D:'#7a1a24',Pn:'#1a2240',H:'N',hat:'beret',hc:'#c8323c'},x)};
+const NEWACTS=[
+ {n:'El Bajón',amb:[34,16,6],pc:['#ffd040','#ff7a1a','#e8a040','#ff5a8a'],intro:['QUÉ HAMBRE… ¿QUEDA ALGO EN LA NEVERA?','¿ESA HAMBURGUESA ME ESTÁ MIRANDO?'],warn:'LA NEVERA DE MADRUGADA SE ABRE…',
+  ph:['Hambre de Madrugada','La Pizza Ataca','Perritos y Tartas','El Rincón del Kebab','Asalto a la Nevera'],
+  E:{skel:['Hamburguesa con Patas',foodP,{kind:'burger'}],bat:['Bolsa de Patatas Voladora',foodP,{kind:'chips',k:.8}],slime:['Donut Saltarín',foodP,{kind:'donut',k:.8}],gob:['Porción de Pizza',foodP,{kind:'pizza'}],
+     wolf:['Perrito Caliente',foodP,{kind:'hotdog'}],cult:['Lata Burbujeante',foodP,{kind:'can'}],orc:['Kebab Andante',foodP,{kind:'kebab',k:1.1}]},
+  B:{slimeKing:['El Donut Glaseado',foodP,{kind:'donut',k:1.7,C:'#7ac8ff',crown:1}],gobKing:['La Pizza Familiar',foodP,{kind:'pizza',k:1.6,angry:1}],batLord:['Las Patatas XXL',foodP,{kind:'chips',k:1.7,C:'#ff5a2a',D:'#ffd040'}],
+     wolfBoss:['El Perrito XXL',foodP,{kind:'hotdog',k:1.7,angry:1}],boneColossus:['La Tarta de Tres Pisos',foodP,{kind:'cake',k:1.7}],orcBoss:['El Kebab Mixto',foodP,{kind:'kebab',k:1.7,angry:1}],
+     highPriest:['La Máquina de Vending',foodP,{kind:'vending',k:1.6}],king:['La Nevera de Madrugada',foodP,{kind:'fridge',k:2.1,angry:1}]}},
+ {n:'La Inspección',amb:[14,18,30],pc:['#f4f0e8','#a9b4c2','#7fc4ff'],intro:['¿UNA CARTA CERTIFICADA? QUÉ MAL ROLLO…','¿HAS DECLARADO LOS COGOLLOS?'],warn:'EL INSPECTOR DE HACIENDA REVISA TUS CUENTAS…',
+  ph:['Llega una Carta','Papeleo Infinito','Vuelva Usted Mañana','La Auditoría','Hacienda Somos Todos'],
+  E:{skel:['Becario Agobiado',humanP,{C:'w',D:'h',Pn:'#2a2a34',H:'N',collar:'w',tie:'#3a5fcd',item:'folder',zomb:1}],bat:['Carta Certificada',letterP,{}],slime:['Bola de Papeleo',slimeP,{C:'#f4f0e8'}],
+     gob:['Inspector de Seguros',humanP,U.suit({hat:'bald',H:'g',glasses:1,item:'brief'})],wolf:['Perro de Aduanas',wolfP,{C:'#c8935e',D:'#7a4b2a',L:'#f2d8b0'}],
+     cult:['Abogada con Recurso',humanP,U.suit({hat:'bun',H:'#3a2010',item:'multa',tie:0})],orc:['Funcionario de Ventanilla',humanP,{k:1.1,fat:1,C:'#c8b090',D:'#8a7050',Pn:'#4a4a54',H:'g',hat:'bald',glasses:1,mus:'g',item:'stamp'}]},
+  B:{slimeKing:['La Montaña de Papeles',slimeP,{k:1.6,C:'#f4f0e8',crown:1}],gobKing:['El Jefe de Negociado',humanP,U.suit({k:1.4,fat:1,hat:'bald',H:'g',mus:'g',item:'stamp',angry:1})],batLord:['La Notificación Urgente',letterP,{k:1.8,C:'#ffd040'}],
+     wolfBoss:['El Perro Rastreador',wolfP,{k:1.7,C:'#7a4b2a',D:'#4e2f1c',L:'#c8935e',spikes:1}],boneColossus:['El Notario',humanP,U.suit({k:1.5,hat:'fedora',hc:'#16161e',glasses:1,item:'folder'})],
+     orcBoss:['El Auditor',humanP,U.suit({k:1.4,fat:1,glasses:1,item:'brief',angry:1})],highPriest:['La Gestora Implacable',humanP,U.suit({k:1.4,hat:'bun',H:'#d8b060',item:'folleto',glasses:1,angry:1,tie:0})],
+     king:['El Inspector de Hacienda',humanP,U.suit({k:2,fat:1,hat:'fedora',hc:'#101018',glasses:1,mus:'x',item:'brief',angry:1,cape:'#101018'})]}},
+ {n:'El Festival',amb:[30,8,26],pc:['#ff5af0','#5affff','#ffd040','#7aff7a'],intro:['¡ABREN PUERTAS!','ESE GUIRI LLEVA TRES DÍAS SIN DORMIR…'],warn:'EL SEGURATA DEL ESCENARIO TE HA VISTO…',
+  ph:['Abren Puertas','La Despedida de Soltero','Guerra de DJs','Pogo Salvaje','Último Bolo'],
+  E:{skel:['Guiri de Despedida',humanP,{C:'#ff7ac8',D:'#c84a98',Pn:'#5ad0ff',H:'#f0d060',hat:'beanie',hc:'#ff5af0',red:1,S:'#ffb0a0'}],bat:['Dron del Festival',droneP,{light:1,C:'#3a3a48'}],slime:['Globo Hinchable',slimeP,{C:'#ff5af0'}],
+     gob:['Fan con Pulsera VIP',humanP,{C:'#ffd040',D:'#c8a020',Pn:'#2a2a34',H:'#c84a2a',glasses:1,item:'phone'}],wolf:['Perro del Camping',wolfP,{C:'#d8d2c0',D:'#8e8676',L:'w'}],
+     cult:['DJ Rival',humanP,{C:'#1a1a20',D:'#0a0a10',Pn:'#1a1a20',H:'#5affff',hat:'cap',hc:'#ff5af0',item:'disc',glasses:1}],orc:['Segurata',humanP,{k:1.1,fat:1,C:'#141418',D:'#0a0a10',Pn:'#141418',hat:'bald',H:'x',vl:'#ffd040',glasses:1}]},
+  B:{slimeKing:['El Globo Gigante',slimeP,{k:1.7,C:'#5affff',crown:1}],gobKing:['El Novio de la Despedida',humanP,{k:1.4,C:'w',D:'h',Pn:'#2a2a34',hat:'beanie',hc:'#ff5af0',red:1,item:'mega',S:'#ffb0a0'}],
+     batLord:['El Dron de la Tele',droneP,{k:1.8,light:1,stripe:'#ff5af0'}],wolfBoss:['El Perro del Backstage',wolfP,{k:1.7,C:'#1a1a20',D:'#0a0a10',L:'#5a5a64',spikes:1}],
+     boneColossus:['El Batukadero Loco',humanP,{k:1.5,C:'#ffd040',D:'#3a8a3a',Pn:'#3a8a3a',H:'N',hat:'hood',item:'disc',red:1}],orcBoss:['El Jefe de Seguridad',humanP,{k:1.5,fat:1,C:'#141418',D:'#0a0a10',Pn:'#141418',hat:'bald',H:'x',vl:'#ffd040',glasses:1,angry:1,item:'radio'}],
+     highPriest:['La Influencer',humanP,{k:1.4,C:'#ff7ac8',D:'#c84a98',Pn:'w',hat:'bun',H:'#f0d060',item:'phone',glasses:1}],king:['El Segurata del Escenario',humanP,{k:2.1,fat:1,C:'#141418',D:'#0a0a10',Pn:'#141418',hat:'bald',H:'x',vl:'#ffd040',glasses:1,angry:1,item:'radio',cape:'#141418'}]}},
+ {n:'La Abducción',amb:[8,28,14],pc:['#7aff7a','#5affff','#ff5af0'],intro:['¿HAS VISTO ESAS LUCES?','NO ERA EL PORRO… ¡SON MARCIANOS!'],warn:'UNA SOMBRA GIGANTE TAPA LAS ESTRELLAS…',
+  ph:['Luces en el Cielo','Contacto','Sondas y Rayos','La Nave se Acerca','Abducción Total'],
+  E:{skel:['Marciano Colocado',alienP,{}],bat:['Platillo Pequeño',ufoP,{k:.8}],slime:['Moco Espacial',slimeP,{C:'#7aff7a'}],gob:['Marciano Curioso',alienP,{C:'#5ad0c8',D:'#2a8a80',glasses:1}],
+     wolf:['Perro de Tres Ojos',wolfP,{C:'#6ad06a',D:'#3a8a3a',L:'#a8f0a8',eye:'#ff5af0'}],cult:['Marciano del Rayo',alienP,{C:'#b07ae0',D:'#6a3aa0',ray:1}],orc:['Marciano Gordo',alienP,{k:1.1,fat:1,suit:'#a9b4c2',belt:1}]},
+  B:{slimeKing:['La Gran Babosa Cósmica',slimeP,{k:1.7,C:'#5affaa',crown:1}],gobKing:['El Comandante Zorg',alienP,{k:1.5,suit:'#c8323c',belt:1,crown:1}],batLord:['El Platillo Explorador',ufoP,{k:1.8,eyes:1,beam:1}],
+     wolfBoss:['El Perro de Marte',wolfP,{k:1.7,C:'#3a8a3a',D:'#1a4a1a',L:'#6ad06a',eye:'#ff5af0',spikes:1}],boneColossus:['El Sabio de Marte',alienP,{k:1.5,C:'#a8a0ff',D:'#5a50c0',eyes3:1}],
+     orcBoss:['El Robot de Carga',alienP,{k:1.6,fat:1,C:'#a9b4c2',D:'#6f7886',suit:'#6f7886',belt:1,T:'#ff3030'}],highPriest:['La Reina Alienígena',alienP,{k:1.5,C:'#ff5af0',D:'#a02a90',crown:1,ray:1}],
+     king:['El OVNI Nodriza',ufoP,{k:2.4,eyes:1,beam:1,C:'#6f7886',D:'#ff5af0'}]}},
+ {n:'Policía Nacional',amb:[6,12,34],pc:['#3a6aff','#ff3a3a','#f4f0e8'],intro:['¡CONTROL DE DOCUMENTACIÓN!','LLEGAN LOS ZETAS…'],warn:'EL COMISARIO PRINCIPAL HA SALIDO DE LA JEFATURA…',
+  ph:['Control de Documentación','Patrulla Nocturna','Unidad Canina','Carga de la UIP','La Jefatura Central'],
+  E:{skel:['Agente en Prácticas',humanP,U.pn({hat:'cap',hc:'#101a3a',zomb:1})],bat:['Dron Policial',droneP,{light:1,C:'#1a2a5a'}],slime:['Bote de Humo',foodP,{kind:'can',k:.7,C:'#6f7886',D:'#ffd040'}],
+     gob:['Agente de Paisano',humanP,{C:'#5a4a3a',D:'#3a2a1a',Pn:'#2a3a5a',H:'N',glasses:1,item:'radio'}],wolf:['Perro de la Unidad Canina',wolfP,{C:'#c8935e',D:'#2a1a10',L:'#e8c070'}],
+     cult:['Agente con Multa',humanP,U.pn({hat:'cap',hc:'#101a3a',badge:1,item:'multa'})],orc:['Agente de la UIP',humanP,U.pn({k:1.1,fat:1,hat:'helmet',hc:'#1a2a5a',item:'baton',shield:1})]},
+  B:{slimeKing:['La Nube de Gas',cloudP,{k:1.6,C:'#ffb070',D:'#c86a2a',angry:1}],gobKing:['El Inspector Jefe',humanP,U.pn({k:1.4,hat:'peak',hc:'#101a3a',mus:'g',badge:1,item:'radio',angry:1})],batLord:['El Helicóptero',droneP,{k:1.6,heli:1,C:'#1a2a5a',stripe:'w'}],
+     wolfBoss:['Rex, el Perro Comisario',wolfP,{k:1.7,C:'#c8935e',D:'#2a1a10',L:'#e8c070',spikes:1}],boneColossus:['El Antidisturbios Colosal',humanP,U.pn({k:1.6,fat:1,hat:'helmet',hc:'#101a3a',shield:1})],
+     orcBoss:['El Mando de la UIP',humanP,U.pn({k:1.5,fat:1,hat:'helmet',hc:'#1a2a5a',item:'baton',shield:1,angry:1})],highPriest:['La Portavoz',humanP,U.pn({k:1.4,hat:'bun',H:'#3a2010',item:'mega'})],
+     king:['El Comisario Principal',humanP,U.pn({k:2,fat:1,hat:'peak',hc:'#101a3a',mus:'g',badge:1,belt:'y',item:'mega',angry:1,cape:'#101a3a'})]}},
+ {n:'Guardia Civil',amb:[10,22,8],pc:['#3a8a3a','#ffd040','#f4f0e8'],intro:['¡ALTO! CONTROL DE ALCOHOLEMIA','HUELE A TRICORNIO…'],warn:'EL CORONEL DEL TRICORNIO SALE DEL CUARTEL…',
+  ph:['Control de Alcoholemia','En la Carretera','El Cuartelillo','Operación Seprona','Llega el Coronel'],
+  E:{skel:['Guardia en Prácticas',humanP,U.gc({hat:'cap',hc:'#24381a',zomb:1})],bat:['Dron de Tráfico',droneP,{light:1,C:'#3a5a2a',stripe:'#ffd040'}],slime:['Cono de Tráfico',foodP,{kind:'cone',k:.8}],
+     gob:['Agente de Tráfico',humanP,U.gc({hat:'cap',hc:'w',vest:'#c8e040',item:'multa'})],wolf:['Perro de la Benemérita',wolfP,{C:'#1a1a20',D:'#0a0a10',L:'#c8935e'}],
+     cult:['Guardia del Tricornio',humanP,U.gc({hat:'tricorn',mus:'x',badge:1,item:'multa'})],orc:['Guardia del GRS',humanP,U.gc({k:1.1,fat:1,hat:'helmet',hc:'#24381a',item:'baton',shield:1})]},
+  B:{slimeKing:['El Cono Gigante',foodP,{kind:'cone',k:1.7,angry:1}],gobKing:['El Sargento Tricornio',humanP,U.gc({k:1.4,fat:1,hat:'tricorn',mus:'x',badge:1,item:'multa',angry:1})],batLord:['El Helicóptero del Seprona',droneP,{k:1.6,heli:1,C:'#3a5a2a',stripe:'#ffd040'}],
+     wolfBoss:['Lobo, el Perro del Cuartel',wolfP,{k:1.7,C:'#1a1a20',D:'#0a0a10',L:'#c8935e',spikes:1}],boneColossus:['El Guardia Colosal',humanP,U.gc({k:1.6,fat:1,hat:'tricorn',mus:'x'})],
+     orcBoss:['El Capitán del GRS',humanP,U.gc({k:1.5,fat:1,hat:'helmet',hc:'#24381a',shield:1,item:'baton',angry:1})],highPriest:['La Teniente del Seprona',humanP,U.gc({k:1.4,hat:'cap',hc:'#24381a',item:'radio'})],
+     king:['El Coronel del Tricornio',humanP,U.gc({k:2,fat:1,hat:'tricorn',mus:'x',badge:1,belt:'y',item:'mega',angry:1,cape:'#24381a'})]}},
+ {n:'La DEA',amb:[6,8,24],pc:['#ffd040','#1a2240','#f4f0e8'],intro:['¿ESOS DE LA CHAQUETA AMARILLA…?','¡HAN VENIDO LOS AMERICANOS!'],warn:'EL DIRECTOR DE LA DEA HA ATERRIZADO…',
+  ph:['Llegan los Americanos','Vigilancia','Infiltrados','La Redada Federal','El Director'],
+  E:{skel:['Agente Novato',humanP,U.dea({hat:'cap',hc:'#1a2240',zomb:1})],bat:['Dron de Vigilancia',droneP,{C:'#1a2240',stripe:'#ffd040'}],slime:['Bolsa de Pruebas',foodP,{kind:'bag',k:.8}],
+     gob:['Agente Infiltrado',humanP,{C:'#ff7a3a',D:'#c84a1a',Pn:'#c8b090',H:'#d8b060',glasses:1,item:'phone',mus:'#d8b060'}],wolf:['Perro Antidroga',wolfP,{C:'#e8c070',D:'#8a5a36',L:'#f2d8b0'}],
+     cult:['Agente con Esposas',humanP,U.dea({hat:'cap',hc:'#1a2240',item:'cuffs'})],orc:['Agente Táctico',humanP,U.dea({k:1.1,fat:1,hat:'helmet',hc:'#1a2240',shield:1})]},
+  B:{slimeKing:['La Bolsa de Pruebas Gigante',foodP,{kind:'bag',k:1.7,angry:1}],gobKing:['El Agente Especial',humanP,U.suit({k:1.4,glasses:1,item:'radio',vl:'#ffd040'})],batLord:['El Helicóptero Negro',droneP,{k:1.6,heli:1,C:'#141418',stripe:'#ffd040'}],
+     wolfBoss:['Sniff, el Perro Antidroga',wolfP,{k:1.7,C:'#e8c070',D:'#8a5a36',L:'#f2d8b0',spikes:1}],boneColossus:['El Analista del Laboratorio',humanP,{k:1.5,C:'w',D:'h',Pn:'#3a4a6a',H:'g',hat:'bald',glasses:1,item:'folder'}],
+     orcBoss:['El Jefe de Operaciones',humanP,U.dea({k:1.5,fat:1,hat:'helmet',hc:'#1a2240',shield:1,angry:1})],highPriest:['La Fiscal Federal',humanP,U.suit({k:1.4,hat:'bun',H:'#d8b060',item:'folleto',tie:0,glasses:1})],
+     king:['El Director de la DEA',humanP,U.dea({k:2,fat:1,hat:'cap',hc:'#1a2240',glasses:1,mus:'g',item:'mega',angry:1,cape:'#0e1428'})]}},
+ {n:'El GEO',amb:[4,4,8],pc:['#6f7886','#ff3a3a','#f4f0e8'],intro:['SE HAN APAGADO LAS LUCES…','¡ENTRAN LOS DEL GEO!'],warn:'EL COMANDANTE DEL GEO DA LA ORDEN…',
+  ph:['Perímetro','Negociación','Asalto','Cuerpo a Cuerpo','Operación Final'],
+  E:{skel:['Aspirante del GEO',humanP,U.geo({zomb:1})],bat:['Dron Táctico',droneP,{C:'#141418',light:1}],slime:['Granada de Humo',foodP,{kind:'can',k:.7,C:'#2a2a34',D:'#6f7886'}],
+     gob:['El Negociador',humanP,U.suit({hat:'bald',H:'N',item:'radio'})],wolf:['Perro de Asalto',wolfP,{C:'#2a2a34',D:'#0a0a10',L:'#6f7886'}],
+     cult:['Operador con Bengalas',humanP,U.geo({item:'radio'})],orc:['Operador del Escudo',humanP,U.geo({k:1.1,fat:1,hat:'helmet',hc:'#141418',shield:1})]},
+  B:{slimeKing:['El Bote de Humo XXL',foodP,{kind:'can',k:1.7,C:'#2a2a34',D:'#ff3a3a',angry:1}],gobKing:['El Negociador Jefe',humanP,U.suit({k:1.4,fat:1,hat:'bald',H:'N',item:'mega',angry:1})],batLord:['El Dron Kamikaze',droneP,{k:1.7,C:'#141418',light:1,stripe:'#ff3a3a'}],
+     wolfBoss:['Titán, el Perro de Asalto',wolfP,{k:1.7,C:'#2a2a34',D:'#0a0a10',L:'#6f7886',spikes:1}],boneColossus:['El Ariete',humanP,U.geo({k:1.6,fat:1,hat:'helmet',hc:'#141418',shield:1})],
+     orcBoss:['El Jefe de Asalto',humanP,U.geo({k:1.5,fat:1,shield:1,item:'baton',angry:1})],highPriest:['La Coronel de Operaciones',humanP,U.geo({k:1.4,hat:'beret',hc:'#6a1a24',item:'radio'})],
+     king:['El Comandante del GEO',humanP,U.geo({k:2,fat:1,hat:'beret',hc:'#6a1a24',item:'mega',angry:1,cape:'#0a0a10'})]}},
+ {n:'Interpol',amb:[18,10,26],pc:['#d8b060','#b07ae0','#f4f0e8'],intro:['HAY UNA ORDEN DE BÚSQUEDA INTERNACIONAL','…Y LLEVA TU CARA'],warn:'EL DIRECTOR DE INTERPOL HA LLEGADO DE LYON…',
+  ph:['Orden de Búsqueda','Persecución Internacional','Espías por Todas Partes','La Embajada','El Director'],
+  E:{skel:['Detective de Gabardina',humanP,{C:'#c8a870',D:'#8a7050',Pn:'#4a4a54',H:'N',hat:'fedora',hc:'#5a4a3a',zomb:1}],bat:['Paloma Espía',pigeonP,{C:'#6f7886',D:'#2a2a34'}],slime:['Maleta Sospechosa',foodP,{kind:'case',k:.8}],
+     gob:['Agente Secreto',humanP,U.suit({glasses:1,item:'phone'})],wolf:['Sabueso de Interpol',wolfP,{C:'#a86a3a',D:'#5a3a1a',L:'#e8c070'}],
+     cult:['Espía con Dardos',humanP,{C:'#1a1a20',D:'#0a0a10',Pn:'#1a1a20',H:'#c84a2a',hat:'bun',glasses:1,item:'radio'}],orc:['Guardaespaldas',humanP,U.suit({k:1.1,fat:1,hat:'bald',H:'x',glasses:1})]},
+  B:{slimeKing:['La Maleta Diplomática',foodP,{kind:'case',k:1.7,C:'#2a2a34',angry:1}],gobKing:['El Jefe de Estación',humanP,U.suit({k:1.4,hat:'fedora',hc:'#16161e',glasses:1,item:'radio'})],batLord:['La Paloma Reina Espía',pigeonP,{k:1.8,C:'#3a3a48',D:'#141418',crown:1}],
+     wolfBoss:['Sherlock, el Sabueso',wolfP,{k:1.7,C:'#a86a3a',D:'#5a3a1a',L:'#e8c070',spikes:1}],boneColossus:['El Hacker',humanP,{k:1.5,C:'#1a1a20',D:'#0a0a10',Pn:'#1a1a20',hat:'hood',glasses:1,item:'phone'}],
+     orcBoss:['El Guardaespaldas Supremo',humanP,U.suit({k:1.5,fat:1,hat:'bald',H:'x',glasses:1,angry:1})],highPriest:['La Agente Doble',humanP,{k:1.4,C:'#c8323c',D:'#7a1a24',Pn:'#1a1a20',hat:'bun',H:'#f0d060',glasses:1,item:'folleto'}],
+     king:['El Director de Interpol',humanP,U.suit({k:2,fat:1,hat:'fedora',hc:'#101018',glasses:1,mus:'g',item:'brief',angry:1,cape:'#c8a870'})]}},
+ {n:'Mossos y Ertzaintza',amb:[30,6,8],pc:['#c8323c','#1a2240','#f4f0e8'],intro:['¿MOSSOS Y ERTZAINAS JUNTOS?','ESTO SE HA PUESTO SERIO DE VERDAD…'],warn:'EL GRAN JEFE CONJUNTO SE ACERCA…',
+  ph:['Frontera Norte','Patrulla Mixta','La Txapela Roja','Carga de la BRIMO','El Mando Unificado'],
+  E:{skel:['Mosso en Prácticas',humanP,U.mos({hat:'cap',hc:'#c8323c',zomb:1})],bat:['Dron de los Mossos',droneP,{C:'#1a2240',light:1,stripe:'#c8323c'}],slime:['Pelota de Goma',slimeP,{C:'#2a2a34'}],
+     gob:['Ertzaina de Patrulla',humanP,U.ertz({item:'radio'})],wolf:['Perro de la Unidad Canina',wolfP,{C:'#5a3a1a',D:'#2a1a10',L:'#c8935e'}],
+     cult:['Ertzaina con Multa',humanP,U.ertz({item:'multa',badge:1})],orc:['Antidisturbios BRIMO',humanP,U.mos({k:1.1,fat:1,hat:'helmet',hc:'#1a2240',shield:1,item:'baton'})]},
+  B:{slimeKing:['La Pelota de Goma Gigante',slimeP,{k:1.7,C:'#2a2a34',crown:1}],gobKing:['El Cabo de los Mossos',humanP,U.mos({k:1.4,fat:1,hat:'cap',hc:'#c8323c',mus:'g',item:'radio',angry:1})],batLord:['El Helicóptero Conjunto',droneP,{k:1.6,heli:1,C:'#1a2240',stripe:'#c8323c'}],
+     wolfBoss:['Txakur, el Perro Ertzaina',wolfP,{k:1.7,C:'#5a3a1a',D:'#2a1a10',L:'#c8935e',spikes:1}],boneColossus:['El Ertzaina Colosal',humanP,U.ertz({k:1.6,fat:1})],
+     orcBoss:['El Mando de la BRIMO',humanP,U.mos({k:1.5,fat:1,hat:'helmet',hc:'#1a2240',shield:1,item:'baton',angry:1})],highPriest:['La Portavoz Conjunta',humanP,U.ertz({k:1.4,hat:'beret',item:'mega'})],
+     king:['El Gran Jefe Conjunto',humanP,U.ertz({k:2,fat:1,hat:'beret',mus:'g',badge:1,item:'mega',angry:1,cape:'#1a2240'})]}}];
+// Actos I y II con 5 fases
+const PH1b=[PH1[0],{n:PH1[1].n,mix:PH1[1].mix,h:PH1[1].h,boss:['gobKing','batLord']},{n:PH1[2].n,mix:PH1[2].mix,h:PH1[2].h,boss:['wolfBoss','boneColossus']},{n:PH1[6].n,mix:PH1[6].mix,h:PH1[6].h,boss:['orcBoss','highPriest']},Object.assign({},PH1[9],{eliteCd:18})];
+const PH2b=PH1b.map((p,i)=>({n:['Empieza el Viaje','Estampida de Ponis','Unicornios Colocados','Ositos de Gominola','El Unicornio Cósmico'][i],mix:p.mix.map(([t,w])=>[DEMON[t],w]),h:DEMON[p.h],boss:p.boss.map(b=>DEMON[b]),eliteCd:p.eliteCd}));
+const ACTS=[{n:'La Calle',ph:PH1b,fin:'king',warn:'EL COMISARIO SE ACERCA...'},{n:'El Viaje',ph:PH2b,fin:'demonKing',warn:'EL GRAN UNICORNIO CÓSMICO DESCIENDE...',pc:['#ff5aa0','#ffd04a','#5ad0ff','#7aff7a','#c08aff']}];
+ET.king.actFin=1;ET.demonKing.actFin=1;
+NEWACTS.forEach((A,ai)=>{const a=ai+3,map={};
+  for(const b of BASE7.concat(BASEB))map[b]='a'+a+'_'+b;
+  for(const b of BASE7){const [nm,fn,o]=A.E[b],nk=map[b];ET[nk]=Object.assign({},ET[b],{name:nm,spr:nk});ENEMY_ART[nk]=[fn,o]}
+  for(const b of BASEB){const [nm,fn,o]=A.B[b],nk=map[b],src=ET[b],c=Object.assign({},src,{name:nm,spr:nk,sc:1});
+    if(src.ai)c.ai=Object.assign({},src.ai,{acts:src.ai.acts.map(x=>x[0]==='summon'?['summon',x[1],map[x[2]]||x[2],x[3]]:x.slice())});
+    if(src.split)c.split=map[src.split]||src.split;if(b==='king')c.actFin=1;
+    if(fn===droneP||fn===ufoP||fn===letterP||fn===pigeonP)c.fly=1;else if(b==='batLord'&&fn!==pigeonP)c.fly=1;
+    ET[nk]=c;ENEMY_ART[nk]=[fn,Object.assign({},o)]}
+  for(const b of ['bat'])if([droneP,ufoP,letterP,pigeonP,foodP].includes(A.E.bat[1]))ET[map.bat].fly=1;
+  ACTS.push({n:A.n,amb:A.amb,pc:A.pc,intro:A.intro,warn:A.warn,fin:map.king,ph:PHT.map((p,i)=>({n:A.ph[i],mix:p.mix.map(([t,w])=>[map[t],w]),h:map[p.h],boss:p.boss.map(x=>map[x]),eliteCd:p.eliteCd}))})});
+// acto n (1, 2, 3…): del XIII en adelante se repiten III–XII
+function actDef(n){return ACTS[n<=12?n-1:2+((n-3)%10)]}
+function actName(n){return n<=12?ROM[n]:'XIII+'.replace('XIII+',(n<=20?['XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'][n-13]:String(n)))}
+curPhase=function(){const t=G.time,a=G.actN||1,A=actDef(a),base=G.actAt||0,i=Math.max(0,Math.min(4,Math.floor((t-base)/PH_T)));return{act:a,i,ph:A.ph[i],start:base+i*PH_T,key:a+'-'+i,A}};
+director=function(dt){const t=G.time,C=curPhase(),tp=t-C.start,A=C.A,a=C.act;
+  if(G.phaseKey!==C.key){G.phaseKey=C.key;toast((a>1?'ACTO '+actName(a)+' · ':'')+'FASE '+(C.i+1)+': '+C.ph.n.toUpperCase())}
+  const rate=Math.min(14,.7+t/38)*(.75+.45*Math.min(1,tp/150));const cap=Math.min(400,30+t*1.1);
+  G.spawnAcc+=rate*dt;while(G.spawnAcc>=1){G.spawnAcc--;if(enemies.length<cap){const [x,y]=ringPos();spawnEnemy(pickType(),x,y)}}
+  if(t>=G.nextHorde){G.nextHorde+=60;const big=tp>=100&&!G.hordeDone[C.key];if(big)G.hordeDone[C.key]=1;const type=big?C.ph.h:pickType();const n=Math.round(Math.min(50,18+t/12)*(big?1.4:1));const a0=rand(6.28);
+    for(let i=0;i<n;i++){const an=a0+i/n*6.283;const R=Math.hypot(VIEW.w,VIEW.h)/2+20;spawnEnemy(type,P.x+Math.cos(an)*R,P.y+Math.sin(an)*R)}toast(big?'¡GRAN HORDA: '+C.ph.n.toUpperCase()+'!':'¡SE ACERCA UNA HORDA!')}
+  if(t>=G.nextElite){G.nextElite+=C.ph.eliteCd||35;const [x,y]=ringPos();spawnEnemy(pickType(),x,y,{elite:1})}
+  if(t>=G.nextThief){G.nextThief+=180;const [x,y]=ringPos(-10);const e=spawnEnemy('thief',x,y);e.life=30;G.thief=e;toast('¡UN VECINO FORRADO! ¡QUE NO SE ESCAPE!',1);sfx('coin')}
+  const base=G.actAt||0;
+  for(let i=0;i<4;i++){const k=a+'b'+i;if(!G.bossDone[k]&&t>=base+(i+1)*PH_T){G.bossDone[k]=1;const L=A.ph[i].boss;if(L.length){L.forEach(spawnBoss);toast(L.map(b=>ET[b].name.toUpperCase()).join(' Y ')+(L.length>1?' HAN APARECIDO':' HA APARECIDO'))}}}
+  const fin=A.fin,ft=base+ACT_T2;
+  if(!G.bossDone[a+'w']&&t>=ft-15){G.bossDone[a+'w']=1;toast(A.warn)}
+  if(!G.bossDone[a+'f']&&t>=ft){G.bossDone[a+'f']=1;const e=spawnBoss(fin);G.boss=e;if(fin==='king')G.king=e;toast('¡'+ET[fin].name.toUpperCase()+'!');G.shake=8}};
+// paso al acto siguiente al vencer a su jefe final
+function nextAct(e){const a=G.actN||1;G.actN=a+1;G.actAt=G.time;G.runActs=Math.max(G.runActs||1,G.actN);if(!G.act2At)G.act2At=G.time;G.phaseKey='';G.intro={t:0,a:G.actN};
+  for(const o of enemies)if(o!==e&&!o.big&&!o.t.static&&!o.t.special)o.dead=true;fx.push({k:'flash',t:0,dur:.8});G.shake=12;G.nextHorde=G.time+60;G.nextElite=G.time+40}
+{const _k=killEnemy;killEnemy=function(e){const fin=!e.dead&&e.t&&e.t.actFin&&e.type===curPhase().A.fin;
+  if(fin&&(G.actN||1)>=3){_k(e);dropItem('rgem',e.x,e.y);for(let i=0;i<24;i++)pickups.push({k:'gem',x:e.x+rand(-36,36),y:e.y+rand(-36,36),v:10});nextAct(e);return}
+  const was1=(G.actN||1)===1&&e.type==='king',was2=(G.actN||1)===2&&e.type==='demonKing';_k(e);if((was1||was2)&&e.dead)nextAct(e)}}
+updateIntro=function(dt){const a=G.actN||1;if(a>=2&&!G.inRift){const A=actDef(a),cols=A.pc||['#ffd04a'];const n=a===2?2:1;for(let i=0;i<n;i++)parts.push(mkPart(camX+rand(VIEW.w),camY+VIEW.h+rand(-20,0),rand(-8,8),-rand(30,60),rand(1.2,2.2),pick(cols),1))}
+  const I=G.intro;if(!I)return;const t0=I.t;I.t+=dt;const at=(s,f)=>{if(t0<s&&I.t>=s)f()};const n=I.a||2,A=actDef(n);
+  if(n===2){at(.4,()=>toast('UF... ¿QUÉ LLEVABA ESE PORRO?'));at(3,()=>toast('LOS PONIS... ¿ESTÁN FUMANDO?'))}
+  else{at(.4,()=>toast((A.intro||[])[0]||''));at(3,()=>toast((A.intro||[])[1]||''))}
+  at(5.8,()=>{toast('ACTO '+actName(n)+': '+A.n.toUpperCase());sfx('boss')});if(I.t>=7.5)G.intro=null};
+// luz ambiente con el color de cada acto
+function actAmb(amb){const a=G.actN||1;if(MENUISH()||a<2)return`rgba(10,8,34,${amb})`;if(a===2)return`hsla(${(G.t*25)%360|0},75%,20%,${amb+.04})`;const c=actDef(a).amb||[10,8,34];return`rgba(${c[0]},${c[1]},${c[2]},${amb+.03})`}
+// cada acto es más duro que el anterior
+{const _s=spawnEnemy;spawnEnemy=function(t,x,y,o){const e=_s(t,x,y,o);const a=G.actN||1;if(a>=3&&!e.t.static&&!e.t.special){const m=1+.22*(a-2),d=1+.08*(a-2);e.hp*=m;e.maxHp*=m;e.dmg*=d}return e}}
+{const _s=startRun;startRun=function(){const r=_s();G.actN=1;G.actAt=0;G.runActs=1;return r}}
+// en la pantalla final se ve hasta qué acto has llegado
+{const _e=endRun;endRun=function(v){const r=_e(v);try{const g=$('#ov-grid'),a=G.actN||1;if(g&&!g.querySelector('.ov-act')&&!(typeof DU!=='undefined'&&DU.on))g.insertAdjacentHTML('afterbegin',`<span class="ov-act">Acto alcanzado</span><b>${actName(a)} · ${actDef(a).n}</b>`)}catch(e){}return r}}
 
 /* ---------------- Init ---------------- */
 function init(){initSprites();initIcons();initWorldArt();bioPack();initLights();
